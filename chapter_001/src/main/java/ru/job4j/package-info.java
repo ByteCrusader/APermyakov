@@ -3,6 +3,6 @@
 *
 *@author apermyakov
 *@version $Id$
-*@since 0.1
+*@since 09.10.2017
 */
 package ru.job4j;
