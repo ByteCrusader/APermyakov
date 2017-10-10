@@ -1,5 +1,5 @@
 /**
- * Package for testing point on the function.
+ * Package for testing point on the function and area triangle.
  *
  * @author apermyakov
  * @version $Id$

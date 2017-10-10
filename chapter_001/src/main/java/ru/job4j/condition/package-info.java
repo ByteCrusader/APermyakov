@@ -1,5 +1,5 @@
 /**
- * Package for point on the function.
+ * Package for point on the function and area of triangle.
  *
  * @author apermyakov
  * @version $Id$
