@@ -5,7 +5,7 @@ package ru.job4j.loop;
  *
  *  @author apermyakov
  *  @since 11.10.2017
- *  @version 1.0
+ *  @version 1.1
  */
 public class Board {
 
@@ -21,7 +21,7 @@ public class Board {
         StringBuilder string = new StringBuilder();
         for (int i = 1; i <= height; i++) {
             for (int j = 1; j <= width; j++) {
-                if (j % 2 != 0 && i % 2 != 0 || j % 2 == 0 && i % 2 == 0) {
+                if ((i + j) % 2 == 0) {
                     string.append("x");
                 } else {
                     string.append(" ");
