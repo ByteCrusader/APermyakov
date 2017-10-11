@@ -5,7 +5,7 @@ package ru.job4j.loop;
  *
  *  @author apermyakov
  *  @since 11.10.2017
- *  @version 1.0
+ *  @version 1.1
  */
 public class Counter {
 
@@ -21,7 +21,7 @@ public class Counter {
         int result = 0;
         for (int i = start; i <= finish; i++) {
             if (i % 2 == 0) {
-                result = result + i;
+                result += i;
             }
         }
         return result;
