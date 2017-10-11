@@ -21,4 +21,18 @@ public class Max {
     public int max(int first, int second) {
         return (first > second ? first : second);
     }
+
+    /**
+     * Method for search max of three value.
+     *
+     * @author apermyakov
+     * @param first first value
+     * @param second second value
+     * @param third third value
+     * @return max of three value
+     * @since 11.10.2017
+     */
+    public int max(int first, int second, int third) {
+        return max(max(first, second), max(second, third));
+    }
 }

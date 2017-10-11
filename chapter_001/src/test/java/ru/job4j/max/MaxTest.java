@@ -39,4 +39,43 @@ public class MaxTest {
         int result = maximum.max(2, 5);
         assertThat(result, is(5));
     }
+
+    /**
+     * Test when first less than second and third less than second.
+     *
+     * @author apermyakov
+     * @since 11.10.2017
+     */
+    @Test
+    public void whenFirstLessThanSecondAndThirdLessThanSecondThenTakeSecond() {
+        Max maximum = new Max();
+        int result = maximum.max(3, 5, 4);
+        assertThat(result, is(5));
+    }
+
+    /**
+     * Test when first more than second and third more than second and first more than third.
+     *
+     * @author apermyakov
+     * @since 11.10.2017
+     */
+    @Test
+    public void whenFirstMoreThanSecondAndThirdMoreThanSecondAndFirstMoreThanThirdThenTakeFirst() {
+        Max maximum = new Max();
+        int result = maximum.max(7, 3, 5);
+        assertThat(result, is(7));
+    }
+
+    /**
+     * Test when first more than second and third less than second.
+     *
+     * @author apermyakov
+     * @since 11.10.2017
+     */
+    @Test
+    public void whenFirstMoreThanSecondAndThirdLessThanSecond() {
+        Max maximum = new Max();
+        int result = maximum.max(7, 5, 3);
+        assertThat(result, is(7));
+    }
 }
