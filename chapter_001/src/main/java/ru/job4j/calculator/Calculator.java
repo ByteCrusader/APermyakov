@@ -6,6 +6,7 @@ package ru.job4j.calculator;
  * @author apermyakov
  * @version $Id$
  * @since 10.10.2017
+ * @version 1.1
  */
 public class Calculator {
 
@@ -52,7 +53,7 @@ public class Calculator {
         try {
             this.result = first / second;
         } catch (Exception e) {
-            //do some with exception (task is do not use System.out.println)
+            e.printStackTrace();
         }
     }
 
