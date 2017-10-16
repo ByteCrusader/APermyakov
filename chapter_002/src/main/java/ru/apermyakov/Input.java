@@ -10,7 +10,7 @@ package ru.apermyakov;
 public interface Input {
 
 	/**
-	* Method for console input.
+	* Method for input.
 	*
 	* @author apermyakov
 	* @since 16.10.2017

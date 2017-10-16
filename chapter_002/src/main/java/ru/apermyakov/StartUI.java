@@ -10,13 +10,26 @@ package ru.apermyakov;
 public class StartUI {
 
 	/**
+	* Initial input info.
+	*/
+	private Input input;
+
+	/**
+	* Initial start application.
+	*
+	* @param input input info
+	* @param tracker array of items
+	* @since 16.10.2017
+	*/
+	public StartUI(Input input, Tracker tracker) {
+		this.input = input;
+		this.tracker = tracker;
+	}
+
+	/**
 	* Initial tracker.
 	*/
-	private Tracker tracker = new Tracker();
-	/**
-	* Condition for work of application.
-	*/
-	private static int work = 1;
+	private Tracker tracker;
 	/**
 	* Const for menu add.
 	*/
@@ -80,7 +93,7 @@ public class StartUI {
 	* @param input user input
 	* @since 16.10.2017
 	*/
-	public void addItem(ConsoleInput input) {
+	public void addItem(Input input) {
 		String name = input.ask("Please, input your name: ");
 		String desc = input.ask("Please, input description of task: ");
 		tracker.add(new Item(name, desc, 123L));
@@ -105,7 +118,7 @@ public class StartUI {
 	* @param input user input
 	* @since 16.10.2017
 	*/
-	public void editItem(ConsoleInput input) {
+	public void editItem(Input input) {
 		String baseId = input.ask("Please, input id of task, which you want to edit: ");
 		String newName = input.ask("Please, input new name of task: ");
 		String newDesc = input.ask("Please, input new description of task: ");
@@ -121,7 +134,7 @@ public class StartUI {
 	* @param input user input
 	* @since 16.10.2017
 	*/
-	public void deleteItem(ConsoleInput input) {
+	public void deleteItem(Input input) {
 		String baseId = input.ask("Please, input id of task, which you want to delete: ");
 		tracker.delete(tracker.findById(baseId));
 	}
@@ -133,7 +146,7 @@ public class StartUI {
 	* @param input user input
 	* @since 16.10.2017
 	*/
-	public void findId(ConsoleInput input) {
+	public void findId(Input input) {
 		String baseId = input.ask("Please, input id of task, which you want to find: ");
 		Item item = tracker.findById(baseId);
 		System.out.println(String.format("Id: %s; name: %s; description: %s", item.getId(), item.getName(), item.getDescription()));
@@ -146,7 +159,7 @@ public class StartUI {
 	* @param input user input
 	* @since 16.10.2017
 	*/
-	public void findName(ConsoleInput input) {
+	public void findName(Input input) {
 		String name = input.ask("Please, input name of tasks, which you want to find: ");
 		Item[] results = tracker.findByName(name);
 		for (Item item : results) {
@@ -161,35 +174,27 @@ public class StartUI {
 	* @since 16.10.2017
 	*/
 	public void initial() {
-		while (work == 1) {
-			ConsoleInput input = new ConsoleInput();
+		while (true) {
 			String name = input.ask(this.menu());
-			switch (name) {
-				case ADD:
-					this.addItem(input);
-					break;
-				case SHOW:
-					this.showAll();
-					break;
-				case EDIT:
-					this.editItem(input);
-					break;
-				case DELETE:
-					this.deleteItem(input);
-					break;
-				case FINDID:
-					this.findId(input);
-					break;
-				case FINDNAME:
-					this.findName(input);
-					break;
-				case EXIT:
-					System.out.println("Bye");
-					work = 0;
-					break;
-				default:
-					System.out.println("Invalid entered item, please write whole number");
-					break;
+			if (ADD.equals(name)) {
+				this.addItem(input);
+			} else if (ADD.equals(name)) {
+				this.addItem(input);
+			} else if (SHOW.equals(name)) {
+				this.showAll();
+			} else if (EDIT.equals(name)) {
+				this.editItem(input);
+			} else if (DELETE.equals(name)) {
+				this.deleteItem(input);
+			} else if (FINDID.equals(name)) {
+				this.findId(input);
+			} else if (FINDNAME.equals(name)) {
+				this.findName(input);
+			} else if (EXIT.equals(name)) {
+				System.out.println("Bye");
+				break;
+			} else {
+				System.out.println("Invalid entered item, please write whole number");
 			}
 		}
 	}
@@ -202,6 +207,8 @@ public class StartUI {
 	* @since 16.10.2017
 	*/
 	public static void main(String[] args) {
-			new StartUI().initial();
+		Input input = new ConsoleInput();
+		Tracker tracker = new Tracker();
+		new StartUI(input, tracker).initial();
 	}
 }
