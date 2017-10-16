@@ -66,8 +66,8 @@ public class Tracker {
 				}
 				itemsIndex--;
 				break;
-			} 
-			this.items[index] = null;			
+			}
+			this.items[index] = null;
 		}
 	}
 
