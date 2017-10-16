@@ -1,6 +1,7 @@
 package ru.apermyakov;
 
 import java.util.Random;
+import java.util.Arrays;
 
 
 /**
@@ -58,10 +59,15 @@ public class Tracker {
 	*/
 	public void delete(Item item) {
 		for (int index = 0; index < itemsIndex; index++) {
-			if (this.items[index].getId().equals(item.getId()) && this.items[index] != null) {
-				this.items[index] = null;
+			if (this.items[index].getId().equals(item.getId()) && this.items[index] != null && itemsIndex > 1) {
+				for (int start = index; start < itemsIndex - 1; start++) {
+					this.items[start] = this.items[start + 1];
+					this.items[start + 1] = null;
+				}
+				itemsIndex--;
 				break;
-			}
+			} 
+			this.items[index] = null;			
 		}
 	}
 
@@ -91,7 +97,7 @@ public class Tracker {
 				inIndex++;
 			}
 		}
-		return result;
+		return Arrays.copyOf(result, inIndex);
 	}
 
 	/**

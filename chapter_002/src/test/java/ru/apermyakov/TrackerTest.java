@@ -31,7 +31,7 @@ public class TrackerTest {
 	@Test
 	public void whenUpdateItemThenUpdateCell() {
 		Tracker tracker = new Tracker();
-		Item first = new Item("Firts", "1", 123L);
+		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		Item second = new Item("Second", "2", 123L);
 		second.setId(first.getId());
@@ -45,11 +45,12 @@ public class TrackerTest {
 	@Test
 	public void whenDeleteItemThenDeleteCell() {
 		Tracker tracker = new Tracker();
-		Item first = new Item("Firts", "1", 123L);
+		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
-		Item expext = null;
+		Item second = new Item("Second", "2", 123L);
+		tracker.add(second);
 		tracker.delete(first);
-		assertThat(tracker.findAll()[0], is(expext));
+		assertThat(tracker.findAll()[0], is(second));
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class TrackerTest {
 	@Test
 	public void whenFindByNameItemLengthOfResultArray() {
 		Tracker tracker = new Tracker();
-		Item first = new Item("Firts", "1", 123L);
+		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		Item second = new Item("First", "2", 123L);
 		tracker.add(second);
@@ -86,7 +87,7 @@ public class TrackerTest {
 	@Test
 	public void whenFindByIdItemThenItemOrNull() {
 		Tracker tracker = new Tracker();
-		Item first = new Item("Firts", "1", 123L);
+		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		String itemId = first.getId();
 		Item second = new Item("First", "2", 123L);
