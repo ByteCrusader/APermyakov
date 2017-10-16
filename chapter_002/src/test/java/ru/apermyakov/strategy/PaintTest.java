@@ -24,7 +24,7 @@ public class PaintTest {
 	public void whenDrowSquareThenSquare() {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
-		new Paint().drow(new Square());
+		new Paint(new Square()).drow();
 		StringBuilder picture = new StringBuilder();
 		picture.append("++++++");
 		picture.append(System.getProperty("line.separator"));
@@ -47,7 +47,7 @@ public class PaintTest {
 	public void whenDrowTriagleThenTriangle() {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(out));
-		new Paint().drow(new Triangle());
+		new Paint(new Triangle()).drow();
 		StringBuilder picture = new StringBuilder();
 		picture.append("+++++++");
 		picture.append(System.getProperty("line.separator"));
