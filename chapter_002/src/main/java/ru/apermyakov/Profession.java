@@ -49,6 +49,6 @@ public class Profession {
 	* @return name
 	*/
     public String getName() {
-        return name;
+        return this.name;
     }
 }

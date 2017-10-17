@@ -42,20 +42,129 @@ public class Teacher extends Profession {
     }
 
 	/**
+	* Class for create teacher's action.
+	*
+	* @author apermyakov
+	* @version 1.0
+	* @since 17.10.2017
+	*/
+	public class TeacherAction {
+		/**
+		* Feild name of the teacher.
+		*/
+		public String teacherName;
+		/**
+		* Feild name of the student.
+		*/
+		public String studentName;
+
+		/**
+		* Base Designer.
+		*/
+		public TeacherAction() {
+		}
+
+		/**
+		* Design TeacherAction.
+		*
+		* @param teacherName name of the teacher
+		* @param studentName name of the student
+		*/
+		public TeacherAction(String teacherName, String studentName) {
+			this.teacherName = teacherName;
+			this.studentName = studentName;
+		}
+
+		/**
+		* Method get name of the teacher.
+		* @return name of the teacher
+		*/
+		public String getTeacherName() {
+			return this.teacherName;
+		}
+
+		/**
+		* Method get name of the student.
+		* @return name of the student
+		*/
+		public String getStudentName() {
+			return this.studentName;
+		}
+	}
+
+	/** Class for create student.
+	*
+	* @author apermyakov
+	* @version 1.0
+	* @since 17.10.2017
+	*/
+	public class Student extends TeacherAction {
+	}
+
+	/**
+	* Class for create student's knowledge.
+	*
+	* @author apermyakov
+	* @version 1.0
+	* @since 17.10.2017
+	*/
+	public class Knowledge extends TeacherAction {
+		/**
+		* Feild chapter of the textbook.
+		*/
+		public int textbookChapter;
+
+		/**
+		* Design Knowledge.
+		*
+		* @param teacherName name of the teacher
+		* @param studentName name of the student
+		* @param textbookChapter chapter of the textbook
+		*/
+		public Knowledge(String teacherName, String studentName, int textbookChapter) {
+			this.teacherName = teacherName;
+			this.studentName = studentName;
+			this.textbookChapter = textbookChapter;
+		}
+
+		/**
+		* Method get chapter of the textbook.
+		* @return chapter of the textbook
+		*/
+		public int getTextbookChapter() {
+			return this.textbookChapter;
+		}
+	}
+
+	/**
 	* Method teacher teach student.
 	* @param student name of student
-	* @return "Teacher name teach student"
+	* @return Knowledge of student
 	*/
     public Knowledge teach(Student student) {
-        //
+        return new Knowledge(this.name, student.getStudentName(), 2);
     }
+	/*
+	* Example for work with this method:
+	* Teacher senior = new Teacher("Petr", true, 100500, true, 100500);
+	* Student junior = new Student("Petr", "Alexander");
+	* Knowledge course = senior.teach(junior);
+	* System.out.println(String.format("Teacher %s teach %s", course.getTeacherName(), course.getStudentName()));
+	*/
 
 	/**
 	* Method teacher training another teacher.
 	* @param teacher another teacher
-	* @return "Teacher name teach another teacher name"
+	* @return Knowledge of teacher
 	*/
     public Knowledge training(Teacher teacher) {
-        //
+        return new Knowledge(this.name, teacher.getName(), 15);
     }
+	/*
+	* Example for work with this method:
+	* Teacher head = new Teacher("Inna", true, 25, true, 10);
+	* Student middle = new Student("Inna", "Vasilii");
+	* Knowledge lesson = head.training(middle);
+	* System.out.println(String.format("Teacher %s training teacher %s", lesson.getTeacherName(), lesson.getStudentName()));
+	*/
 }
