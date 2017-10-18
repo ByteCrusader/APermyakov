@@ -7,17 +7,18 @@ package ru.apermyakov;
 * @version 1.0
 * @since 17.10.2017
 */
-class Add implements UserAction {
+class Add extends BaseAction {
 
 	/**
-	* Method for initial class menu key.
+	* Design event add.
 	*
 	* @author apermyakov
-	* @return menu key
-	* @since 17.10.2017
+	* @param key key of menu
+	* @param name name of menu
+	* @since 18.10.2017
 	*/
-	public int key() {
-		return 0;
+	Add(int key, String name) {
+		super(key, name);
 	}
 
 	/**
@@ -33,17 +34,6 @@ class Add implements UserAction {
 		String desc = input.ask("Please, input description of task: ");
 		tracker.add(new Item(name, desc, 123L));
 	}
-
-	/**
-	* Method for print class menu assignment.
-	*
-	* @author apermyakov
-	* @return class menu assignment
-	* @since 17.10.2017
-	*/
-	public String info() {
-		return String.format("%s. %s", this.key(), "Add the new item. ");
-	}
 }
 
 /**
@@ -53,17 +43,18 @@ class Add implements UserAction {
 * @version 1.0
 * @since 17.10.2017
 */
-class Edit implements UserAction {
+class Edit extends BaseAction {
 
 	/**
-	* Method for initial class menu key.
+	* Design event edit.
 	*
 	* @author apermyakov
-	* @return menu key
-	* @since 17.10.2017
+	* @param key key of menu
+	* @param name name of menu
+	* @since 18.10.2017
 	*/
-	public int key() {
-		return 2;
+	Edit(int key, String name) {
+		super(key, name);
 	}
 
 	/**
@@ -82,17 +73,6 @@ class Edit implements UserAction {
 		newItem.setId(baseId);
 		tracker.update(newItem);
 	}
-
-	/**
-	* Method for print class menu assignment.
-	*
-	* @author apermyakov
-	* @return class menu assignment
-	* @since 17.10.2017
-	*/
-	public String info() {
-		return String.format("%s. %s", this.key(), "Edit item. ");
-	}
 }
 
 /**
@@ -102,17 +82,18 @@ class Edit implements UserAction {
 * @version 1.0
 * @since 17.10.2017
 */
-class Delete implements UserAction {
+class Delete extends BaseAction {
 
 	/**
-	* Method for initial class menu key.
+	* Design event delete.
 	*
 	* @author apermyakov
-	* @return menu key
-	* @since 17.10.2017
+	* @param key key of menu
+	* @param name name of menu
+	* @since 18.10.2017
 	*/
-	public int key() {
-		return 3;
+	Delete(int key, String name) {
+		super(key, name);
 	}
 
 	/**
@@ -126,17 +107,6 @@ class Delete implements UserAction {
 	public void mainActivity(Input input, Tracker tracker) {
 		String baseId = input.ask("Please, input id of task, which you want to delete: ");
 		tracker.delete(tracker.findById(baseId));
-	}
-
-	/**
-	* Method for print class menu assignment.
-	*
-	* @author apermyakov
-	* @return class menu assignment
-	* @since 17.10.2017
-	*/
-	public String info() {
-		return String.format("%s. %s", this.key(), "Delete item. ");
 	}
 }
 
@@ -179,13 +149,13 @@ public class MenuTracker {
 	* Initial menu's classes.
 	*/
 	public void initial() {
-		this.actions[0] = new Add();
-		this.actions[1] = new Show();
-		this.actions[2] = new Edit();
-		this.actions[3] = new Delete();
-		this.actions[4] = new FindId();
-		this.actions[5] = new FindName();
-		this.actions[6] = new Exit();
+		this.actions[0] = new Add(0, "Add new item. ");
+		this.actions[1] = new Show(1, "Show all items. ");
+		this.actions[2] = new Edit(2, "Edit item. ");
+		this.actions[3] = new Delete(3, "Delete item. ");
+		this.actions[4] = new FindId(4, "Find item by ID. ");
+		this.actions[5] = new FindName(5, "Find items by name. ");
+		this.actions[6] = new Exit(6, "Exit. ");
 	}
 
 	/**
@@ -207,7 +177,11 @@ public class MenuTracker {
 	* @since 17.10.2017
 	*/
 	public void choise(int key) {
-		this.actions[key].mainActivity(this.input, this.tracker);
+		for (UserAction act : actions) {
+			if (act.key() == key) {
+				act.mainActivity(this.input, this.tracker);
+			}
+		}
 	}
 
 	/**
@@ -231,17 +205,18 @@ public class MenuTracker {
 	* @version 1.0
 	* @since 17.10.2017
 	*/
-	private static class Show implements UserAction {
+	private static class Show extends BaseAction {
 
 		/**
-		* Method for initial class menu key.
+		* Design event show.
 		*
 		* @author apermyakov
-		* @return menu key
-		* @since 17.10.2017
+		* @param key key of menu
+		* @param name name of menu
+		* @since 18.10.2017
 		*/
-		public int key() {
-			return 1;
+		Show(int key, String name) {
+			super(key, name);
 		}
 
 		/**
@@ -257,17 +232,6 @@ public class MenuTracker {
 				System.out.println(String.format("Id: %s; name: %s; description: %s", item.getId(), item.getName(), item.getDescription()));
 			}
 		}
-
-		/**
-		* Method for print class menu assignment.
-		*
-		* @author apermyakov
-		* @return class menu assignment
-		* @since 17.10.2017
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Show all items. ");
-		}
 	}
 
 	/**
@@ -277,17 +241,18 @@ public class MenuTracker {
 	* @version 1.0
 	* @since 17.10.2017
 	*/
-	private class FindId implements UserAction {
+	private class FindId extends BaseAction {
 
 		/**
-		* Method for initial class menu key.
+		* Design event find by id.
 		*
 		* @author apermyakov
-		* @return menu key
-		* @since 17.10.2017
+		* @param key key of menu
+		* @param name name of menu
+		* @since 18.10.2017
 		*/
-		public int key() {
-			return 4;
+		FindId(int key, String name) {
+			super(key, name);
 		}
 
 		/**
@@ -303,17 +268,6 @@ public class MenuTracker {
 			Item item = tracker.findById(baseId);
 			System.out.println(String.format("Id: %s; name: %s; description: %s", item.getId(), item.getName(), item.getDescription()));
 		}
-
-		/**
-		* Method for print class menu assignment.
-		*
-		* @author apermyakov
-		* @return class menu assignment
-		* @since 17.10.2017
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Find item by Id. ");
-		}
 	}
 
 	/**
@@ -323,17 +277,18 @@ public class MenuTracker {
 	* @version 1.0
 	* @since 17.10.2017
 	*/
-	private class FindName implements UserAction {
+	private class FindName extends BaseAction {
 
 		/**
-		* Method for initial class menu key.
+		* Design event find by name.
 		*
 		* @author apermyakov
-		* @return menu key
-		* @since 17.10.2017
+		* @param key key of menu
+		* @param name name of menu
+		* @since 18.10.2017
 		*/
-		public int key() {
-			return 5;
+		FindName(int key, String name) {
+			super(key, name);
 		}
 
 		/**
@@ -351,37 +306,27 @@ public class MenuTracker {
 				System.out.println(String.format("Id: %s; name: %s; description: %s", item.getId(), item.getName(), item.getDescription()));
 			}
 		}
-
-		/**
-		* Method for print class menu assignment.
-		*
-		* @author apermyakov
-		* @return class menu assignment
-		* @since 17.10.2017
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Find items by name. ");
-		}
 	}
 
 	/**
-	* Class for add Item.
+	* Class for go out of application.
 	*
 	* @author apermyakov
 	* @version 1.0
 	* @since 17.10.2017
 	*/
-	private static class Exit implements UserAction {
+	private static class Exit extends BaseAction {
 
 		/**
-		* Method for initial class menu key.
+		* Design event exit.
 		*
 		* @author apermyakov
-		* @return menu key
-		* @since 17.10.2017
+		* @param key key of menu
+		* @param name name of menu
+		* @since 18.10.2017
 		*/
-		public int key() {
-			return 6;
+		Exit(int key, String name) {
+			super(key, name);
 		}
 
 		/**
@@ -394,17 +339,6 @@ public class MenuTracker {
 		*/
 		public void mainActivity(Input input, Tracker tracker) {
 			System.out.println("Thanks for using!");
-		}
-
-		/**
-		* Method for print class menu assignment.
-		*
-		* @author apermyakov
-		* @return class menu assignment
-		* @since 17.10.2017
-		*/
-		public String info() {
-			return String.format("%s. %s", this.key(), "Exit. ");
 		}
 	}
 }
