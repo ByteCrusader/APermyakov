@@ -37,4 +37,29 @@ public class StubInput implements Input {
 	public String ask(String question) {
 		return answers[position++];
 	}
+
+	/**
+	* Method for sending auto output info.
+	*
+	* @author apermyakov
+	* @param question input info
+	* @param range range of menu
+	* @return auto output info
+	* @since 17.10.2017
+	*/
+	public int ask(String question, int[] range) {
+		int key = Integer.valueOf(this.ask(question));
+		boolean exist = false;
+		for (int value : range) {
+			if (value == key) {
+				exist = true;
+				break;
+			}
+		}
+		if (exist) {
+			return key;
+		} else {
+			throw new MenuOutException("Out of menu range. ");
+		}
+	}
 }

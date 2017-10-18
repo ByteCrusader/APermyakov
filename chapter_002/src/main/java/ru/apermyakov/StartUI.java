@@ -39,16 +39,19 @@ public class StartUI {
 	*/
 	public void initial() {
 		MenuTracker menu = new MenuTracker(this.input, tracker);
-		int chacker = 0;
+		menu.initial();
+		int[] ranges = new int[menu.getActions().length];
+		for (int index = 0; index < ranges.length; index++) {
+			ranges[index] = menu.getActions()[index].key();
+		}
 		do {
-			menu.initial();
 			menu.drow();
-			int key = Integer.valueOf(input.ask("Please, select meny's item: "));
+			int key = input.ask("Please, select meny's item: ", ranges);
 			menu.choise(key);
-			if (key == 6) {
-				chacker++;
+			if (key == menu.getActions()[menu.getActions().length - 1].key()) {
+				break;
 			}
-		} while (chacker == 0);
+		} while (true);
 	}
 
 	/**
@@ -59,7 +62,7 @@ public class StartUI {
 	* @since 16.10.2017
 	*/
 	public static void main(String[] args) {
-		Input input = new ConsoleInput();
+		Input input = new ValidateInput();
 		Tracker tracker = new Tracker();
 		new StartUI(input, tracker).initial();
 	}

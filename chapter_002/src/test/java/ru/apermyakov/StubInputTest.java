@@ -12,6 +12,7 @@ import static org.junit.Assert.assertThat;
 * @since 16.10.2017
 * @version 1.0
 */
+
 public class StubInputTest {
 
 	/**

@@ -189,6 +189,17 @@ public class MenuTracker {
 	}
 
 	/**
+	* Get menu's array.
+	*
+	* @author apermyakov
+	* @return array of menu
+	* @since 18.10.2017
+	*/
+	public UserAction[] getActions() {
+		return this.actions;
+	}
+
+	/**
 	* Method for choise class menu assignment.
 	*
 	* @author apermyakov
