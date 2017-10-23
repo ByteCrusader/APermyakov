@@ -53,4 +53,20 @@ public class ConvertList {
         }
         return result;
     }
+
+    /**
+     * Method for convert array to list.
+     *
+     * @param list base array
+     * @return result list
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] insideArray : list) {
+            for (int value : insideArray) {
+                result.add(value);
+            }
+        }
+        return result;
+    }
 }

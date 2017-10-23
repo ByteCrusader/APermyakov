@@ -61,4 +61,24 @@ public class ConvertListTest {
         int[][] result = convert.toArray(check, 4);
         assertThat(result, is(expect));
     }
+
+    /**
+     * Test when convert check list to array with 4 rows.
+     */
+    @Test
+    public void whenConvertCheckListOfArraysThenTakeOneList() {
+        List<int[]> check = new ArrayList<>();
+        check.add(new int[]{25, 35, 45});
+        check.add(new int[]{6, 7, 8, 9, 10});
+        List<Integer> expect = new ArrayList<>();
+        expect.add(25);
+        expect.add(35);
+        expect.add(45);
+        for (int i = 6; i < 11; i++) {
+            expect.add(i);
+        }
+        ConvertList convert = new ConvertList();
+        List<Integer> result = convert.convert(check);
+        assertThat(result, is(expect));
+    }
 }
