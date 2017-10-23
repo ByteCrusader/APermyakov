@@ -41,11 +41,13 @@
 			for (int index = 0; index < x.length; index++) {
 				if (horizontal.equals(x[index])) {
 					this.xCoord = index;
+					break;
 				}
 			}
 			for (int index = 0; index < y.length; index++) {
 				if (vertical == y[index]) {
 					this.yCoord = index;
+					break;
 				}
 			}
 		}

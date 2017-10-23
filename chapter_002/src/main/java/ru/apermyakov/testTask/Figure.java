@@ -13,7 +13,7 @@ public abstract class Figure {
 	* Initial figure's position.
 	*/
 	final Cell position;
-	
+
 	/**
 	* Initial figure reall moves caunter.
 	*/

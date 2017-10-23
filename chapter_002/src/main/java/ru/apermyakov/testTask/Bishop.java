@@ -17,6 +17,11 @@ public class Bishop extends Figure {
 	private Cell[] moves = new Cell[13];
 
 	/**
+	* Initial figure's move.
+	*/
+	private Move move = new Move();
+
+	/**
 	* Method for initial bishop possible moves array.
 	*
 	* @author apermyakov
@@ -26,22 +31,22 @@ public class Bishop extends Figure {
 		for (int count = 1;
 			super.position.getX() + count < 8 &&  super.position.getY() + count < 8;
 			count++) {
-			moves[super.reallMoves++] = new Cell(super.position.getX() + count, super.position.getY() + count);
+			moves[super.reallMoves++] = move.upRight(super.position, count, count);
 		}
 		for (int count = 1;
 			super.position.getX() + count < 8 &&  super.position.getY() - count >= 0;
 			count++) {
-			moves[super.reallMoves++] = new Cell(super.position.getX() + count, super.position.getY() - count);
+			moves[super.reallMoves++] = move.downRight(super.position, count, count);
 		}
 		for (int count = 1;
 			super.position.getX() - count >= 0 &&  super.position.getY() - count >= 0;
 			count++) {
-			moves[super.reallMoves++] = new Cell(super.position.getX() - count, super.position.getY() - count);
+			moves[super.reallMoves++] = move.downLeft(super.position, count, count);
 		}
 		for (int count = 1;
 			super.position.getX() - count >= 0 &&  super.position.getY() + count < 8;
 			count++) {
-			moves[super.reallMoves++] = new Cell(super.position.getX() - count, super.position.getY() + count);
+			moves[super.reallMoves++] = move.upLeft(super.position, count, count);
 		}
 	}
 
@@ -85,19 +90,19 @@ public class Bishop extends Figure {
 				wayLength = Math.max(dist.getX(), super.position.getX()) - Math.min(dist.getX(), super.position.getX());
 				if (dist.getX() > super.position.getX() && dist.getY() > super.position.getY()) { //up and right
 					for (int index = 1; index <= wayLength; index++) {
-						bishopWay[wayPoints++] = new Cell(super.position.getX() + index, super.position.getY() + index);
+						bishopWay[wayPoints++] = move.upRight(super.position, index, index);
 					}
 				} else if (dist.getX() > super.position.getX() && dist.getY() < super.position.getY()) { //down and right
 					for (int index = 1; index <= wayLength; index++) {
-						bishopWay[wayPoints++] = new Cell(super.position.getX() + index, super.position.getY() - index);
+						bishopWay[wayPoints++] = move.downRight(super.position, index, index);
 					}
 				} else if (dist.getX() < super.position.getX() && dist.getY() < super.position.getY()) { //down and left
 					for (int index = 1; index <= wayLength; index++) {
-						bishopWay[wayPoints++] = new Cell(super.position.getX() - index, super.position.getY() - index);
+						bishopWay[wayPoints++] = move.downLeft(super.position, index, index);
 					}
 				} else { //up and left
 					for (int index = 1; index <= wayLength; index++) {
-						bishopWay[wayPoints++] = new Cell(super.position.getX() - index, super.position.getY() + index);
+						bishopWay[wayPoints++] = move.upLeft(super.position, index, index);
 					}
 				}
 			}

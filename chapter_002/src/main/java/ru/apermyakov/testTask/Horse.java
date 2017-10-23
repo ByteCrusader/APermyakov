@@ -17,6 +17,11 @@ public class Horse extends Figure {
 	private Cell[] moves = new Cell[8];
 
 	/**
+	* Initial figure's move.
+	*/
+	private Move move = new Move();
+
+	/**
 	* Method for initial horse possible moves array.
 	*
 	* @author apermyakov
@@ -25,38 +30,38 @@ public class Horse extends Figure {
 	private void init() {
 		if (super.position.getX() + 2 < 8) {
 			if (super.position.getY() + 1 < 8) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() + 2, super.position.getY() + 1);
-				moves[super.reallMoves++] = new Cell(super.position.getX() + 1, super.position.getY() + 2);
+				moves[super.reallMoves++] = move.upRight(super.position, 2, 1);
+				moves[super.reallMoves++] = move.upRight(super.position, 1, 2);
 			}
 			if (super.position.getY() - 1 >= 0) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() + 2, super.position.getY() - 1);
-				moves[super.reallMoves++] = new Cell(super.position.getX() + 1, super.position.getY() - 2);
+				moves[super.reallMoves++] = move.downRight(super.position, 2, 1);
+				moves[super.reallMoves++] = move.downRight(super.position, 1, 2);
 			}
 		}
 		if (super.position.getX() + 2 >= 8 && super.position.getX() + 1 < 8) {
 			if (super.position.getY() + 2 < 8) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() + 1, super.position.getY() + 2);
+				moves[super.reallMoves++] = move.upRight(super.position, 1, 2);
 			}
 			if (super.position.getY() - 2 >= 0) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() + 1, super.position.getY() - 2);
+				moves[super.reallMoves++] = move.downRight(super.position, 1, 2);
 			}
 		}
 		if (super.position.getX() - 2 >= 0) {
 			if (super.position.getY() + 1 < 8) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() - 2, super.position.getY() + 1);
-				moves[super.reallMoves++] = new Cell(super.position.getX() - 1, super.position.getY() + 2);
+				moves[super.reallMoves++] = move.upLeft(super.position, 2, 1);
+				moves[super.reallMoves++] = move.upLeft(super.position, 1, 2);
 			}
 			if (super.position.getY() - 1 >= 0) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() - 2, super.position.getY() - 1);
-				moves[super.reallMoves++] = new Cell(super.position.getX() - 1, super.position.getY() - 2);
+				moves[super.reallMoves++] = move.downLeft(super.position, 2, 1);
+				moves[super.reallMoves++] = move.downLeft(super.position, 1, 2);
 			}
 		}
 		if (super.position.getX() - 2 < 0 && super.position.getX() - 1 >= 0) {
 			if (super.position.getY() + 2 < 8) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() - 1, super.position.getY() + 2);
+				moves[super.reallMoves++] = move.upLeft(super.position, 1, 2);
 			}
 			if (super.position.getY() - 2 >= 0) {
-				moves[super.reallMoves++] = new Cell(super.position.getX() - 1, super.position.getY() - 2);
+				moves[super.reallMoves++] = move.downLeft(super.position, 1, 2);
 			}
 		}
 	}
@@ -104,21 +109,21 @@ public class Horse extends Figure {
 				if (wayYLength > wayXLength) { //first Y or X
 					if (dist.getY() - super.position.getY() > 0) { //first Y and up
 						for (int index = 1; index <= wayYLength; index++) { //going up
-							horseWay[wayPoints++] = new Cell(super.position.getX(), super.position.getY() + index);
+							horseWay[wayPoints++] = move.upRight(super.position, 0, index);
 						}
 					} else { //first Y and down
 						for (int index = 1; index <= wayYLength; index++) { //going down
-							horseWay[wayPoints++] = new Cell(super.position.getX(), super.position.getY() - index);
+							horseWay[wayPoints++] = move.downLeft(super.position, 0, index);
 						}
 					}
 				} else {
 					if (dist.getX() - super.position.getX() > 0) { //first X and right
 						for (int index = 1; index <= wayXLength; index++) { //going right
-							horseWay[wayPoints++] = new Cell(super.position.getX() + index, super.position.getY());
+							horseWay[wayPoints++] = move.upRight(super.position, index, 0);
 						}
 					} else { //first X and left
 						for (int index = 1; index <= wayXLength; index++) { //going left
-							horseWay[wayPoints++] = new Cell(super.position.getX() - index, super.position.getY());
+							horseWay[wayPoints++] = move.downLeft(super.position, index, 0);
 						}
 					}
 				}
