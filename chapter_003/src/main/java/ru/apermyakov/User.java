@@ -25,7 +25,7 @@ public class User implements Comparable<User> {
     private String city;
 
     /**
-     * Initial user city.
+     * Initial user age.
      */
     private String age;
 
@@ -60,6 +60,24 @@ public class User implements Comparable<User> {
      */
     public int getId() {
         return this.id;
+    }
+
+    /**
+     * Method for return user age.
+     *
+     * @return user age
+     */
+    public String getAge() {
+        return this.age;
+    }
+
+    /**
+     * Method for return user name.
+     *
+     * @return user name
+     */
+    public String getName() {
+        return this.name;
     }
 
     /**
