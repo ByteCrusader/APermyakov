@@ -21,9 +21,7 @@ public class ConvertList {
     public List<Integer> toList(int[][] array) {
         List<Integer> list = new ArrayList<>();
         for (int[] insideArray : array) {
-            for (int value : insideArray) {
-                list.add(value);
-            }
+            list.addAll(singleArrayToList(insideArray));
         }
         return list;
     }
@@ -42,7 +40,7 @@ public class ConvertList {
         for (int[] insideArray : result) {
             int in = 0;
             for (int value : insideArray) {
-                if (index < list.size()) {
+                if (index < list.size() && list.get(index) != null) {
                     result[out][in++] = list.get(index);
                 } else {
                     result[out][in++] = 0;
@@ -63,10 +61,26 @@ public class ConvertList {
     public List<Integer> convert(List<int[]> list) {
         List<Integer> result = new ArrayList<>();
         for (int[] insideArray : list) {
-            for (int value : insideArray) {
-                result.add(value);
-            }
+            result.addAll(singleArrayToList(insideArray));
         }
         return result;
+    }
+
+    /**
+     * Method for convert single array to list.
+     *
+     * @param array base array
+     * @return result list
+     */
+    public List<Integer> singleArrayToList(int[] array) {
+        List<Integer> list = new ArrayList<>();
+        if (array != null) {
+            for (int value : array) {
+                list.add(value);
+            }
+        } else {
+            list.add(null);
+        }
+        return list;
     }
 }
