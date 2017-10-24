@@ -7,7 +7,7 @@ package ru.apermyakov;
  * @version 1.0
  * @since 23.10.2017
  */
-public class User {
+public class User implements Comparable<User> {
 
     /**
      * Initial user id.
@@ -25,6 +25,11 @@ public class User {
     private String city;
 
     /**
+     * Initial user city.
+     */
+    private String age;
+
+    /**
      * Design User.
      *
      * @param id user id
@@ -38,11 +43,48 @@ public class User {
     }
 
     /**
+     * Design User.
+     *
+     * @param age user age
+     * @param name user name
+     */
+    public User(String name, String age) {
+        this.age = age;
+        this.name = name;
+    }
+
+    /**
      * Method for return user id.
      *
      * @return user id
      */
     public int getId() {
         return this.id;
+    }
+
+    /**
+     * Method for override compare to.
+     *
+     * @param o compare object
+     * @return int
+     */
+    @Override
+    public int compareTo(User o) {
+        int compareAge = this.age.compareTo(o.age);
+        int compareName = this.name.compareTo(o.name);
+        return compareAge != 0 ? compareAge : compareName;
+    }
+
+    /**
+     * Method for override to string.
+     *
+     * @return needed string
+     */
+    @Override
+    public String toString() {
+        return "User{"
+                + ", name='" + name + '\''
+                + ", age='" + age + '\''
+                + '}';
     }
 }
