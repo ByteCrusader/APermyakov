@@ -1,7 +1,8 @@
 package ru.apermyakov;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Arrays;
 
 
 /**
@@ -14,14 +15,9 @@ import java.util.Arrays;
 public class Tracker {
 
 	/**
-	* Feild array of items.
-	*/
-	private Item[] items = new Item[100];
-
-	/**
-	* Feild item index for arrays.
-	*/
-	private int itemsIndex = 0;
+	 * Field array of items.
+	 */
+	private List<Item> items = new ArrayList<>();
 
 	/**
 	* Feild for set uniq id.
@@ -35,8 +31,7 @@ public class Tracker {
 	*/
 	public Item add(Item item) {
 		item.setId(String.valueOf(System.currentTimeMillis() + RN.nextInt()));
-		this.items[itemsIndex] = item;
-		itemsIndex++;
+		this.items.add(item);
 		return item;
 	}
 
@@ -45,11 +40,13 @@ public class Tracker {
 	* @param item new item
 	*/
 	public void update(Item item) {
-		for (int index = 0; index < itemsIndex; index++) {
-			if (this.items[index].getId().equals(item.getId()) && this.items[index] != null) {
-				this.items[index] = item;
+		int index = 0;
+		for (Item value : this.items) {
+			if (value.getId().equals(item.getId()) && value != null) {
+				this.items.set(index, item);
 				break;
 			}
+			index++;
 		}
 	}
 
@@ -58,16 +55,13 @@ public class Tracker {
 	* @param item chousen item
 	*/
 	public void delete(Item item) {
-		for (int index = 0; index < itemsIndex; index++) {
-			if (this.items[index].getId().equals(item.getId()) && this.items[index] != null && itemsIndex > 1) {
-				for (int start = index; start < itemsIndex - 1; start++) {
-					this.items[start] = this.items[start + 1];
-					this.items[start + 1] = null;
-				}
-				itemsIndex--;
+		int index = 0;
+		for (Item value : this.items) {
+			if (value.getId().equals(item.getId()) && value != null && items.size() > 1) {
+				this.items.remove(index);
 				break;
 			}
-			this.items[index] = null;
+			index++;
 		}
 	}
 
@@ -75,10 +69,10 @@ public class Tracker {
 	* Method find all item whithout null.
 	* @return all item
 	*/
-	public Item[] findAll() {
-		Item[] result = new Item[itemsIndex];
-		for (int index = 0; index < itemsIndex; index++) {
-				result[index] = this.items[index];
+	public List<Item> findAll() {
+		List<Item> result = new ArrayList<>();
+		for (Item value : this.items) {
+			result.add(value);
 		}
 		return result;
 	}
@@ -88,16 +82,14 @@ public class Tracker {
 	* @param key item's name
 	* @return array of found names
 	*/
-	public Item[] findByName(String key) {
-		Item[] result = new Item[itemsIndex];
-		int inIndex = 0;
-		for (int index = 0; index < itemsIndex; index++) {
-			if (items[index] != null && this.items[index].getName().equals(key)) {
-				result[inIndex] = this.items[index];
-				inIndex++;
+	public List<Item> findByName(String key) {
+		List<Item> result = new ArrayList<>();
+		for (Item value : this.items) {
+			if (value != null && value.getName().equals(key)) {
+				result.add(value);
 			}
 		}
-		return Arrays.copyOf(result, inIndex);
+		return result;
 	}
 
 	/**

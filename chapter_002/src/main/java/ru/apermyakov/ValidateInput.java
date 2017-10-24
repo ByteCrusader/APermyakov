@@ -1,5 +1,7 @@
 package ru.apermyakov;
 
+import java.util.List;
+
 /**
 * Class for validate input.
 *
@@ -18,7 +20,7 @@ public class ValidateInput extends ConsoleInput {
 	* @return validate info or exception
 	* @since 17.10.2017
 	*/
-	public int ask(String question, int[] range) {
+	public int ask(String question, List<Integer> range) {
 		int value = -1;
 		do {
 			try {

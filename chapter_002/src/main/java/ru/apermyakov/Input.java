@@ -1,5 +1,7 @@
 package ru.apermyakov;
 
+import java.util.List;
+
 /**
 * Interface for input information.
 *
@@ -30,5 +32,5 @@ public interface Input {
 	* @return choice
 	* @version 1.0
 	*/
-	int ask(String question, int[] range);
+	int ask(String question, List<Integer> range);
 }

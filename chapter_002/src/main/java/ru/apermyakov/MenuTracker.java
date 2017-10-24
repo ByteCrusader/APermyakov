@@ -1,5 +1,8 @@
 package ru.apermyakov;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 * Class for add Item.
 *
@@ -132,7 +135,7 @@ public class MenuTracker {
 	/**
 	* Initial menu.
 	*/
-	private UserAction[] actions = new UserAction[7];
+	private List<UserAction> actions = new ArrayList<>();
 
 	/**
 	* Design menu tracker.
@@ -149,13 +152,13 @@ public class MenuTracker {
 	* Initial menu's classes.
 	*/
 	public void initial() {
-		this.actions[0] = new Add(0, "Add new item. ");
-		this.actions[1] = new Show(1, "Show all items. ");
-		this.actions[2] = new Edit(2, "Edit item. ");
-		this.actions[3] = new Delete(3, "Delete item. ");
-		this.actions[4] = new FindId(4, "Find item by ID. ");
-		this.actions[5] = new FindName(5, "Find items by name. ");
-		this.actions[6] = new Exit(6, "Exit. ");
+		this.actions.add(0, new Add(0, "Add new item. "));
+		this.actions.add(1, new Show(1, "Show all items. "));
+		this.actions.add(2, new Edit(2, "Edit item. "));
+		this.actions.add(3, new Delete(3, "Delete item. "));
+		this.actions.add(4, new FindId(4, "Find item by ID. "));
+		this.actions.add(5, new FindName(5, "Find items by name. "));
+		this.actions.add(6, new Exit(6, "Exit. "));
 	}
 
 	/**
@@ -165,7 +168,7 @@ public class MenuTracker {
 	* @return array of menu
 	* @since 18.10.2017
 	*/
-	public UserAction[] getActions() {
+	public List<UserAction> getActions() {
 		return this.actions;
 	}
 
@@ -177,7 +180,7 @@ public class MenuTracker {
 	* @since 17.10.2017
 	*/
 	public void choise(int key) {
-		for (UserAction act : actions) {
+		for (UserAction act : this.actions) {
 			if (act.key() == key) {
 				act.mainActivity(this.input, this.tracker);
 			}
@@ -301,7 +304,7 @@ public class MenuTracker {
 		*/
 		public void mainActivity(Input input, Tracker tracker) {
 			String name = input.ask("Please, input name of tasks, which you want to find: ");
-			Item[] results = tracker.findByName(name);
+			List<Item> results = tracker.findByName(name);
 			for (Item item : results) {
 				System.out.println(String.format("Id: %s; name: %s; description: %s", item.getId(), item.getName(), item.getDescription()));
 			}

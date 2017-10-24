@@ -1,5 +1,7 @@
 package ru.apermyakov;
 
+import java.util.List;
+
 /**
 * Class for auto output info.
 *
@@ -47,7 +49,7 @@ public class StubInput implements Input {
 	* @return auto output info
 	* @since 17.10.2017
 	*/
-	public int ask(String question, int[] range) {
+	public int ask(String question, List<Integer> range) {
 		int key = Integer.valueOf(this.ask(question));
 		boolean exist = false;
 		for (int value : range) {

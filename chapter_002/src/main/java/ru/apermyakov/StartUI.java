@@ -1,5 +1,8 @@
 package ru.apermyakov;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 * Class for run application.
 *
@@ -40,15 +43,15 @@ public class StartUI {
 	public void initial() {
 		MenuTracker menu = new MenuTracker(this.input, tracker);
 		menu.initial();
-		int[] ranges = new int[menu.getActions().length];
-		for (int index = 0; index < ranges.length; index++) {
-			ranges[index] = menu.getActions()[index].key();
+		List<Integer> ranges = new ArrayList<>();
+		for (UserAction action : menu.getActions()) {
+			ranges.add(action.key());
 		}
 		do {
 			menu.drow();
 			int key = input.ask("Please, select meny's item: ", ranges);
 			menu.choise(key);
-			if (key == menu.getActions()[menu.getActions().length - 1].key()) {
+			if (key == menu.getActions().get(menu.getActions().size() - 1).key()) {
 				break;
 			}
 		} while (true);

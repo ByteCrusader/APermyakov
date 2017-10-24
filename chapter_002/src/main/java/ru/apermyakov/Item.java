@@ -1,5 +1,7 @@
 package ru.apermyakov;
 
+import java.util.List;
+
 /**
  * Class for create items.
  *
@@ -32,12 +34,7 @@ public class Item {
 	/**
 	* Feild array of comments to items.
 	*/
-	private String[] comments;
-
-	/**
-	* Feild counter/length of comments array.
-	*/
-	private int commentPosition = 0;
+	private List<String> comments;
 
 	/**
 	* Design Item.
@@ -97,15 +94,14 @@ public class Item {
 	* @param comment item's comment
 	*/
 	public void addComment(String comment) {
-		this.comments[commentPosition] = comment;
-		commentPosition++;
+		this.comments.add(comment);
 	}
 
 	/**
 	* Method get item's comments array.
 	* @return item's comments array
 	*/
-	public String[] getComments() {
+	public List<String> getComments() {
 		return this.comments;
 	}
 }

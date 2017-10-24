@@ -1,5 +1,6 @@
 package ru.apermyakov;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -41,7 +42,7 @@ public class ConsoleInput implements Input {
 	* @return user choice
 	* @version 1.0
 	*/
-	public int ask(String question, int[] range) {
+	public int ask(String question, List<Integer> range) {
 		int key = Integer.valueOf(this.ask(question));
 		boolean exist = false;
 		for (int value : range) {
