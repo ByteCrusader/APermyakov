@@ -18,13 +18,12 @@ public class SortUser {
      * @return sorted set
      */
     public Set<User> sort(List<User> list) {
-        Set<User> sorted = new TreeSet<>();
         for (User user : list) {
-            if (user != null) {
-                sorted.add(user);
+            if (user == null) {
+                list.remove(user);
             }
         }
-        return sorted;
+        return new TreeSet<>(list);
     }
 
     /**
