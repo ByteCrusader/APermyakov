@@ -31,7 +31,7 @@ public class BankMapTest {
     /**
      * Test when delete user out of map then exception.
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void whenDeleteUserOutIfMapThenException() {
         Passport passport = new Passport(6518, 235478, "USSR", "12.02.1978");
         User user = new User("Valerii", passport);
@@ -47,7 +47,7 @@ public class BankMapTest {
     /**
      * Test delete account which user does not have then exception.
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void whenDeleteAccountWhichUserDoesNotHaveThenException() {
         Passport passport = new Passport(6518, 235478, "USSR", "12.02.1978");
         User user = new User("Valerii", passport);
@@ -81,7 +81,7 @@ public class BankMapTest {
     /**
      * Test when delete user and get his account then exception
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void whenDeleteUserAndGetHisAccountThenException() {
         Passport passport1 = new Passport(6518, 248478, "USSR", "12.02.1978");
         User user1 = new User("Ivan", passport1);
@@ -184,7 +184,7 @@ public class BankMapTest {
     /**
      * Test when transfer money and haven't user then exception.
      */
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void whenTransferMoneyAndHaventUserThenException() {
         Passport passport1 = new Passport(6518, 248478, "USSR", "12.02.1978");
         User user1 = new User("Ivan", passport1);

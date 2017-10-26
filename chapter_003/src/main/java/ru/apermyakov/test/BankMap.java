@@ -31,11 +31,11 @@ public class BankMap {
      * @param user delete user
      * @throws NullPointerException Empty user
      */
-    public void deleteUser(User user) throws NullPointerException {
+    public void deleteUser(User user) throws IllegalArgumentException {
         if (this.catalog.containsKey(user)) {
             this.catalog.remove(user);
         } else {
-            throw new NullPointerException("No such user");
+            throw new IllegalArgumentException("No such user");
         }
     }
 
@@ -46,10 +46,14 @@ public class BankMap {
      * @param account new account
      */
     public void addAccountToUser(User user, Account account) {
-        if (this.catalog.get(user) == null) {
-            this.catalog.put(user, new LinkedList<Account>());
+        if (this.catalog.containsKey(user)) {
+            if (this.catalog.get(user) == null) {
+                this.catalog.put(user, new LinkedList<Account>());
+            }
+            this.catalog.get(user).add(account);
+        } else {
+            throw new IllegalArgumentException("No such user");
         }
-        this.catalog.get(user).add(account);
     }
 
     /**
@@ -59,11 +63,11 @@ public class BankMap {
      * @param account delete account
      * @throws NullPointerException user has't such account
      */
-    public void deleteAccountFromUser(User user, Account account)  throws NullPointerException {
+    public void deleteAccountFromUser(User user, Account account)  throws IllegalArgumentException {
         if (this.catalog.get(user).contains(account)) {
             this.catalog.get(user).remove(account);
         } else {
-            throw new NullPointerException("User has't such account");
+            throw new IllegalArgumentException("User has't such account");
         }
     }
 
@@ -74,11 +78,11 @@ public class BankMap {
      * @return user's accounts
      * @throws NullPointerException empty user
      */
-    public List<Account> getUserAccount(User user) throws NullPointerException {
+    public List<Account> getUserAccount(User user) throws IllegalArgumentException {
         if (this.catalog.containsKey(user)) {
             return this.catalog.get(user);
         } else {
-            throw new NullPointerException("No such user");
+            throw new IllegalArgumentException("No such user");
         }
     }
 
@@ -100,7 +104,7 @@ public class BankMap {
         if (source.checkUserAccount() && dispatch.checkUserAccount()) {
             if (source.availableSavings() > amount) {
                 source.withdrawal(amount);
-                source.deposit(amount);
+                dispatch.deposit(amount);
                 result = true;
             }
         }
