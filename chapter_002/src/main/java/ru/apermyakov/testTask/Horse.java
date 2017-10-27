@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class Horse extends Figure {
 
 	/**
-	* Initial horse possible moves array.
+	* Initial horse possible moves collections.
 	*/
 	private Cell[] moves = new Cell[8];
 
@@ -22,7 +22,7 @@ public class Horse extends Figure {
 	private Move move = new Move();
 
 	/**
-	* Method for initial horse possible moves array.
+	* Method for initial horse possible moves collections.
 	*
 	* @author apermyakov
 	* @since 20.10.2017
@@ -30,38 +30,38 @@ public class Horse extends Figure {
 	private void init() {
 		if (super.position.getX() + 2 < 8) {
 			if (super.position.getY() + 1 < 8) {
-				moves[super.reallMoves++] = move.upRight(super.position, 2, 1);
-				moves[super.reallMoves++] = move.upRight(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, 2, 1);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, 2);
 			}
 			if (super.position.getY() - 1 >= 0) {
-				moves[super.reallMoves++] = move.downRight(super.position, 2, 1);
-				moves[super.reallMoves++] = move.downRight(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, 2, -1);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, -2);
 			}
 		}
 		if (super.position.getX() + 2 >= 8 && super.position.getX() + 1 < 8) {
 			if (super.position.getY() + 2 < 8) {
-				moves[super.reallMoves++] = move.upRight(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, 2);
 			}
 			if (super.position.getY() - 2 >= 0) {
-				moves[super.reallMoves++] = move.downRight(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, -2);
 			}
 		}
 		if (super.position.getX() - 2 >= 0) {
 			if (super.position.getY() + 1 < 8) {
-				moves[super.reallMoves++] = move.upLeft(super.position, 2, 1);
-				moves[super.reallMoves++] = move.upLeft(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, -2, 1);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, 2);
 			}
 			if (super.position.getY() - 1 >= 0) {
-				moves[super.reallMoves++] = move.downLeft(super.position, 2, 1);
-				moves[super.reallMoves++] = move.downLeft(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, -2, -1);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, -2);
 			}
 		}
 		if (super.position.getX() - 2 < 0 && super.position.getX() - 1 >= 0) {
 			if (super.position.getY() + 2 < 8) {
-				moves[super.reallMoves++] = move.upLeft(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, 2);
 			}
 			if (super.position.getY() - 2 >= 0) {
-				moves[super.reallMoves++] = move.downLeft(super.position, 1, 2);
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, -2);
 			}
 		}
 	}
@@ -79,10 +79,10 @@ public class Horse extends Figure {
 	}
 
 	/**
-	* Method for initial horse possible moves array.
+	* Method for initial horse possible moves collections.
 	*
 	* @author apermyakov
-	* @return array of possible cells
+	* @return collections of possible cells
 	* @since 20.10.2017
 	*/
 	public Cell[] possibleMoves() {
@@ -94,7 +94,7 @@ public class Horse extends Figure {
 	*
 	* @author apermyakov
 	* @param dist destination
-	* @return array of way cells
+	* @return collections of way cells
 	* @since 20.10.2017
 	*/
 	public Cell[] way(Cell dist) {
@@ -109,21 +109,21 @@ public class Horse extends Figure {
 				if (wayYLength > wayXLength) { //first Y or X
 					if (dist.getY() - super.position.getY() > 0) { //first Y and up
 						for (int index = 1; index <= wayYLength; index++) { //going up
-							horseWay[wayPoints++] = move.upRight(super.position, 0, index);
+							horseWay[wayPoints++] = move.moveSomewhere(super.position, 0, index);
 						}
 					} else { //first Y and down
 						for (int index = 1; index <= wayYLength; index++) { //going down
-							horseWay[wayPoints++] = move.downLeft(super.position, 0, index);
+							horseWay[wayPoints++] = move.moveSomewhere(super.position, 0, -index);
 						}
 					}
 				} else {
 					if (dist.getX() - super.position.getX() > 0) { //first X and right
 						for (int index = 1; index <= wayXLength; index++) { //going right
-							horseWay[wayPoints++] = move.upRight(super.position, index, 0);
+							horseWay[wayPoints++] = move.moveSomewhere(super.position, index, 0);
 						}
 					} else { //first X and left
 						for (int index = 1; index <= wayXLength; index++) { //going left
-							horseWay[wayPoints++] = move.downLeft(super.position, index, 0);
+							horseWay[wayPoints++] = move.moveSomewhere(super.position, -index, 0);
 						}
 					}
 				}
