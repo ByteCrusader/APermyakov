@@ -29,24 +29,13 @@ public class Bishop extends Figure {
 	*/
 	private void init() {
 		for (int count = 1;
-			super.position.getX() + count < 8 &&  super.position.getY() + count < 8;
-			count++) {
-			moves[super.reallMoves++] = move.moveSomewhere(super.position, count, count);
-		}
-		for (int count = 1;
-			super.position.getX() + count < 8 &&  super.position.getY() - count >= 0;
-			count++) {
-			moves[super.reallMoves++] = move.moveSomewhere(super.position, count, -count);
-		}
-		for (int count = 1;
-			super.position.getX() - count >= 0 &&  super.position.getY() - count >= 0;
-			count++) {
-			moves[super.reallMoves++] = move.moveSomewhere(super.position, -count, -count);
-		}
-		for (int count = 1;
-			super.position.getX() - count >= 0 &&  super.position.getY() + count < 8;
-			count++) {
-			moves[super.reallMoves++] = move.moveSomewhere(super.position, -count, count);
+			 super.position.getX() + count < 8 &&  super.position.getY() + count < 8 &&
+					 super.position.getX() - count >= 0 &&  super.position.getY() - count >= 0;
+			 count++) {
+			for (int index = 1; index <= 2; index++ ) {
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, count*(int)Math.pow(-1D, index), count*(int)Math.pow(-1D, index));
+				moves[super.reallMoves++] = move.moveSomewhere(super.position, count*(int)Math.pow(-1D, index + 1), count*(int)Math.pow(-1D, index));
+			}
 		}
 	}
 

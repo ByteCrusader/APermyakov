@@ -113,7 +113,7 @@ public class BoardTest {
 		Cell first = new Cell("D", 5);
 		Bishop bishop = new Bishop(first);
 		Cell second = new Cell("G", 8);
-		assertThat(bishop.possibleMoves()[2].getX(), is(second.getX()));
+		assertThat(bishop.possibleMoves()[9].getX(), is(second.getX()));
 	}
 
 	/**
