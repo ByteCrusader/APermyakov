@@ -1,6 +1,5 @@
 package ru.apermyakov.arrayiterator;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -29,52 +28,58 @@ public class PrimesIterator implements Iterator {
     private int step = 0;
 
     /**
-     * Field for save all prime items.
-     */
-    private ArrayList<Integer> primeItems = new ArrayList<>();
-
-    /**
      * Design array iterator.
      *
      * @param array source array
      */
     public PrimesIterator(int[] array) {
         this.array = array;
-        checkPrimeItems();
     }
 
     /**
-     * Method for calculate and save index of prime items.
+     * Method for check item if item is prime.
+     *
+     * @return prime or not
      */
-    private void checkPrimeItems() {
-        Integer index = 0;
-        for (int insideItem : this.array) {
-            if (insideItem > 1) {
-                if (insideItem == 2 || insideItem == 3) {
-                    this.primeItems.add(index);
-                } else if (insideItem % 2 != 0) {
-                    checkMultiplier(insideItem, index);
-                }
+    private boolean checkPrimeItem(int item) {
+        boolean prime = false;
+        if (item > 1) {
+            if (item == 2 || item == 3) {
+                prime = true;
+            } else if (item % 2 != 0) {
+                prime = checkMultiplierOfItem(item);
             }
-            index++;
         }
+        return prime;
     }
 
     /**
      * Method for check whether the item is divided by a multiplier.
      *
-     * @param item base item
-     * @param index base index of prime item's array
+     * @param item divided or not
      */
-    private void checkMultiplier(int item, int index) {
+    private boolean checkMultiplierOfItem(int item) {
         for (long i = 3; i <= Math.ceil(Math.sqrt(item)); i += 2) {
             if (item % i == 0) {
-                break;
-            } else {
-                this.primeItems.add(index);
-                break;
+                return false;
             }
         }
+        return true;
+    }
+
+    /**
+     * Method for calculate number of primes.
+     *
+     * @return number of primes
+     */
+    private int numberOfPrimes() {
+        int primes = 0;
+        for (int item : this.array) {
+            if (checkPrimeItem(item)) {
+                primes++;
+            }
+        }
+        return primes;
     }
 
     /**
@@ -84,7 +89,7 @@ public class PrimesIterator implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        return primeItems.size() > step;
+        return numberOfPrimes() > count;
     }
 
     /**
@@ -95,10 +100,15 @@ public class PrimesIterator implements Iterator {
      */
     @Override
     public Object next() throws NoSuchElementException {
-        step++;
-        try {
-            return array[primeItems.get(count++)];
-        } catch (Exception ex) {
+        if (hasNext()) {
+            for (; step < this.array.length; step++) {
+                if (checkPrimeItem(this.array[step])) {
+                    count++;
+                    break;
+                }
+            }
+            return this.array[step++];
+        } else {
             throw new NoSuchElementException("No such element");
         }
     }
