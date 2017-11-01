@@ -80,4 +80,19 @@ public class SimpleArrayTest {
         assertThat(container.get(1), is(70000));
         container.get(2);
     }
+
+    /**
+     * Test when add more then 100 data and delete 101 data then container grow to 50 and delete last item.
+     */
+    @Test
+    public void whenAddMoreThen100DataAndDelete101DataThenContainerGrowTo50AndDeleteLastItem() {
+        SimpleArray<String> container = new SimpleArray<>();
+        for (int count = 0; count != 102; count++) {
+            container.add("Hi!");
+        }
+        container.add("Petr");
+        assertThat(container.get(101), is("Hi!"));
+        container.delete("Hi!");
+        assertThat(container.get(101), is("Petr"));
+    }
 }
