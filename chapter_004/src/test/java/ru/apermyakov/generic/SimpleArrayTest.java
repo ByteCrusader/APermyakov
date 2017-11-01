@@ -2,6 +2,8 @@ package ru.apermyakov.generic;
 
 import org.junit.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -94,5 +96,28 @@ public class SimpleArrayTest {
         assertThat(container.get(101), is("Hi!"));
         container.delete("Hi!");
         assertThat(container.get(101), is("Petr"));
+    }
+
+    /**
+     * Test when check iterator's methods then assert and exception.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void whenCheckIteratorsMethodsThenAssertAndException() {
+        SimpleArray<String> container = new SimpleArray<>();
+        container.add("Hi!");
+        container.add("Ivan");
+        container.add("Vasilii");
+        container.iterator().next();
+        container.iterator().next();
+        assertThat(container.iterator().next(), is("Vasilii"));
+        for (int count = 0; count < 97; count++) {
+            container.add("Hi!");
+        }
+        for (int index = 4; index <= 99; index++) {
+            container.iterator().next();
+        }
+        assertThat(container.iterator().next(), is("Hi!"));
+        assertThat(container.iterator().hasNext(), is(false));
+        container.iterator().next();
     }
 }

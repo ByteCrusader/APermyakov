@@ -1,6 +1,8 @@
 package ru.apermyakov.generic;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class for contain data.
@@ -10,7 +12,7 @@ import java.util.Arrays;
  * @since 31.10.2017
  * @param <T> type of data.
  */
-public class SimpleArray<T> {
+public class SimpleArray<T> implements SimpleContainer<T> {
 
     /**
      * Field for size of array.
@@ -28,10 +30,16 @@ public class SimpleArray<T> {
     private int aliveData = 0;
 
     /**
+     * Field for iterator counter.
+     */
+    private int iteratorCounter = 0;
+
+    /**
      * Method for add data into list.
      *
      * @param insert added data
      */
+    @Override
     public void add(T insert) {
         if (this.aliveData == this.size) {
             this.size += this.size / 2;
@@ -92,11 +100,58 @@ public class SimpleArray<T> {
      * @param index aliveData of data
      * @return found data
      */
+    @Override
     public T get(int index) throws IllegalArgumentException {
         if (this.array[index] != null) {
             return (T) this.array[index];
         } else {
             throw new IllegalArgumentException("Container has't data on this aliveData.");
         }
+    }
+
+    /**
+     * Method for design iterator.
+     *
+     * @return container's iterator
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+
+            /**
+             * Method for override hasnext.
+             *
+             * @return true if container has next data
+             */
+            @Override
+            public boolean hasNext() {
+                return iteratorCounter < size;
+            }
+
+            /**
+             * Method for override next.
+             *
+             * @return next container's data
+             * @throws NoSuchElementException no such element
+             */
+            @Override
+            public T next() throws NoSuchElementException {
+                if (hasNext()) {
+                    return (T) array[iteratorCounter++];
+                } else {
+                    throw new NoSuchElementException();
+                }
+            }
+
+            /**
+             * Method for override remove.
+             *
+             * @throws UnsupportedOperationException operation does't support
+             */
+            @Override
+            public void remove() throws UnsupportedOperationException {
+                throw new UnsupportedOperationException("This operation does't support");
+            }
+        };
     }
 }
