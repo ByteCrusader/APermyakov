@@ -33,7 +33,7 @@ public class Converter {
             /**
              * Field for condition of work.
              */
-            private boolean work = it.hasNext();
+            private boolean work = currentIterator.hasNext();
 
             /**
              * Method for override hasNext method.

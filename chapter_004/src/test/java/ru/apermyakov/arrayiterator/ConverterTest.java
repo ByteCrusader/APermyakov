@@ -99,4 +99,21 @@ public class ConverterTest {
         assertThat(it.next(), is(9));
         it.next();
     }
+
+    /**
+     * Test when add one iterator then work correct and exception.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void whenAddOneIteratorThenWorkCorrectAndException() {
+        Iterator<Integer> it1 = Arrays.asList(1, 2, 3).iterator();
+        Iterator<Iterator<Integer>> its = Arrays.asList(it1).iterator();
+        Converter converter = new Converter();
+        Iterator<Integer> it = converter.convert(its);
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(3));
+        it.next();
+    }
 }
