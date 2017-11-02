@@ -19,10 +19,10 @@ public class StoreTest {
      */
     @Test
     public void whenCheckAllMethodOfUserStoreThenAssert() {
-        AbstractStore<Base> abstractStore = new UserStore();
-        Base user1 = new User("Petr", "Male", 30);
-        Base user2 = new User("Ivan", "Male", 15);
-        Base user3 = new User("Vasilii", "Male", 47);
+        AbstractStore<User> abstractStore = new UserStore();
+        User user1 = new User("Petr", "Male", 30);
+        User user2 = new User("Ivan", "Male", 15);
+        User user3 = new User("Vasilii", "Male", 47);
         assertThat(abstractStore.add(user1), is(user1));
         abstractStore.add(user2);
         user3.setId(user2.getId());
@@ -35,10 +35,10 @@ public class StoreTest {
      */
     @Test
     public void whenCheckAllMethodOfRoleStoreThenAssert() {
-        AbstractStore<Base> abstractStore = new RoleStore();
-        Base role1 = new Role("Junior", 0D);
-        Base role2 = new Role("Middle", 1D);
-        Base role3 = new Role("Senior", 4D);
+        AbstractStore<Role> abstractStore = new RoleStore();
+        Role role1 = new Role("Junior", 0D);
+        Role role2 = new Role("Middle", 1D);
+        Role role3 = new Role("Senior", 4D);
         assertThat(abstractStore.add(role1), is(role1));
         abstractStore.add(role2);
         role3.setId(role2.getId());
@@ -51,10 +51,10 @@ public class StoreTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void whenUpdateOutOfContainerDataThenException() {
-        AbstractStore<Base> abstractStore = new UserStore();
-        Base user1 = new User("Petr", "Male", 30);
-        Base user2 = new User("Ivan", "Male", 15);
-        Base user3 = new User("Vasilii", "Male", 47);
+        AbstractStore<User> abstractStore = new UserStore();
+        User user1 = new User("Petr", "Male", 30);
+        User user2 = new User("Ivan", "Male", 15);
+        User user3 = new User("Vasilii", "Male", 47);
         abstractStore.add(user1);
         abstractStore.add(user2);
         assertThat(abstractStore.update(user3), is(user3));
@@ -65,10 +65,10 @@ public class StoreTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void whenDeleteOutOfContainerDataThenException() {
-        AbstractStore<Base> abstractStore = new RoleStore();
-        Base role1 = new Role("Junior", 0D);
-        Base role2 = new Role("Middle", 1D);
-        Base role3 = new Role("Senior", 4D);
+        AbstractStore<Role> abstractStore = new RoleStore();
+        Role role1 = new Role("Junior", 0D);
+        Role role2 = new Role("Middle", 1D);
+        Role role3 = new Role("Senior", 4D);
         abstractStore.add(role1);
         abstractStore.add(role2);
         abstractStore.delete(role3.getId());

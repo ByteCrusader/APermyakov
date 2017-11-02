@@ -7,5 +7,5 @@ package ru.apermyakov.generic;
  * @version 1.0
  * @since 01.11.2017
  */
-public class UserStore extends AbstractStore {
+public class UserStore extends AbstractStore<User> {
 }
