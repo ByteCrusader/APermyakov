@@ -15,14 +15,9 @@ import java.util.NoSuchElementException;
 public class SimpleArray<T> implements SimpleContainer<T> {
 
     /**
-     * Field for size of array.
-     */
-    private int size = 100;
-
-    /**
      * Field for list of data.
      */
-    private Object[] array = new Object[size];
+    private Object[] array = new Object[100];
 
     /**
      * Field for calculate index of next alive data.
@@ -37,15 +32,23 @@ public class SimpleArray<T> implements SimpleContainer<T> {
     /**
      * Method for add data into list.
      *
+     * @param insert storing data
+     */
+    private void addItem(T insert) {
+        if (this.aliveData == this.array.length) {
+            this.array = Arrays.copyOf(this.array, this.array.length + this.array.length / 2);
+        }
+        this.array[this.aliveData++] = insert;
+    }
+
+    /**
+     * Method for override add.
+     *
      * @param insert added data
      */
     @Override
     public void add(T insert) {
-        if (this.aliveData == this.size) {
-            this.size += this.size / 2;
-            this.array = Arrays.copyOf(this.array, this.size);
-        }
-        this.array[this.aliveData++] = insert;
+        addItem(insert);
     }
 
     /**
@@ -63,33 +66,44 @@ public class SimpleArray<T> implements SimpleContainer<T> {
             }
             index++;
         }
-        if (index + 1 == this.size) {
-            throw new IllegalArgumentException("Container has't data, that need to be update.");
+        checkIndex(index);
+    }
+
+    /**
+     * Method for found index of item in array.
+     *
+     * @param delete needed item
+     * @return found index
+     */
+    private int indexOfItem(T delete) {
+        int index = 0;
+        for (; index < this.array.length; index++) {
+            if (this.array[index] != null && this.array[index].equals(delete)) {
+                break;
+            }
         }
+        return index;
     }
 
     /**
      * Method for delete data.
      *
-     * @param insert deleted data
+     * @param delete deleted data
+     */
+    public void delete(T delete) {
+        int itemIndex = indexOfItem(delete);
+        checkIndex(itemIndex);
+        System.arraycopy(this.array, itemIndex + 1, this.array, itemIndex, this.array.length - itemIndex - 1);
+    }
+
+    /**
+     * Check end of array.
+     *
+     * @param index index of for
      * @throws IllegalArgumentException container has't such data
      */
-    public void delete(T insert) throws IllegalArgumentException {
-        int index = 0;
-        for (Object value : this.array) {
-            if (value != null && value.equals(insert)) {
-                for (int count = index; count < this.size - 1; count++) {
-                    Object temp = this.array[count];
-                    this.array[count] = this.array[count + 1];
-                    this.array[count + 1] = temp;
-                }
-                this.array = Arrays.copyOf(this.array, this.size - 1);
-                this.aliveData--;
-                break;
-            }
-            index++;
-        }
-        if (index + 1 == this.size) {
+    private void checkIndex(int index) throws IllegalArgumentException {
+        if (index == this.array.length) {
             throw new IllegalArgumentException("Container has't such data.");
         }
     }
@@ -102,10 +116,10 @@ public class SimpleArray<T> implements SimpleContainer<T> {
      */
     @Override
     public T get(int index) throws IllegalArgumentException {
-        if (this.array[index] != null) {
+        if (index >= 0 && index < this.array.length && this.array[index] != null) {
             return (T) this.array[index];
         } else {
-            throw new IllegalArgumentException("Container has't data on this aliveData.");
+            throw new IllegalArgumentException("Container has't data on this index.");
         }
     }
 
@@ -125,7 +139,7 @@ public class SimpleArray<T> implements SimpleContainer<T> {
              */
             @Override
             public boolean hasNext() {
-                return iteratorCounter < size;
+                return iteratorCounter < array.length;
             }
 
             /**
