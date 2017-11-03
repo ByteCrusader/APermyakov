@@ -122,9 +122,9 @@ public class SimpleLinkedArrayTest {
         array.add("Kirk");
         assertThat(array.removeItem("Vasilii"), is("Vasilii"));
         assertThat(array.removeItem(1), is("Ivan"));
-        assertThat(array.getFirst(), is("Petr"));
+        assertThat(array.getFirst().getObject(), is("Petr"));
         assertThat(array.get(0), is("Petr"));
-        assertThat(array.getLast(), is("Kirk"));
+        assertThat(array.getLast().getObject(), is("Kirk"));
         assertThat(array.get(1), is("Kirk"));
         array.removeItem(null);
     }

@@ -1,5 +1,7 @@
 package ru.apermyakov.generic;
 
+import java.util.NoSuchElementException;
+
 /**
  * Class for simple stack.
  *
@@ -17,6 +19,10 @@ public class SimpleStack<T> extends AbstractDeque<T> {
      */
     @Override
     public T poll() {
-        return container.removeItem(container.getLast());
+        try {
+            return container.removeItem(container.getLast().getObject());
+        } catch (Exception ex) {
+            throw new NoSuchElementException("Container has't such object");
+        }
     }
 }

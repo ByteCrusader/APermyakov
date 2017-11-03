@@ -33,6 +33,15 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
     private int iteratorCounter = 0;
 
     /**
+     * Method for get size of container.
+     *
+     * @return size of container
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
      * Method for add item for array.
      *
      * @param insert storing data
@@ -67,9 +76,9 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @return item if container not empty
      * @throws NoSuchElementException container is empty
      */
-    private T tryGet(Item<T> item) throws NoSuchElementException {
+    private Item<T> tryGet(Item<T> item) throws NoSuchElementException {
         try {
-            return item.getObject();
+            return item;
         } catch (Exception ex) {
             throw new NoSuchElementException("Container is empty");
         }
@@ -80,7 +89,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      *
      * @return first object
      */
-    public T getFirst() throws NoSuchElementException {
+    public Item<T> getFirst() {
         return tryGet(this.first);
     }
 
@@ -89,7 +98,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      *
      * @return last object
      */
-    public T getLast() throws NoSuchElementException {
+    public Item<T> getLast() {
         return tryGet(this.last);
     }
 
@@ -218,7 +227,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @return item
      * @throws NoSuchElementException container has't such object
      */
-    private Item<T> findByObject(T object) throws NoSuchElementException {
+    protected Item<T> findByObject(T object) throws NoSuchElementException {
         for (Item<T> counter = this.first; counter != null; counter = counter.getNext()) {
             if (object.equals(counter.getObject())) {
                 return counter;

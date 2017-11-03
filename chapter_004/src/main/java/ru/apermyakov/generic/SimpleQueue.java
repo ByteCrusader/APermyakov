@@ -1,5 +1,7 @@
 package ru.apermyakov.generic;
 
+import java.util.NoSuchElementException;
+
 /**
  * Class for simple queue.
  *
@@ -17,6 +19,10 @@ public class SimpleQueue<T> extends AbstractDeque<T> {
      */
     @Override
     public T poll() {
-        return container.removeItem(container.getFirst());
+        try {
+            return container.removeItem(container.getFirst().getObject());
+        } catch (Exception ex) {
+            throw new NoSuchElementException("Container has't such object");
+        }
     }
 }

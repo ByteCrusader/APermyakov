@@ -1,5 +1,7 @@
 package ru.apermyakov.generic;
 
+import java.util.NoSuchElementException;
+
 /**
  * Abstract class for design queue and stack.
  *
@@ -20,7 +22,7 @@ public abstract class AbstractDeque<T> {
      *
      * @return
      */
-    abstract T poll();
+    abstract T poll() throws NoSuchElementException;
 
     /**
      * Method for push item to container.
