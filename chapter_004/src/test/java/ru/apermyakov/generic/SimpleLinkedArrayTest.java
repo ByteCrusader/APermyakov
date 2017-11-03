@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class for test simple linked array.
  *
  * @author apermyakov
- * @version 1.0
+ * @version 1.1
  * @since 02.11.2017
  */
 public class SimpleLinkedArrayTest {
@@ -108,5 +108,34 @@ public class SimpleLinkedArrayTest {
         SimpleLinkedArray<String> array = new SimpleLinkedArray<>();
         array.add("Petr");
         array.get(1);
+    }
+
+    /**
+     * Test when add four items and delete two in the middle then get first is first get last is last.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void whenAddFourItemsAndDeleteTwoInTheMiddleThenGetFirstIsFirstGetLastIsLast() {
+        SimpleLinkedArray<String> array = new SimpleLinkedArray<>();
+        array.add("Petr");
+        array.add("Vasilii");
+        array.add("Ivan");
+        array.add("Kirk");
+        assertThat(array.removeItem("Vasilii"), is("Vasilii"));
+        assertThat(array.removeItem(1), is("Ivan"));
+        assertThat(array.getFirst(), is("Petr"));
+        assertThat(array.get(0), is("Petr"));
+        assertThat(array.getLast(), is("Kirk"));
+        assertThat(array.get(1), is("Kirk"));
+        array.removeItem(null);
+    }
+
+    /**
+     * Test when remove unexpected item then exception.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void whenRemoveUnexpectedItemThenException() {
+        SimpleLinkedArray<String> array = new SimpleLinkedArray<>();
+        array.add("Petr");
+        array.removeItem("Ivan");
     }
 }

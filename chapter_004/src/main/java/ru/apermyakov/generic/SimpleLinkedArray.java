@@ -6,7 +6,7 @@ import java.util.*;
  * Class for storing data base by linked array.
  *
  * @author apermyakov
- * @version 1.0
+ * @version 1.1
  * @since 02.11.2017
  * @param <T> storing data type
  */
@@ -61,7 +61,40 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
     }
 
     /**
-     * Method for get storing data's item by index.
+     * Method for try get item if container not empty, else exception.
+     *
+     * @param item item
+     * @return item if container not empty
+     * @throws NoSuchElementException container is empty
+     */
+    private T tryGet(Item<T> item) throws NoSuchElementException {
+        try {
+            return item.getObject();
+        } catch (Exception ex) {
+            throw new NoSuchElementException("Container is empty");
+        }
+    }
+
+    /**
+     * Method for get first object with time O(1).
+     *
+     * @return first object
+     */
+    public T getFirst() throws NoSuchElementException {
+        return tryGet(this.first);
+    }
+
+    /**
+     * Method for get last object with time O(1).
+     *
+     * @return last object
+     */
+    public T getLast() throws NoSuchElementException {
+        return tryGet(this.last);
+    }
+
+    /**
+     * Method for get storing data's item by index with time O(n).
      *
      * @param index index of storing data's item
      * @return storing data's item
@@ -96,6 +129,119 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
     @Override
     public T get(int index) {
         return getItem(index).getObject();
+    }
+
+    /**
+     * Method for remove first item with time O(1).
+     */
+    private void removeFirstItemLink() {
+        this.first = this.first.getNext();
+
+        if (this.first == null) {
+            this.last = null;
+        } else {
+            this.first.setPrevious(null);
+        }
+    }
+
+    /**
+     * Method for remove last item with time O(1).
+     */
+    private void removeLastItemLink() {
+        this.last = this.last.getPrevious();
+
+        if (this.last == null) {
+            this.first = null;
+        } else {
+            this.last.setNext(null);
+        }
+    }
+
+    /**
+     * Method for remove item inside container with time O(n).
+     *
+     * @param removable target item
+     */
+    private void removeInsideItemLink(Item<T> removable) {
+        removable.getNext().setPrevious(removable.getPrevious());
+        removable.getPrevious().setNext(removable.getNext());
+    }
+
+    /**
+     * Method for identify place of target item in container.
+     *
+     * @param removable target item
+     * @return object of item
+     */
+    private T removeLinkItem(Item<T> removable) {
+        T temporaryObject = removable.getObject();
+
+        if (removable == this.last) {
+            removeLastItemLink();
+        } else if (removable == this.first) {
+            removeFirstItemLink();
+        } else {
+            removeInsideItemLink(removable);
+        }
+        removable.eliminateItem();
+        size--;
+
+        return temporaryObject;
+    }
+
+    /**
+     * Method for remove item by object.
+     *
+     * @param removableObject object of item
+     * @return removed item's object
+     */
+    public T removeItem(T removableObject) {
+        Item<T> removableItem = findItem(removableObject);
+        return removeLinkItem(removableItem);
+    }
+
+    /**
+     * Method for remove item by index.
+     *
+     * @param index index of item
+     * @return object of removed item
+     */
+    public T removeItem(int index) {
+        Item<T> removableItem = findItem(get(index));
+        return removeLinkItem(removableItem);
+    }
+
+    /**
+     * Method for find item by object.
+     *
+     * @param object item's object
+     * @return item
+     * @throws NoSuchElementException container has't such object
+     */
+    private Item<T> findByObject(T object) throws NoSuchElementException {
+        for (Item<T> counter = this.first; counter != null; counter = counter.getNext()) {
+            if (object.equals(counter.getObject())) {
+                return counter;
+            }
+        }
+        throw new NoSuchElementException("Container has't such object");
+    }
+
+    /**
+     * Method for find item by object and realize O(1) time for first and last item, and O(n) for inside item.
+     *
+     * @param findObject object of item
+     * @return found item
+     * @throws IllegalArgumentException incorrect data
+     */
+    private Item<T> findItem(T findObject) throws  IllegalArgumentException {
+        if (findObject != null) {
+            return findObject.equals(getFirst()) ? this.first
+                    : findObject.equals(getLast()) ? this.last
+                    : findByObject(findObject);
+        } else {
+            throw new IllegalArgumentException("Incorrect data.");
+        }
     }
 
     /**
