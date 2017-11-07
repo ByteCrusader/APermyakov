@@ -6,7 +6,7 @@ import java.util.*;
  * Class for storing data base by linked array.
  *
  * @author apermyakov
- * @version 1.1
+ * @version 1.2
  * @since 02.11.2017
  * @param <T> storing data type
  */
@@ -46,7 +46,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      *
      * @param insert storing data
      */
-    private void addItem(T insert) {
+    public void addItem(T insert) {
         Item<T> temporaryItem = this.last;
         Item<T> newItem = new Item<>(insert);
         newItem.setPrevious(temporaryItem);

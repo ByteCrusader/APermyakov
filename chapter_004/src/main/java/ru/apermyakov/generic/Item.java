@@ -4,7 +4,7 @@ package ru.apermyakov.generic;
  * Class for design data which will store in simple linked array.
  *
  * @author apermyakov
- * @version 1.1
+ * @version 1.2
  * @since 02.11.2017
  * @param <T> storing data type
  */
@@ -39,7 +39,7 @@ public class Item<T> {
      *
      * @return previous item
      */
-    protected Item<T> getPrevious() {
+    public Item<T> getPrevious() {
         return this.previous;
     }
 
@@ -48,7 +48,7 @@ public class Item<T> {
      *
      * @param previous link for previous item
      */
-    protected void setPrevious(Item<T> previous) {
+    public void setPrevious(Item<T> previous) {
         this.previous = previous;
     }
 
@@ -57,7 +57,7 @@ public class Item<T> {
      *
      * @return next item
      */
-    protected Item<T> getNext() {
+    public Item<T> getNext() {
         return this.next;
     }
 
@@ -66,7 +66,7 @@ public class Item<T> {
      *
      * @param next link for next item
      */
-    protected void setNext(Item<T> next) {
+    public void setNext(Item<T> next) {
         this.next = next;
     }
 
@@ -75,7 +75,7 @@ public class Item<T> {
      *
      * @return storing object
      */
-    protected T getObject() {
+    public T getObject() {
         return object;
     }
 
