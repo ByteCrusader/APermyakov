@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class for test simple set.
  *
  * @author apermyakov
- * @version 1.1
+ * @version 1.2
  * @since 07.11.2017
  */
 public class SimpleSetTest {
@@ -120,5 +120,38 @@ public class SimpleSetTest {
         }
         assertThat(set.iterator().next(), is("Praise the sun"));
         set.iterator().next();
+    }
+
+    /**
+     * Test when add some item to hash set contains and remove then true if not duplicate and exception if contain out of container.
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void whenAddSomeItemToHashSetContainsAndRemoveThenTrueIfNotDuplicateAndExceptionIfContainOutOfContainer() {
+        SimpleHashSet<String> set = new SimpleHashSet<>();
+        boolean result = false;
+        HashPair<String> checkNull = new HashPair<>(null);
+        set.add(null);
+        assertThat(set.add("Ivan"), is(true));
+        assertThat(set.contains("Ivan"), is(true));
+        assertThat(set.contains("Petr"), is(result));
+        assertThat(set.add("Petr"), is(true));
+        assertThat(set.contains("Petr"), is(true));
+        assertThat(set.contains("Master"), is(result));
+        assertThat(set.add("Master"), is(true));
+        assertThat(set.contains("Master"), is(true));
+        assertThat(set.add("Master"), is(result));
+        assertThat(set.contains("Master"), is(true));
+        assertThat(set.remove("Master"), is(true));
+        assertThat(set.contains("Master"), is(result));
+        assertThat(set.remove("Master"), is(result));
+        set.add(null);
+        set.add(null);
+        set.add(null);
+        set.add(null);
+        assertThat(set.contains(null), is(true));
+        assertThat(set.remove(null), is(true));
+        assertThat(set.contains(null), is(result));
+        SimpleHashSet<String> nullSet = new SimpleHashSet<>();
+        nullSet.contains("Ivan");
     }
 }

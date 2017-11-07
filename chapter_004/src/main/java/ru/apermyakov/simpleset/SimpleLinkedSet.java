@@ -3,8 +3,6 @@ package ru.apermyakov.simpleset;
 import ru.apermyakov.generic.Item;
 import ru.apermyakov.generic.SimpleLinkedArray;
 
-import java.util.ListIterator;
-
 /**
  * Class for realize simple set base by linked items.
  *
@@ -21,7 +19,7 @@ public class SimpleLinkedSet<T> extends SimpleLinkedArray<T> implements SimpleSe
      * @param object insert item
      * @return has duplicate or not
      */
-    private boolean checkDuplicate(T object) {
+    private boolean searchDuplicate(T object) {
         boolean duplicate;
         int index = 0;
         Item<T> checkItem = getFirst();
@@ -40,7 +38,7 @@ public class SimpleLinkedSet<T> extends SimpleLinkedArray<T> implements SimpleSe
      */
     @Override
     public void add(T insert) {
-        if (getSize() == 0 || !checkDuplicate(insert)) {
+        if (getSize() == 0 || !searchDuplicate(insert)) {
             addItem(insert);
         }
     }
