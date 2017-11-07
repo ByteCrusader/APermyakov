@@ -12,22 +12,22 @@ public class Comparing {
     /**
      * Field for object one.
      */
-    private String o1;
+    private String objectOne;
 
     /**
      * Field for object two.
      */
-    private String o2;
+    private String objectTwo;
 
     /**
      * Field for parsing object one.
      */
-    private String[] arrayO1;
+    private String[] splitObjectOne;
 
     /**
      * Field for parsing object two.
      */
-    private String[] arrayO2;
+    private String[] splitObjectTwo;
 
     /**
      * Design comparing.
@@ -36,10 +36,10 @@ public class Comparing {
      * @param o2 object two
      */
     public Comparing(String o1, String o2) {
-        this.o1 = o1;
-        this.o2 = o2;
-        this.arrayO1 = o1.split("\\\\");
-        this.arrayO2 = o2.split("\\\\");
+        this.objectOne = o1;
+        this.objectTwo = o2;
+        this.splitObjectOne = o1.split("\\\\");
+        this.splitObjectTwo = o2.split("\\\\");
     }
 
     /**
@@ -48,7 +48,7 @@ public class Comparing {
      * @return difference of the length
      */
     private int lengthDif() {
-        return Integer.compare(this.o1.length(), this.o2.length());
+        return Integer.compare(this.objectOne.length(), this.objectTwo.length());
     }
 
     /**
@@ -57,7 +57,7 @@ public class Comparing {
      * @return total length
      */
     private int totalLength() {
-        return this.arrayO1.length + this.arrayO2.length;
+        return this.splitObjectOne.length + this.splitObjectTwo.length;
     }
 
     /**
@@ -67,7 +67,7 @@ public class Comparing {
      * @return ascending result
      */
     private int compareItems(int index) {
-        return this.arrayO1[index].compareTo(this.arrayO2[index]);
+        return this.splitObjectOne[index].compareTo(this.splitObjectTwo[index]);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Comparing {
      * @return ascending return
      */
     private int compareLastItems() {
-        return this.arrayO1[this.arrayO1.length - 1].compareTo(this.arrayO2[this.arrayO2.length - 1]);
+        return this.splitObjectOne[this.splitObjectOne.length - 1].compareTo(this.splitObjectTwo[this.splitObjectTwo.length - 1]);
     }
 
     /**
@@ -86,8 +86,8 @@ public class Comparing {
      * @return decreasing result
      */
     private int decreasCompareItems(int index) {
-        return this.arrayO1[index].compareTo(this.arrayO2[index]) == 1 ? -1
-                : this.arrayO1[index].compareTo(this.arrayO2[index]) == -1 ? 1
+        return this.splitObjectOne[index].compareTo(this.splitObjectTwo[index]) == 1 ? -1
+                : this.splitObjectOne[index].compareTo(this.splitObjectTwo[index]) == -1 ? 1
                 : 0;
     }
 
@@ -97,8 +97,8 @@ public class Comparing {
      * @return decreasing result
      */
     private int decreasCompareLastItems() {
-        return this.arrayO1[this.arrayO1.length - 1].compareTo(this.arrayO2[this.arrayO2.length - 1]) == 1 ? -1
-                : this.arrayO1[this.arrayO1.length - 1].compareTo(this.arrayO2[this.arrayO2.length - 1]) == -1 ? 1
+        return this.splitObjectOne[this.splitObjectOne.length - 1].compareTo(this.splitObjectTwo[this.splitObjectTwo.length - 1]) == 1 ? -1
+                : this.splitObjectOne[this.splitObjectOne.length - 1].compareTo(this.splitObjectTwo[this.splitObjectTwo.length - 1]) == -1 ? 1
                 : 0;
     }
 
