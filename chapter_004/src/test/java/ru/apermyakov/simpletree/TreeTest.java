@@ -34,6 +34,14 @@ public class TreeTest {
         assertThat(tree.add(15, 11), is(true));
         assertThat(tree.add(11, 2), is(true));
         assertThat(tree.add(10, 7), is(true));
+        assertThat(tree.isBinary(), is(false));
+
+        Tree<Integer> treeNumberTwo = new Tree<>();
+        assertThat(treeNumberTwo .add(10, 5), is(true));
+        assertThat(treeNumberTwo .add(10, 8), is(true));
+        assertThat(treeNumberTwo .add(5, 4), is(true));
+        assertThat(treeNumberTwo.isBinary(), is(true));
+
         assertThat(tree.iterator().hasNext(), is(true));
         assertThat(tree.iterator().next(), is(15));
         assertThat(tree.iterator().hasNext(), is(true));

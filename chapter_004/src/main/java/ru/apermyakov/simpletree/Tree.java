@@ -232,6 +232,35 @@ public class Tree<T extends Comparable<T>> implements SimpleTree<T> {
     }
 
     /**
+     * Method for recursive search children size.
+     *
+     * @param children children
+     * @return binary or not
+     */
+    private boolean recursiveIsBinary(List<Node<T>> children) {
+        boolean result = true;
+        for (Node<T> steps : children) {
+            if (steps.children.size() > 2) {
+                result = false;
+                break;
+            }
+            if (steps.children.size() != 0) {
+                recursiveIsBinary(steps.children);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Method for build check binary action.
+     *
+     * @return binary or not
+     */
+    public boolean isBinary() {
+        return this.root.children.size() <= 2 && recursiveIsBinary(this.root.children);
+    }
+
+    /**
      * Recursive method for save tree's items to list.
      *
      * @param children tree of children
