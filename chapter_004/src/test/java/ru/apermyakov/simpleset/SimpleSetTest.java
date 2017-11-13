@@ -129,7 +129,6 @@ public class SimpleSetTest {
     public void whenAddSomeItemToHashSetContainsAndRemoveThenTrueIfNotDuplicateAndExceptionIfContainOutOfContainer() {
         SimpleHashSet<String> set = new SimpleHashSet<>();
         boolean result = false;
-        HashPair<String> checkNull = new HashPair<>(null);
         set.add(null);
         assertThat(set.add("Ivan"), is(true));
         assertThat(set.contains("Ivan"), is(true));
@@ -149,8 +148,8 @@ public class SimpleSetTest {
         set.add(null);
         set.add(null);
         assertThat(set.contains(null), is(true));
-        assertThat(set.remove(null), is(true));
-        assertThat(set.contains(null), is(result));
+        assertThat(set.remove(null), is(false));
+        assertThat(set.contains(null), is(true));
         SimpleHashSet<String> nullSet = new SimpleHashSet<>();
         nullSet.contains("Ivan");
     }

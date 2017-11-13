@@ -16,7 +16,7 @@ public class SimpleHashSet<T> {
     /**
      * Field for array of hash pairs.
      */
-    private HashPair[] array = new HashPair[100];
+    private Object[] array = new Object[2];
 
     /**
      * Field for calculate alive items into array.
@@ -28,6 +28,36 @@ public class SimpleHashSet<T> {
      */
     private int duplicateIndex = -1;
 
+
+    /**
+     * Method for calculate hash of key.
+     *
+     * @param key key
+     * @return key's hash
+     */
+    private int calculateHash(T key) {
+        int hash = key == null ? 0 : key.hashCode();
+		/*
+		* HashCodes that differ only by constant multiples at each bit position
+		* have a bounded number of collisions (approximately 8 at default load factor).
+		*/
+        hash ^= (hash >>> 20) ^ (hash >>> 12);
+        return hash ^ (hash >>> 7) ^ (hash >>> 4);
+    }
+
+    /**
+     *Method for build array's index base on key's hash.
+     *
+     * @param key key
+     * @return array's index
+     */
+    private int buildIndex(T key) {
+        if (aliveItems == array.length) {
+            increaseArray();
+        }
+        return calculateHash(key) & array.length - 1;
+    }
+
     /**
      * Method for search duplicate.
      *
@@ -36,13 +66,11 @@ public class SimpleHashSet<T> {
      */
     private boolean searchDuplicate(T object) {
         boolean duplicate;
-        int index = 0;
-        do {
-            duplicate = object == null ? this.array[index].getObjectHash() == 0
-                    : object.hashCode() == this.array[index].getObjectHash();
-            duplicateIndex = duplicate ? index : -1;
-            index++;
-        } while (index < aliveItems && !duplicate);
+        int index = object == null ? 0 : buildIndex(object);
+        int arrayIndexHash = this.array[index] == null ? 0 : calculateHash((T) this.array[index]);
+        duplicate = object == null ? arrayIndexHash == 0
+                :  calculateHash(object) ==  arrayIndexHash;
+        duplicateIndex = duplicate ? index : -1;
         return duplicate;
     }
 
@@ -50,7 +78,17 @@ public class SimpleHashSet<T> {
      * Method for increase array if add item more then array length.
      */
     private void increaseArray() {
-        this.array = Arrays.copyOf(this.array, this.array.length + this.array.length / 2);
+        Object[] oldArray = this.array;
+        int oldLength = oldArray == null ? 0 : oldArray.length;
+        Object[] newArray = new Object[oldLength * 2];
+        for (int index = 0; index < oldLength; index++) {
+            Object temporaryObject = oldArray[index];
+            if (temporaryObject != null) {
+                oldArray[index] = null;
+                newArray[calculateHash((T) temporaryObject) & (oldLength * 2 - 1)] = temporaryObject;
+            }
+        }
+        this.array = newArray;
     }
 
     /**
@@ -63,7 +101,8 @@ public class SimpleHashSet<T> {
         if (this.aliveItems == this.array.length) {
             increaseArray();
         }
-        this.array[aliveItems++] = new HashPair(object);
+        this.array[buildIndex(object)] = object;
+        aliveItems++;
         return true;
     }
 
@@ -74,7 +113,7 @@ public class SimpleHashSet<T> {
      * @return added or not
      */
     public boolean add(T insert) {
-        return (aliveItems == 0 || !searchDuplicate(insert)) && addItem(insert);
+        return !searchDuplicate(insert) && addItem(insert);
     }
 
     /**
@@ -103,7 +142,7 @@ public class SimpleHashSet<T> {
      * @return true
      */
     private boolean removeItem() {
-        System.arraycopy(this.array, duplicateIndex + 1, this.array, duplicateIndex, this.array.length - duplicateIndex - 1);
+        this.array[duplicateIndex] = null;
         duplicateIndex = -1;
         aliveItems--;
         return true;
@@ -116,7 +155,7 @@ public class SimpleHashSet<T> {
      * @return remove or not
      */
     private boolean checkRemove(T checkItem) {
-        return searchDuplicate(checkItem) && removeItem();
+        return checkItem != null && searchDuplicate(checkItem) && removeItem();
     }
 
     /**
