@@ -37,7 +37,17 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * Method for increase array if add item more then array length.
      */
     private void increaseArray() {
-        this.array = Arrays.copyOf(this.array, this.array.length * 2);
+        Object[] oldArray = this.array;
+        int oldLength = oldArray == null ? 0 : oldArray.length;
+        Object[] newArray = new Object[oldLength * 2];
+        for (int index = 0; index < oldLength; index++) {
+            Object temporaryObject = oldArray[index];
+            if (temporaryObject != null) {
+                oldArray[index] = null;
+                newArray[calculateHash((K) temporaryObject) & (oldLength * 2 - 1)] = temporaryObject;
+            }
+        }
+        this.array = newArray;
     }
 
     /**
