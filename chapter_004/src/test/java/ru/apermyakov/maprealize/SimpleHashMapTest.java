@@ -22,11 +22,11 @@ public class SimpleHashMapTest {
     @Test(expected = NoSuchElementException.class)
     public void whenAddItemInMapThenWithoutCollisions() {
         SimpleHashMap<String, String> map = new SimpleHashMap<>();
-        assertThat(map.insert("First", "First"), is(true));
-        assertThat(map.insert("Second", "Second"), is(true));
-        assertThat(map.insert("Third", "Third"), is(true));
-        assertThat(map.insert("First", "Fourth"), is(false)); //collision
-        assertThat(map.insert("First", "First"), is(false)); //collision
+        assertThat(map.insert(new Node("First", "First")), is(true));
+        assertThat(map.insert(new Node("Second", "Second")), is(true));
+        assertThat(map.insert(new Node("Third", "Third")), is(true));
+        assertThat(map.insert(new Node("First", "Fourth")), is(false)); //collision
+        assertThat(map.insert(new Node("First", "First")), is(false)); //collision
         assertThat(map.get("First"), is("First"));
         assertThat(map.get("Second"), is("Second"));
         assertThat(map.get("Third"), is("Third"));
@@ -36,23 +36,23 @@ public class SimpleHashMapTest {
 		assertThat(map.iterator().hasNext(), is(true));
 		map.iterator().next();
 		assertThat(map.iterator().hasNext(), is(false));
-		assertThat(map.insert("four", "four"), is(true));
-		assertThat(map.insert("five", "five"), is(false)); //collision
-		assertThat(map.insert("six", "six"), is(true));
-		assertThat(map.insert("seven", "seven"), is(false)); //collision
-		assertThat(map.insert("eight", "eight"), is(true));
-		assertThat(map.insert("nine", "nine"), is(true));
-		assertThat(map.insert("ten", "ten"), is(true));
-		assertThat(map.insert("eleven", "eleven"), is(false)); //collision
-		assertThat(map.insert("twelve", "twelve"), is(false)); //collision
-		assertThat(map.insert("thirteen", "thirteen"), is(false)); //collision
-		assertThat(map.insert("fourteen", "fourteen"), is(false)); //collision
-		assertThat(map.insert("fifteen", "fifteen"), is(true));
-		assertThat(map.insert("sixteen", "sixteen"), is(true));
-		assertThat(map.insert("seventeen", "seventeen"), is(false)); //collision
-		assertThat(map.insert("eighteen", "eighteen"), is(true));
-		assertThat(map.insert("nineteen", "nineteen"), is(false)); //collision
-		assertThat(map.insert("twenty", "twenty"), is(false)); //collision
+		assertThat(map.insert(new Node("four", "four")), is(true));
+		assertThat(map.insert(new Node("five", "five")), is(false)); //collision
+		assertThat(map.insert(new Node("six", "six")), is(true));
+		assertThat(map.insert(new Node("seven", "seven")), is(false)); //collision
+		assertThat(map.insert(new Node("eight", "eight")), is(true));
+		assertThat(map.insert(new Node("nine", "nine")), is(true));
+		assertThat(map.insert(new Node("ten", "ten")), is(true));
+		assertThat(map.insert(new Node("eleven", "eleven")), is(false)); //collision
+		assertThat(map.insert(new Node("twelve", "twelve")), is(false)); //collision
+		assertThat(map.insert(new Node("thirteen", "thirteen")), is(false)); //collision
+		assertThat(map.insert(new Node("fourteen", "fourteen")), is(false)); //collision
+		assertThat(map.insert(new Node("fifteen", "fifteen")), is(true));
+		assertThat(map.insert(new Node("sixteen", "sixteen")), is(true));
+		assertThat(map.insert(new Node("seventeen", "seventeen")), is(false)); //collision
+		assertThat(map.insert(new Node("eighteen", "eighteen")), is(true));
+		assertThat(map.insert(new Node("nineteen", "nineteen")), is(false)); //collision
+		assertThat(map.insert(new Node("twenty", "twenty")), is(false)); //collision
 		assertThat(map.delete("First"), is(true));
         map.get("First");
     }
@@ -64,11 +64,11 @@ public class SimpleHashMapTest {
     public void whenAddItemInIncreaseMapThenWithoutCollisions() {
         SimpleHashMap<String, String> map = new SimpleHashMap<>();
 		assertThat(map.largeMap(), is(160));
-        assertThat(map.insert("First", "First"), is(true));
-        assertThat(map.insert("Second", "Second"), is(true));
-        assertThat(map.insert("Third", "Third"), is(true));
-        assertThat(map.insert("First", "Fourth"), is(false)); //collision
-        assertThat(map.insert("First", "First"), is(false)); //collision
+        assertThat(map.insert(new Node("First", "First")), is(true));
+        assertThat(map.insert(new Node("Second", "Second")), is(true));
+        assertThat(map.insert(new Node("Third", "Third")), is(true));
+        assertThat(map.insert(new Node("First", "Fourth")), is(false)); //collision
+        assertThat(map.insert(new Node("First", "First")), is(false)); //collision
         assertThat(map.get("First"), is("First"));
         assertThat(map.get("Third"), is("Third"));
 		map.iterator().next();
@@ -77,23 +77,23 @@ public class SimpleHashMapTest {
 		assertThat(map.iterator().hasNext(), is(true));
 		map.iterator().next();
 		assertThat(map.iterator().hasNext(), is(false));
-		assertThat(map.insert("four", "four"), is(true));
-		assertThat(map.insert("five", "five"), is(true));
-		assertThat(map.insert("six", "six"), is(true));
-		assertThat(map.insert("seven", "seven"), is(true));
-		assertThat(map.insert("eight", "eight"), is(true));
-		assertThat(map.insert("nine", "nine"), is(true));
-		assertThat(map.insert("ten", "ten"), is(true));
-		assertThat(map.insert("eleven", "eleven"), is(false)); //collision
-		assertThat(map.insert("twelve", "twelve"), is(true)); //collision
-		assertThat(map.insert("thirteen", "thirteen"), is(true));
-		assertThat(map.insert("fourteen", "fourteen"), is(false)); //collision
-		assertThat(map.insert("fifteen", "fifteen"), is(true));
-		assertThat(map.insert("sixteen", "sixteen"), is(true));
-		assertThat(map.insert("seventeen", "seventeen"), is(true));
-		assertThat(map.insert("eighteen", "eighteen"), is(true));
-		assertThat(map.insert("nineteen", "nineteen"), is(true));
-		assertThat(map.insert("twenty", "twenty"), is(false)); //collision
+		assertThat(map.insert(new Node("four", "four")), is(true));
+		assertThat(map.insert(new Node("five", "five")), is(true));
+		assertThat(map.insert(new Node("six", "six")), is(true));
+		assertThat(map.insert(new Node("seven", "seven")), is(true));
+		assertThat(map.insert(new Node("eight", "eight")), is(true));
+		assertThat(map.insert(new Node("nine", "nine")), is(true));
+		assertThat(map.insert(new Node("ten", "ten")), is(true));
+		assertThat(map.insert(new Node("eleven", "eleven")), is(false)); //collision
+		assertThat(map.insert(new Node("twelve", "twelve")), is(true)); //collision
+		assertThat(map.insert(new Node("thirteen", "thirteen")), is(true));
+		assertThat(map.insert(new Node("fourteen", "fourteen")), is(false)); //collision
+		assertThat(map.insert(new Node("fifteen", "fifteen")), is(true));
+		assertThat(map.insert(new Node("sixteen", "sixteen")), is(true));
+		assertThat(map.insert(new Node("seventeen", "seventeen")), is(true));
+		assertThat(map.insert(new Node("eighteen", "eighteen")), is(true));
+		assertThat(map.insert(new Node("nineteen", "nineteen")), is(true));
+		assertThat(map.insert(new Node("twenty", "twenty")), is(false)); //collision
 		assertThat(map.delete("Third"), is(true));
         map.get("Third");
     }

@@ -16,7 +16,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     /**
      * Field for object's array.
      */
-    private Object[] array = new Object[16];
+    private Node[] array = new Node[16];
 
     /**
      * Field for calculate alive items in array.
@@ -24,27 +24,14 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     private int aliveItems = 0;
 
     /**
-     * Field for iterator counter.
-     */
-    private int iteratorCounter = 0;
-	
-	/**
-	 * Field for iterator inside index.
-	 */
-	private int iteratorIndex = 0;
-
-    /**
      * Method for increase array if add item more then array length.
      */
     private void increaseArray() {
-        Object[] oldArray = this.array;
-        int oldLength = oldArray == null ? 0 : oldArray.length;
-        Object[] newArray = new Object[oldLength * 2];
-        for (int index = 0; index < oldLength; index++) {
-            Object temporaryObject = oldArray[index];
-            if (temporaryObject != null) {
-                oldArray[index] = null;
-                newArray[calculateHash((K) temporaryObject) & (oldLength * 2 - 1)] = temporaryObject;
+        Node[] oldArray = this.array;
+        Node[] newArray = new Node[oldArray.length * 2];
+        for (Node node : oldArray) {
+            if (node != null) {
+                newArray[calculateHash((K) node.getKey()) & (newArray.length - 1)] = node;
             }
         }
         this.array = newArray;
@@ -73,9 +60,6 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      * @return array's index
      */
     private int buildIndex(K key) {
-		if (aliveItems == array.length) {
-            increaseArray();
-        }
         return calculateHash(key) & array.length - 1;
     }
 
@@ -92,12 +76,14 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     /**
 	 * Method for insert value to array.
 	 *
-     * @param key key
-     * @param value value
+     * @param node insert node
      * @return true
      */
-    private boolean insertValue(K key, V value) {
-        array[buildIndex(key)] = value;
+    private boolean insertValue(Node node) {
+        if (aliveItems == array.length) {
+            increaseArray();
+        }
+        array[buildIndex((K) node.getKey())] = node;
         aliveItems++;
 
         return true;
@@ -106,12 +92,11 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     /**
 	 * Method for initialize insert action.
 	 *
-     * @param key insert key
-     * @param value insert value
+     * @param node insert node
      * @return insert of not
      */
-    public boolean insert(K key, V value) {
-        return checkKey(key) && insertValue(key, value);
+    public boolean insert(Node node) {
+        return checkKey((K) node.getKey()) && insertValue(node);
     }
 
     /**
@@ -122,7 +107,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
      */
     private V getValue(K key) throws NoSuchElementException {
         if (!checkKey(key)) {
-            return (V) this.array[buildIndex(key)];
+            return (V) this.array[buildIndex(key)].getValue();
         } else {
             throw new NoSuchElementException("Map has't such element");
         }
@@ -171,46 +156,71 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
 	}
 
     /**
+     * Private class for initialize map iterator.
+     *
+     * @author apermyakov
+     * @version 1.0
+     * @since 14.11.2017
+     * @param <V>
+     */
+    private class MapIterator<V> implements Iterator<V>{
+
+        /**
+         * Field for iterator counter.
+         */
+        private int iteratorCounter = 0;
+
+        /**
+         * Field for iterator inside index.
+         */
+        private int iteratorIndex = 0;
+
+        /**
+         * Method for override has next.
+         *
+         * @return array has next alive item or not
+         */
+        @Override
+        public boolean hasNext() {
+            return iteratorCounter < aliveItems;
+        }
+
+        /**
+         * Method for override next.
+         *
+         * @return next item if exist
+         * @throws NoSuchElementException Map has't such element
+         */
+        @Override
+        public V next() throws NoSuchElementException {
+            if (hasNext()) {
+                V next = null;
+                for (; iteratorIndex < array.length;) {
+                    if (array[iteratorIndex++] != null) {
+                        next = (V) array[iteratorIndex - 1].getValue();
+                        iteratorCounter++;
+                        break;
+                    }
+                }
+                return next;
+            } else {
+                throw new NoSuchElementException("Map has't such element");
+            }
+        }
+    }
+
+    /**
+     * Field for initialize map iterator object.
+     */
+    private MapIterator mapIterator = new MapIterator();
+
+    /**
 	 * Realize of iterator.
 	 *
      * @return new iterator.
      */
     @Override
     public Iterator<V> iterator() {
-        return new Iterator<V>() {
-		
-            /**
-			 * Method for override has next.
-			 *
-             * @return array has next alive item or not
-             */
-            @Override
-            public boolean hasNext() {
-                return iteratorCounter < aliveItems;
-            }
-
-            /**
-			 * Method for override next.
-			 *
-             * @return next item if exist
-			 * @throws NoSuchElementException Map has't such element
-             */
-            @Override
-            public V next() throws NoSuchElementException {
-				if (hasNext()) {
-					V next = null;
-					for (; iteratorIndex < array.length;) {
-						if (array[iteratorIndex++] != null) {
-							next = (V) array[iteratorIndex - 1];
-							iteratorCounter++;
-							break;
-						}
-					}
-					return next;
-				} else {
-					throw new NoSuchElementException("Map has't such element");
-				}
-            }
-        };
+        return mapIterator;
     }
 }
