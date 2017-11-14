@@ -125,7 +125,7 @@ public class SimpleSetTest {
     /**
      * Test when add some item to hash set contains and remove then true if not duplicate and exception if contain out of container.
      */
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void whenAddSomeItemToHashSetContainsAndRemoveThenTrueIfNotDuplicateAndExceptionIfContainOutOfContainer() {
         SimpleHashSet<String> set = new SimpleHashSet<>();
         boolean result = false;
@@ -151,6 +151,6 @@ public class SimpleSetTest {
         assertThat(set.remove(null), is(false));
         assertThat(set.contains(null), is(true));
         SimpleHashSet<String> nullSet = new SimpleHashSet<>();
-        nullSet.contains("Ivan");
+        assertThat(nullSet.contains("Ivan"), is(false));
     }
 }

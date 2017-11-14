@@ -24,12 +24,6 @@ public class SimpleHashSet<T> {
     private int aliveItems = 0;
 
     /**
-     * Field for save index of duplicate item.
-     */
-    private int duplicateIndex = -1;
-
-
-    /**
      * Method for calculate hash of key.
      *
      * @param key key
@@ -52,9 +46,6 @@ public class SimpleHashSet<T> {
      * @return array's index
      */
     private int buildIndex(T key) {
-        if (aliveItems == array.length) {
-            increaseArray();
-        }
         return calculateHash(key) & array.length - 1;
     }
 
@@ -65,13 +56,7 @@ public class SimpleHashSet<T> {
      * @return found or not
      */
     private boolean searchDuplicate(T object) {
-        boolean duplicate;
-        int index = object == null ? 0 : buildIndex(object);
-        int arrayIndexHash = this.array[index] == null ? 0 : calculateHash((T) this.array[index]);
-        duplicate = object == null ? arrayIndexHash == 0
-                :  calculateHash(object) ==  arrayIndexHash;
-        duplicateIndex = duplicate ? index : -1;
-        return duplicate;
+        return calculateHash((T) this.array[buildIndex(object)]) == calculateHash(object);
     }
 
     /**
@@ -79,13 +64,10 @@ public class SimpleHashSet<T> {
      */
     private void increaseArray() {
         Object[] oldArray = this.array;
-        int oldLength = oldArray == null ? 0 : oldArray.length;
-        Object[] newArray = new Object[oldLength * 2];
-        for (int index = 0; index < oldLength; index++) {
-            Object temporaryObject = oldArray[index];
+        Object[] newArray = new Object[oldArray.length * 2];
+        for (Object temporaryObject : oldArray) {
             if (temporaryObject != null) {
-                oldArray[index] = null;
-                newArray[calculateHash((T) temporaryObject) & (oldLength * 2 - 1)] = temporaryObject;
+                newArray[calculateHash((T) temporaryObject) & (newArray.length - 1)] = temporaryObject;
             }
         }
         this.array = newArray;
@@ -133,7 +115,7 @@ public class SimpleHashSet<T> {
      * @return contain or not
      */
     public boolean contains(T comparable) {
-        return aliveItems != 0 ? searchDuplicate(comparable) : throwNoSuchElExc();
+        return aliveItems != 0 && searchDuplicate(comparable);
     }
 
     /**
@@ -141,9 +123,8 @@ public class SimpleHashSet<T> {
      *
      * @return true
      */
-    private boolean removeItem() {
-        this.array[duplicateIndex] = null;
-        duplicateIndex = -1;
+    private boolean removeItem(T removable) {
+        this.array[buildIndex(removable)] = null;
         aliveItems--;
         return true;
     }
@@ -155,7 +136,7 @@ public class SimpleHashSet<T> {
      * @return remove or not
      */
     private boolean checkRemove(T checkItem) {
-        return checkItem != null && searchDuplicate(checkItem) && removeItem();
+        return checkItem != null && searchDuplicate(checkItem) && removeItem(checkItem);
     }
 
     /**
