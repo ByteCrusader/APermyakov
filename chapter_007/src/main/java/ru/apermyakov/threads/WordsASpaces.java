@@ -131,22 +131,11 @@ public class WordsASpaces {
     }
 
     /**
-     * Main thread of app.
-     *
-     * @param args args
-     */
-    public static void main(String[] args) {
-        calculate("Hi, Petr, I work fine!");
-        calculate("Hi, Petr, bye!");
-        calculate("   Hi,   Petr, threads   is awesome idea!   ");
-    }
-
-    /**
      * Method for initialize threads running.
      *
      * @param string insert text
      */
-    private static void calculate(String string) {
+    public static void calculate(String string) {
         Thread hello = new Thread(new Receptionist("Hello! Program starts up.."));
         Thread bye = new Thread(new Receptionist("Program is finished its work. Bye!"));
         Thread findWords = new Thread(new Words(string));
