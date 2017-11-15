@@ -99,6 +99,38 @@ public class WordsASpaces {
     }
 
     /**
+     * Private class for interact with user at the beginning and end of app.
+     *
+     * @author apermyakov
+     * @version 1.0
+     * @since 15.11.2017
+     */
+    private static class Receptionist implements Runnable {
+
+        /**
+         * Field for phrase to user.
+         */
+        private String string;
+
+        /**
+         * Design receptionist.
+         *
+         * @param string output text
+         */
+        Receptionist(String string) {
+            this.string = string;
+        }
+
+        /**
+         * Method for output phrase for user.
+         */
+        @Override
+        public void run() {
+            System.out.println(string);
+        }
+    }
+
+    /**
      * Main thread of app.
      *
      * @param args args
@@ -115,7 +147,24 @@ public class WordsASpaces {
      * @param string insert text
      */
     private static void calculate(String string) {
-        new Thread(new Words(string)).start();
-        new Thread(new Spaces(string)).start();
+        Thread hello = new Thread(new Receptionist("Hello! Program starts up.."));
+        Thread bye = new Thread(new Receptionist("Program is finished its work. Bye!"));
+        Thread findWords = new Thread(new Words(string));
+        Thread findSpaces = new Thread(new Spaces(string));
+
+        hello.start();
+
+        try {
+            hello.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        findWords.start();
+        findSpaces.start();
+
+        while (findWords.isAlive() || findSpaces.isAlive());
+
+        bye.start();
     }
 }
