@@ -1,35 +1,43 @@
 package ru.apermyakov.generic;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.*;
 
 /**
  * Class for storing data base by linked array.
  *
- * @author apermyakov
- * @version 1.2
- * @since 02.11.2017
  * @param <T> storing data type
+ * @author apermyakov
+ * @version 1.3
+ * @since 02.11.2017
  */
+@ThreadSafe
 public class SimpleLinkedArray<T> implements SimpleContainer<T> {
 
     /**
      * Field for save size of linked array.
      */
-    private int size = 0;
+    @GuardedBy("volatile")
+    private volatile int size = 0;
 
     /**
      * Filed for save first item in array.
      */
+    @GuardedBy("this")
     private Item<T> first;
 
     /**
      * Field for save last item in array.
      */
+    @GuardedBy("this")
     private Item<T> last;
 
     /**
      * Field for iterator's counter.
      */
+    @GuardedBy("this")
     private int iteratorCounter = 0;
 
     /**
@@ -46,7 +54,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      *
      * @param insert storing data
      */
-    public void addItem(T insert) {
+    public synchronized void addItem(T insert) {
         Item<T> temporaryItem = this.last;
         Item<T> newItem = new Item<>(insert);
         newItem.setPrevious(temporaryItem);
@@ -65,7 +73,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @param insert added data
      */
     @Override
-    public void add(T insert) {
+    public synchronized void add(T insert) {
         addItem(insert);
     }
 
@@ -89,7 +97,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      *
      * @return first object
      */
-    public Item<T> getFirst() {
+    public synchronized Item<T> getFirst() {
         return tryGet(this.first);
     }
 
@@ -98,7 +106,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      *
      * @return last object
      */
-    public Item<T> getLast() {
+    public synchronized Item<T> getLast() {
         return tryGet(this.last);
     }
 
@@ -136,7 +144,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @return storing data from found item
      */
     @Override
-    public T get(int index) {
+    public synchronized T get(int index) {
         return getItem(index).getObject();
     }
 
@@ -204,7 +212,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @param removableObject object of item
      * @return removed item's object
      */
-    public T removeItem(T removableObject) {
+    public synchronized T removeItem(T removableObject) {
         Item<T> removableItem = findItem(removableObject);
         return removeLinkItem(removableItem);
     }
@@ -215,7 +223,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @param index index of item
      * @return object of removed item
      */
-    public T removeItem(int index) {
+    public synchronized T removeItem(int index) {
         Item<T> removableItem = findItem(get(index));
         return removeLinkItem(removableItem);
     }
@@ -227,7 +235,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @return item
      * @throws NoSuchElementException container has't such object
      */
-    protected Item<T> findByObject(T object) throws NoSuchElementException {
+    protected synchronized Item<T> findByObject(T object) throws NoSuchElementException {
         for (Item<T> counter = this.first; counter != null; counter = counter.getNext()) {
             if (object.equals(counter.getObject())) {
                 return counter;
@@ -243,7 +251,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @return found item
      * @throws IllegalArgumentException incorrect data
      */
-    private Item<T> findItem(T findObject) throws  IllegalArgumentException {
+    private Item<T> findItem(T findObject) throws IllegalArgumentException {
         if (findObject != null) {
             return findObject.equals(getFirst()) ? this.first
                     : findObject.equals(getLast()) ? this.last
@@ -259,7 +267,7 @@ public class SimpleLinkedArray<T> implements SimpleContainer<T> {
      * @return list iterator
      */
     @Override
-    public ListIterator<T> iterator() {
+    public synchronized ListIterator<T> iterator() {
         return new ListIterator<T>() {
 
             /**

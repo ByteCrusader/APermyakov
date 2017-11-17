@@ -1,5 +1,8 @@
 package ru.apermyakov.generic;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -8,25 +11,29 @@ import java.util.NoSuchElementException;
  * Class for contain data.
  *
  * @author apermyakov
- * @version 1.0
+ * @version 1.1
  * @since 31.10.2017
  * @param <T> type of data.
  */
+@ThreadSafe
 public class SimpleArray<T> implements SimpleContainer<T> {
 
     /**
      * Field for list of data.
      */
+    @GuardedBy("this")
     private Object[] array = new Object[100];
 
     /**
      * Field for calculate index of next alive data.
      */
+    @GuardedBy("this")
     private int aliveData = 0;
 
     /**
      * Field for iterator counter.
      */
+    @GuardedBy("this")
     private int iteratorCounter = 0;
 
     /**
@@ -47,7 +54,7 @@ public class SimpleArray<T> implements SimpleContainer<T> {
      * @param insert added data
      */
     @Override
-    public void add(T insert) {
+    public synchronized void add(T insert) {
         addItem(insert);
     }
 
@@ -57,7 +64,7 @@ public class SimpleArray<T> implements SimpleContainer<T> {
      * @param old old data
      * @param next new data
      */
-    public void update(T old, T next) {
+    public synchronized void update(T old, T next) {
         int index = 0;
         for (Object value : this.array) {
             if (value != null && value.equals(old)) {
@@ -90,7 +97,7 @@ public class SimpleArray<T> implements SimpleContainer<T> {
      *
      * @param delete deleted data
      */
-    public void delete(T delete) {
+    public synchronized void delete(T delete) {
         int itemIndex = indexOfItem(delete);
         checkIndex(itemIndex);
         System.arraycopy(this.array, itemIndex + 1, this.array, itemIndex, this.array.length - itemIndex - 1);
@@ -115,7 +122,7 @@ public class SimpleArray<T> implements SimpleContainer<T> {
      * @return found data
      */
     @Override
-    public T get(int index) throws IllegalArgumentException {
+    public synchronized T get(int index) throws IllegalArgumentException {
         if (index >= 0 && index < this.array.length && this.array[index] != null) {
             return (T) this.array[index];
         } else {
@@ -129,7 +136,7 @@ public class SimpleArray<T> implements SimpleContainer<T> {
      * @return container's iterator
      */
     @Override
-    public Iterator<T> iterator() {
+    public synchronized Iterator<T> iterator() {
         return new Iterator<T>() {
 
             /**
