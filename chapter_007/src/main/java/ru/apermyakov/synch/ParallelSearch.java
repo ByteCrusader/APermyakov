@@ -6,8 +6,7 @@ import net.jcip.annotations.ThreadSafe;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class for build parallel search text in files.
@@ -22,26 +21,23 @@ public class ParallelSearch {
     /**
      * Field for list of files with correct extension.
      */
-    @GuardedBy("this")
-    private List<String> extsFiles = new LinkedList<>();
+    @GuardedBy("itself")
+    private final Set<String> extsFiles = Collections.synchronizedSet(new HashSet<String>());
 
     /**
      * Field for target root.
      */
-    @GuardedBy("this")
-    private String root;
+    private final String root;
 
     /**
      * Field for target text.
      */
-    @GuardedBy("this")
-    private String text;
+    private final String text;
 
     /**
      * Field for target file's extensions.
      */
-    @GuardedBy("this")
-    private List<String> exts;
+    private final List<String> exts;
 
     /**
      * Design parallel search.
@@ -96,7 +92,6 @@ public class ParallelSearch {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    synchronized (result) {
                         try {
                             BufferedReader br = new BufferedReader(new FileReader(path));
 
@@ -110,7 +105,6 @@ public class ParallelSearch {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
                 }
             }).start();
         }
@@ -139,7 +133,7 @@ public class ParallelSearch {
      *
      * @return list of results
      */
-    public synchronized List<String> result() {
+    public List<String> result() {
 
         final List<String> result = new LinkedList<>();
 
@@ -165,8 +159,9 @@ public class ParallelSearch {
         }
 
         scan.start();
+
         try {
-            scan.join();
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -184,6 +179,21 @@ public class ParallelSearch {
         exts.add(".txt");
         exts.add(".docx");
         ParallelSearch searcher = new ParallelSearch("C:\\Projects", "I will test your program.", exts);
-        System.out.println(searcher.result());
+
+        Thread first = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(searcher.result());
+            }
+        });
+        Thread second = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println(searcher.result());
+            }
+        });
+
+        first.start();
+        second.start();
     }
 }
