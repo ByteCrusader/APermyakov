@@ -38,20 +38,20 @@ public class SimpleSAXParser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
-        if (qName.equals("AddOrder")) {
-            converter.convertAdd(new Order(attributes.getValue(0),
-                    attributes.getValue(1),
-                    Double.valueOf(attributes.getValue(2)),
-                    Integer.valueOf(attributes.getValue(3)),
-                    Integer.valueOf(attributes.getValue(4))));
+        if (("AddOrder").equals(qName)) {
+            converter.convertAdd(new Order(attributes.getValue("book"),
+                    attributes.getValue("operation"),
+                    Double.valueOf(attributes.getValue("price")),
+                    Integer.valueOf(attributes.getValue("volume")),
+                    Integer.valueOf(attributes.getValue("orderId"))));
         }
 
-        if (qName.equals("DeleteOrder")) {
-            converter.convertDelete(new Order(attributes.getValue(0),
+        if (("DeleteOrder").equals(qName)) {
+            converter.convertDelete(new Order(attributes.getValue("book"),
                     "",
                     0D,
                     0,
-                    Integer.valueOf(attributes.getValue(1))));
+                    Integer.valueOf(attributes.getValue("orderId"))));
         }
     }
 }

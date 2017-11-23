@@ -93,12 +93,10 @@ public class Converter {
      */
     private void addToMaps(Order order, boolean sellOrBuy) {
         TreeMap<Double, Order> targetMap = sellOrBuy ? this.sell : this.buy;
-        if (targetMap.get(order.price) == null) {
-            targetMap.put(order.price, order);
-        } else {
-            Order transportOrder = targetMap.get(order.price);
-            targetMap.put(order.price, new Order(order.book, order.operation, order.price,
-                    order.volume + transportOrder.volume, order.orderId));
+
+        if (targetMap.computeIfAbsent(order.price, k -> order) != order) {
+            targetMap.computeIfPresent(order.price, (k, v) -> v = new Order(order.book, order.operation, order.price,
+                    order.volume + targetMap.get(order.price).volume, order.orderId));
         }
     }
 }
