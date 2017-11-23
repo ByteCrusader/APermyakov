@@ -65,6 +65,11 @@ public class ThreadPool {
     private final Thread[] pool;
 
     /**
+     * Field for identify pool action.
+     */
+    private volatile boolean work = true;
+
+    /**
      * Design thread pool.
      *
      * @param numberOfThreads number of threads
@@ -98,6 +103,17 @@ public class ThreadPool {
     }
 
     /**
+     * Method for end pool.
+     */
+    public void endPool() {
+        System.out.println("End pool");
+        synchronized (listOfWorks) {
+            work = false;
+            listOfWorks.notifyAll();
+        }
+    }
+
+    /**
      * Field for thread counter to output.
      */
     private int threadCounter = 1;
@@ -119,13 +135,13 @@ public class ThreadPool {
 
             int threadNumber = threadCounter++;
 
-            Work threadWork;
+            Work threadWork = new Work("", 0L);
 
             System.out.println("Initialize " + threadNumber + " thread");
 
-            while (true) {
+            while (work) {
                 synchronized (listOfWorks) {
-                    while (listOfWorks.isEmpty()) {
+                    while (work && listOfWorks.isEmpty()) {
                         try {
                             System.out.println("Thread " + threadNumber + " wait");
                             listOfWorks.wait();
@@ -133,7 +149,9 @@ public class ThreadPool {
                             e.printStackTrace();
                         }
                     }
-                    threadWork = listOfWorks.removeFirst();
+                    if (work) {
+                        threadWork = listOfWorks.removeFirst();
+                    }
                 }
 
                 try {
@@ -141,7 +159,12 @@ public class ThreadPool {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Thread " + threadNumber + " done " + threadWork.name);
+
+                if (work) {
+                    System.out.println("Thread " + threadNumber + " done " + threadWork.name);
+                } else {
+                    System.out.println("Thread " + threadNumber + " done his work");
+                }
             }
         }
     }
@@ -160,5 +183,13 @@ public class ThreadPool {
         pool.add(new Work("Third work", 1000));
         pool.add(new Work("Fourth work", 1000));
         pool.add(new Work("Fifth work", 1000));
+
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        pool.endPool();
     }
 }
