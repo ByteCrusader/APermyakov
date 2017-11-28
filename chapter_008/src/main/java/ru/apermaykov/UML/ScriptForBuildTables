@@ -1,0 +1,14 @@
+postgres=# \c umlsystem
+ПРЕДУПРЕЖДЕНИЕ: ...
+Вы подключены к базе данных "umlsystem" как пользователь "postgres".
+umlsystem=# create table users(id serial primary key, username text);
+CREATE TABLE
+umlsystem=# create table roles(id serial primary key, role text, description text[], users_id integer references users(id));
+CREATE TABLE
+umlsystem=# create table categories(id serial primary key, categoryname text);
+CREATE TABLE
+umlsystem=# create table bids(id serial primary key, bidname text, condition text, user_id integer references users(id), categories_id integer references categories(id));
+CREATE TABLE
+umlsystem=# create table comments(id serial primary key, comment text, bids_id integer references bids(id));
+CREATE TABLE
+umlsystem=#

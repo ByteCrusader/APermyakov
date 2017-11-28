@@ -1,0 +1,17 @@
+umlsystem=# insert into users(username) values('Alexander');
+INSERT 0 1
+umlsystem=# insert into roles(role, description, users_id) values('admin', '{"create", "insert", "drop"}', 1);
+INSERT 0 1
+umlsystem=# insert into categories(categoryname) values('learning task');
+INSERT 0 1
+umlsystem=# insert into bids(bidname, condition, user+id, categories_id) values('build correct database', 'indev', 1, 1);
+INSERT 0 1
+umlsystem=# insert into comments(comment, bids_id) values('indev', 1);
+INSERT 0 1
+umlsystem=# insert into comments(comment, bids_id) values('done', 1);
+INSERT 0 1
+umlsystem=# insert into files(path, bids_id) values('some file path', 1);
+INSERT 0 1
+umlsystem=# update bids set condition='close' where id=1;
+UPDATE 1
+umlsystem=#

@@ -1,0 +1,6 @@
+umlsystem=# select * from users;
+umlsystem=# select * from roles;
+umlsystem=# select * from bids;
+umlsystem=# select * from comments;
+umlsystem=# select * from files;
+umlsystem=# select * from categories;

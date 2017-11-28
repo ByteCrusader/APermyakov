@@ -1,0 +1,3 @@
+postgres=# create database UMLSystem;
+CREATE DATABASE
+postgres=#
