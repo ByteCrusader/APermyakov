@@ -1,0 +1,12 @@
+postgres=# \c outerjoin
+ПРЕДУПРЕЖДЕНИЕ: ...
+Вы подключены к базе данных "outerjoin" как пользователь "postgres".
+outerjoin=# create table engine(id serial primary key, name text, type text, cylinders integer, horsepower real);
+CREATE TABLE
+outerjoin=# create table gearbox(id serial primary key, name text, type text, gear integer);
+CREATE TABLE
+outerjoin=# create table transmission(id serial primary key, type text, description text);
+CREATE TABLE
+outerjoin=# create table car(id serial primary key, make text, model text, year integer, engine_id integer references engine(id), gearbox_id integer references gearbox(id), transmission_id integer references transmission(id));
+CREATE TABLE
+outerjoin=#

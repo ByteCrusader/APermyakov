@@ -1,0 +1,21 @@
+outerjoin=# insert into transmission(type, description) values('rear drive', 'Torsen');
+INSERT 0 1
+outerjoin=# insert into gearbox(name, type, gear) values('A341E', 'automatic', 4);
+INSERT 0 1
+outerjoin=# insert into engine(name, type, cylinders, horsepower) values('1JZ-GE', 'petrol', 6, 200);
+INSERT 0 1
+outerjoin=# insert into car(make, model, year, engine_id, gearbox_id, transmission_id) values('Toyota', 'Chaser', 2001, 1, 1, 1);
+INSERT 0 1
+outerjoin=# insert into engine(name, type, cylinders, horsepower) values('3S-GE', 'petrol', 4, 200);
+INSERT 0 1
+outerjoin=# insert into gearbox(name, type, gear) values('A650E', 'tiptronic', 5);
+INSERT 0 1
+outerjoin=# insert into car(make, model, year, engine_id, gearbox_id, transmission_id) values('Toyota', 'Altezza', 2005, 2, 2, 1);
+INSERT 0 1
+outerjoin=# insert into engine(name, type, cylinders, horsepower) values('VR38DETT', 'petrol', 6, 550);
+INSERT 0 1
+outerjoin=# insert into gearbox(name, type, gear) values('A340H(4x4)', 'automatic', 4);
+INSERT 0 1
+outerjoin=# insert into transmission(type, description) values('4WD', 'xDrive');
+INSERT 0 1
+outerjoin=#

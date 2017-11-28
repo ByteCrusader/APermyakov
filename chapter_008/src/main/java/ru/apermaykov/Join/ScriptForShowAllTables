@@ -1,0 +1,5 @@
+outerjoin=# select * from car;
+outerjoin=# select * from engine;
+outerjoin=# select * from gearbox;
+outerjoin=# select * from transmission;
+outerjoin=#

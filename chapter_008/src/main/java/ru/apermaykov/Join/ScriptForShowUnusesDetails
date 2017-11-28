@@ -1,0 +1,4 @@
+outerjoin=# select e.name as Engine from car as c right outer join engine as e on e.id=c.engine_id where c.make is null;
+outerjoin=# select g.name as GearBox from car as c right outer join gearbox as g on g.id=c.gearbox_id where c.make is null;
+outerjoin=# select t.description as Transmission from car as c right outer join transmission as t on t.id=c.transmission_id where c.make is null;
+outerjoin=#
