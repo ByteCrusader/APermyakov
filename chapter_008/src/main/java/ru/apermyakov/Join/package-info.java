@@ -5,4 +5,4 @@
  * @version 1.0
  * @since 28.11.2017
  */
-package ru.apermaykov.Join;
+package ru.apermyakov.Join;

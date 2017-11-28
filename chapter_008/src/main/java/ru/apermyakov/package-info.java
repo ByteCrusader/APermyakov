@@ -5,4 +5,4 @@
  * @version 1.0
  * @since 24.11.2017
  */
-package ru.apermaykov;
+package ru.apermyakov;
