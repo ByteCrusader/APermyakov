@@ -6,33 +6,33 @@ import java.util.List;
  * Class for create items.
  *
  * @author apermyakov
- * @version 1.0
+ * @version 1.1
  * @since 13.10.2017
  */
 public class Item {
 
 	/**
-	* Feild item id.
+	* Field item id.
 	*/
-	private String id;
+	private int id;
 
 	/**
-	* Feild name of task.
+	* Field name of task.
 	*/
 	private String name;
 
 	/**
-	* Feild description of task.
+	* Field description of task.
 	*/
 	private String description;
 
 	/**
-	* Feild data when task was created.
+	* Field data when task was created.
 	*/
 	private long created;
 
 	/**
-	* Feild array of comments to items.
+	* Field array of comments to items.
 	*/
 	private List<String> comments;
 
@@ -53,7 +53,7 @@ public class Item {
 	* Method get item's id.
 	* @return item's id
 	*/
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
@@ -61,7 +61,7 @@ public class Item {
 	* Method set item's id.
 	* @param id item's id
 	*/
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

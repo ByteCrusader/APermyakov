@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 *
 * @author apermyakov
 * @since 16.10.2017
-* @version 1.0
+* @version 1.1
 */
 
 public class StubInputTest {
@@ -21,6 +21,7 @@ public class StubInputTest {
 	@Test
 	public void whenUserAddItemThenTrackerHasThisItem() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Input input = new StubInput(new String[] {"0", "ivan", "check", "6"});
 		new StartUI(input, tracker).initial();
 		assertThat(tracker.findAll().get(0).getName(), is("ivan"));
@@ -32,6 +33,7 @@ public class StubInputTest {
 	@Test
 	public void whenUserAddThreeItemAndChouseShowThenTrackerHasThreeItemsAndUserSeeThreeItems() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = tracker.add(new Item("vasilii", "check aircondition", 123L));
 		Item second = tracker.add(new Item("ivan", "need to repair TV", 123L));
 		Item third = tracker.add(new Item("vasilii", "repair TV", 123L));
@@ -46,8 +48,9 @@ public class StubInputTest {
 	@Test
 	public void whenUserEditItemThenTrackerHasUpdatedValue() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item item = tracker.add(new Item("ivan", "repair TV", 123L));
-		Input input = new StubInput(new String[]{"2", item.getId(), "vasilii", "check aircondition", "6"});
+		Input input = new StubInput(new String[]{"2", String.valueOf(item.getId()), "vasilii", "check aircondition", "6"});
 		new StartUI(input, tracker).initial();
 		assertThat(tracker.findById(item.getId()).getName(), is("vasilii"));
 	}
@@ -58,9 +61,10 @@ public class StubInputTest {
 	@Test
 	public void whenUserDeleteFirstItemThenTrackerHasSecondItemOnTheFirstItem() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = tracker.add(new Item("ivan", "cry", 123L));
 		Item second = tracker.add(new Item("vasilii", "comfort", 123L));
-		Input input = new StubInput(new String[]{"3", first.getId(), "6"});
+		Input input = new StubInput(new String[]{"3", String.valueOf(first.getId()), "6"});
 		new StartUI(input, tracker).initial();
 		assertThat(tracker.findAll().get(0).getName(), is("vasilii"));
 	}
@@ -71,8 +75,9 @@ public class StubInputTest {
 	@Test
 	public void whenUserFindByIdThenTrackerHasThisItem() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item item = tracker.add(new Item("ivan", "cry", 123L));
-		Input input = new StubInput(new String[]{"4", item.getId(), "6"});
+		Input input = new StubInput(new String[]{"4", String.valueOf(item.getId()), "6"});
 		new StartUI(input, tracker).initial();
 		assertThat(tracker.findById(item.getId()).getDescription(), is("cry"));
 	}
@@ -83,6 +88,7 @@ public class StubInputTest {
 	@Test
 	public void whenUserFindByNameIvanThenTrackerHasThisThreeItems() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = tracker.add(new Item("ivan", "need to repair TV", 123L));
 		Item second = tracker.add(new Item("ivan", "cry", 123L));
 		Item third = tracker.add(new Item("vasilii", "repair TV", 123L));

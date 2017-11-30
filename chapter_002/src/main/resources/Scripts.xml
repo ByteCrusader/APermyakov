@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<scripts>
+    <connectscript>C:\check\TRACKER.sqlite</connectscript>
+    <dropscript>DROP TABLE IF EXISTS TRACKER</dropscript>
+    <createscript>CREATE TABLE IF NOT EXISTS TRACKER (id integer primary key, itemname text, itemdescription text, itemcreated integer)</createscript>
+    <insertscript>INSERT INTO TRACKER (itemname, itemdescription, itemcreated) values(?, ?, ?)</insertscript>
+    <updatescript>UPDATE TRACKER SET itemname=?, itemdescription=?, itemcreated=? where id=?</updatescript>
+    <deletescript>DELETE FROM TRACKER WHERE id=?</deletescript>
+    <selectallscript>SELECT * FROM TRACKER</selectallscript>
+    <selectbyidscript>SELECT * FROM TRACKER where id=?</selectbyidscript>
+    <selectbynamescript>SELECT * FROM TRACKER where itemname=?</selectbynamescript>
+    <selectbyallfieldscript>SELECT * FROM TRACKER WHERE itemname=? and itemdescription=? and itemcreated=?</selectbyallfieldscript>
+</scripts>

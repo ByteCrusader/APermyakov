@@ -8,7 +8,7 @@ import java.util.List;
 *
 * @author apermyakov
 * @since 16.10.2017
-* @version 1.0
+* @version 1.1
 */
 public class StartUI {
 
@@ -67,6 +67,7 @@ public class StartUI {
 	public static void main(String[] args) {
 		Input input = new ValidateInput();
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		new StartUI(input, tracker).initial();
 	}
 }

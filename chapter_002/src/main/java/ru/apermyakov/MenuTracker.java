@@ -7,7 +7,7 @@ import java.util.List;
 * Class for add Item.
 *
 * @author apermyakov
-* @version 1.0
+* @version 1.1
 * @since 17.10.2017
 */
 class Add extends BaseAction {
@@ -43,7 +43,7 @@ class Add extends BaseAction {
 * Class for edit Item.
 *
 * @author apermyakov
-* @version 1.0
+* @version 1.1
 * @since 17.10.2017
 */
 class Edit extends BaseAction {
@@ -73,7 +73,7 @@ class Edit extends BaseAction {
 		String newName = input.ask("Please, input new name of task: ");
 		String newDesc = input.ask("Please, input new description of task: ");
 		Item newItem = new Item(newName, newDesc, 123L);
-		newItem.setId(baseId);
+		newItem.setId(Integer.valueOf(baseId));
 		tracker.update(newItem);
 	}
 }
@@ -82,7 +82,7 @@ class Edit extends BaseAction {
 * Class for delete Item.
 *
 * @author apermyakov
-* @version 1.0
+* @version 1.1
 * @since 17.10.2017
 */
 class Delete extends BaseAction {
@@ -109,7 +109,7 @@ class Delete extends BaseAction {
 	*/
 	public void mainActivity(Input input, Tracker tracker) {
 		String baseId = input.ask("Please, input id of task, which you want to delete: ");
-		tracker.delete(tracker.findById(baseId));
+		tracker.delete(tracker.findById(Integer.valueOf(baseId)));
 	}
 }
 
@@ -117,7 +117,7 @@ class Delete extends BaseAction {
 * Class for initial menu.
 *
 * @author apermyakov
-* @version 1.0
+* @version 1.1
 * @since 17.10.2017
 */
 public class MenuTracker {
@@ -268,7 +268,7 @@ public class MenuTracker {
 		*/
 		public void mainActivity(Input input, Tracker tracker) {
 			String baseId = input.ask("Please, input id of task, which you want to find: ");
-			Item item = tracker.findById(baseId);
+			Item item = tracker.findById(Integer.valueOf(baseId));
 			System.out.println(String.format("Id: %s; name: %s; description: %s", item.getId(), item.getName(), item.getDescription()));
 		}
 	}

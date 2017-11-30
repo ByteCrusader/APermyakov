@@ -9,7 +9,7 @@ import static org.junit.Assert.assertThat;
  * Class for test tracker.
  *
  * @author apermyakov
- * @version 1.0
+ * @version 1.1
  * @since 13.10.2017
  */
 public class TrackerTest {
@@ -20,9 +20,10 @@ public class TrackerTest {
 	@Test
 	public void whenAddNewItemThenAdd() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item item = new Item("TestAAA", "aaa", 123L);
 		tracker.add(item);
-		assertThat(tracker.findAll().get(0), is(item));
+		assertThat(tracker.findAll().get(0).getName(), is(item.getName()));
 	}
 
 	/**
@@ -31,6 +32,7 @@ public class TrackerTest {
 	@Test
 	public void whenUpdateItemThenUpdateCell() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		Item second = new Item("Second", "2", 123L);
@@ -45,12 +47,13 @@ public class TrackerTest {
 	@Test
 	public void whenDeleteItemThenDeleteCell() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		Item second = new Item("Second", "2", 123L);
 		tracker.add(second);
 		tracker.delete(first);
-		assertThat(tracker.findAll().get(0), is(second));
+		assertThat(tracker.findAll().get(0).getName(), is(second.getName()));
 	}
 
 	/**
@@ -59,6 +62,7 @@ public class TrackerTest {
 	@Test
 	public void whenNeedFindAllThenLengthOfResultArray() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		Item second = new Item("Second", "2", 1234L);
@@ -74,6 +78,7 @@ public class TrackerTest {
 	@Test
 	public void whenFindByNameItemLengthOfResultArray() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
 		Item second = new Item("First", "2", 123L);
@@ -84,16 +89,37 @@ public class TrackerTest {
 	/**
 	* Test when find item by id then take item or null.
 	*/
-	@Test
-	public void whenFindByIdItemThenItemOrNull() {
+	@Test(expected = IllegalArgumentException.class)
+	public void whenFindByIdItemThenItemOrEx() {
 		Tracker tracker = new Tracker();
+		tracker.initial(true);
 		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
-		String itemId = first.getId();
+		int itemId = first.getId();
 		Item second = new Item("First", "2", 123L);
 		tracker.add(second);
 		tracker.delete(first);
-		Item expext = null;
-		assertThat(tracker.findById(itemId), is(expext));
+		tracker.findById(itemId);
+	}
+
+	/**
+	 * Test when add new item to database then add.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void whenAddNewItemToDbThenAdd() {
+		Tracker tracker = new Tracker();
+		Item first = new Item("First", "1", 123L);
+		Item second = new Item("Second", "2", 123L);
+		tracker.initial(true);
+		tracker.add(first);
+		tracker.add(second);
+		assertThat(tracker.findAll().get(0).getName(), is(first.getName()));
+		second.setId(first.getId());
+		tracker.update(second);
+		assertThat(tracker.findAll().get(0).getName(), is(second.getName()));
+		assertThat(tracker.findByName(second.getName()).get(1).getName(), is(second.getName()));
+		tracker.delete(second);
+		assertThat(tracker.findAll().get(0).getId(), is(2));
+		tracker.findByName("InvalidName");
 	}
 }
