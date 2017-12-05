@@ -1,0 +1,28 @@
+addittesttask=# insert into company(id, name) values(1, 'XRM');
+INSERT 0 1
+addittesttask=# insert into company(id, name) values(2, 'Sun Ind.');
+INSERT 0 1
+addittesttask=# insert into company(id, name) values(3, 'Oracle');
+INSERT 0 1
+addittesttask=# insert into company(id, name) values(4, 'Google');
+INSERT 0 1
+addittesttask=# insert into company(id, name) values(5, 'Apple');
+INSERT 0 1
+addittesttask=# insert into company(id, name) values(6, 'Yandex');
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(1, 'Alexander P.', 1);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(2, 'Vladimir P.', 1);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(3, 'Alexander S.', 1);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(4, 'Gosling J.', 2);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(5, 'Jon S.', 3);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(6, 'Sundar P.', 4);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(7, 'Jonathan I.', 5);
+INSERT 0 1
+addittesttask=# insert into person(id, name, company_id) values(8, 'Greg A.', 6);
+INSERT 0 1

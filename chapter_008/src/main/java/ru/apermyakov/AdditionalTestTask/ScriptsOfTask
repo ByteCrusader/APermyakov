@@ -1,0 +1,55 @@
+1. Первый скрипт:
+В одном запросе получить:
+- имена всех лиц, которые не принадлежат компании с id=5
+- название компании для каждого человека
+
+addittesttask=# select p.name as name, c.name as company
+                   from
+                      person as p
+                      left join company as c
+                      on p.company_id=c.id
+                   where c.id!=5;
+
+Результат запроса:
+
+       name    : company
+  -------------+----------
+  Alexander P. : XRM
+  Vladimir P.  : XRM
+  Alexander S. : XRM
+  Gosling J.   : Sun Ind.
+  Jon S.       : Oracle
+  Sundar P.    : Google
+  Greg A.      : Yandex
+
+
+2. Второй скрипт:
+Выборка с названием компании с максимальным колисеством лиц
+и количество человек в этой компании
+
+addittesttask=# with table_with_count as (
+                   select sub.corp as corporation,
+                      count(sub.corp) as workers
+                      from (
+                         select c.name as corp, p.id
+                         from
+                            company as c
+                            left join
+                            person as p
+                            on c.id=p.company_id
+                      ) as sub
+                   group by sub.corp
+                ) select *
+                     from
+                        table_with_count
+                     where
+                        workers = (
+                           select max(workers)
+                              from table_with_count
+                        );
+
+Результат скрипта:
+
+ corporation: workers
+------------+--------
+ XRM        :       3

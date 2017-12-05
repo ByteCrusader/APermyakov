@@ -1,0 +1,3 @@
+postgres=# create database AdditTestTask;
+CREATE DATABASE
+postgres=#
