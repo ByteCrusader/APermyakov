@@ -41,27 +41,15 @@ public class BomberMan {
     }
 
     /**
-     * Field for board lock.
-     */
-    private final Object boardLock = new Object();
-
-    /**
-     * Field for initial board lock.
-     */
-    private final Object initialLock = new Object();
-
-    /**
      * Method for initial board objects and eternal obstacles.
      */
     private void initialEternalObstacles() {
-        synchronized (initialLock) {
-            for (int outsideIndex = 0; outsideIndex < this.numberOfBoardLines; outsideIndex++) {
-                for (int insideIndex = 0; insideIndex < this.numberOfBoardColumns; insideIndex++) {
-                    board[outsideIndex][insideIndex] = new ReentrantLock();
-                    if (outsideIndex % 2 != 0 && insideIndex % 2 != 0) {
-                        System.out.println(String.format("Board [%s] [%s] is locked", outsideIndex,  insideIndex));
-                        board[outsideIndex][insideIndex].lock();
-                    }
+        for (int outsideIndex = 0; outsideIndex < this.numberOfBoardLines; outsideIndex++) {
+            for (int insideIndex = 0; insideIndex < this.numberOfBoardColumns; insideIndex++) {
+                board[outsideIndex][insideIndex] = new ReentrantLock();
+                if (outsideIndex % 2 != 0 && insideIndex % 2 != 0) {
+                    System.out.println(String.format("Board [%s] [%s] is locked", outsideIndex,  insideIndex));
+                    board[outsideIndex][insideIndex].lock();
                 }
             }
         }
@@ -76,14 +64,12 @@ public class BomberMan {
         int numberOfDestructibleObstacles = 5;
         Random random = new Random();
         int initialized = 0;
-        synchronized (initialLock) {
-            while (initialized < numberOfDestructibleObstacles) {
-                if (board[random.nextInt(this.numberOfBoardLines)][random.nextInt(this.numberOfBoardColumns)].tryLock(10L, TimeUnit.MILLISECONDS)) {
-                    System.out.println("Destructible obstacle initialized");
-                    initialized++;
-                } else {
-                    System.out.println("Locked");
-                }
+        while (initialized < numberOfDestructibleObstacles) {
+            if (board[random.nextInt(this.numberOfBoardLines)][random.nextInt(this.numberOfBoardColumns)].tryLock(10L, TimeUnit.MILLISECONDS)) {
+                System.out.println("Destructible obstacle initialized");
+                initialized++;
+            } else {
+                System.out.println("Locked");
             }
         }
     }
@@ -94,29 +80,27 @@ public class BomberMan {
      * @throws InterruptedException interrupted thread
      */
     public void initialBoard() throws InterruptedException {
-        synchronized (boardLock) {
-            Thread initialEternalObstaclesThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    initialEternalObstacles();
+        Thread initialEternalObstaclesThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initialEternalObstacles();
+            }
+        });
+        Thread randomInitialDestructibleObstaclesThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    randomInitialDestructibleObstacles();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
-            Thread randomInitialDestructibleObstaclesThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        randomInitialDestructibleObstacles();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            }
+        });
 
-            initialEternalObstaclesThread.start();
-            initialEternalObstaclesThread.join();
-            randomInitialDestructibleObstaclesThread.start();
-            randomInitialDestructibleObstaclesThread.join();
-        }
+        initialEternalObstaclesThread.start();
+        initialEternalObstaclesThread.join();
+        randomInitialDestructibleObstaclesThread.start();
+        randomInitialDestructibleObstaclesThread.join();
     }
 
     /**
