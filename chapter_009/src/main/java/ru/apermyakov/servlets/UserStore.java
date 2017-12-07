@@ -3,6 +3,9 @@ package ru.apermyakov.servlets;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 
@@ -26,24 +29,27 @@ public class UserStore {
      * Field for connection to data base.
      */
     @GuardedBy("this")
-    private Connection connection = null;
+    private static Connection connection;
 
-    /**
-     * Private design of user store.
-     */
-    private UserStore() {
+    static {
+        PoolProperties properties = new PoolProperties();
+        properties.setUrl("jdbc:postgresql://localhost:5432/servlet");
+        properties.setDriverClassName("org.postgresql.Driver");
+        properties.setUsername("postgres");
+        properties.setPassword("Figa1357");
+        DataSource source = new DataSource();
+        source.setPoolProperties(properties);
         try {
-            Class.forName("org.postgresql.Driver");
-            this.connection = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/servlet",
-                    "postgres",
-                    "Figa1357");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            connection = source.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Private design of user store.
+     */
+    private UserStore() {}
 
     /**
      * Method for get user store instance.
@@ -69,24 +75,26 @@ public class UserStore {
      * @return string of all database
      */
     public String get(){
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("<table>");
         try {
             checkTable();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM USERS");
             while (resultSet.next()) {
+                builder.append("<tr><td>");
                 builder.append(String.format("%s %s %s %s %s",
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("login"),
                         resultSet.getString("email"),
                         resultSet.getString("createDate")));
-                builder.append(System.lineSeparator());
+                builder.append("</td></tr>");
             }
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        builder.append("</table>");
         return builder.toString();
     }
 
@@ -152,6 +160,19 @@ public class UserStore {
             this.workWithDataInDb("DELETE FROM USERS WHERE id=?", req);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method for close connection when servlet is done.
+     */
+    public synchronized void closeConnect() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

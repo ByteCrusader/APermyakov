@@ -8,9 +8,45 @@
         <url-pattern>/echo</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>InterfaceServlet</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.InterfaceServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InterfaceServlet</servlet-name>
+        <url-pattern>/interface</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UserPostServlet</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.UserPostServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserPostServlet</servlet-name>
+        <url-pattern>/user/post</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UserPutServlet</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.UserPutServlet</servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserPutServlet</servlet-name>
+        <url-pattern>/user/put</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UserDeleteServlet</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.UserDeleteServlet</servlet-class>
+        <load-on-startup>4</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserDeleteServlet</servlet-name>
+        <url-pattern>/user/delete</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>UsersServlet</servlet-name>
         <servlet-class>ru.apermyakov.servlets.UsersServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>3</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>

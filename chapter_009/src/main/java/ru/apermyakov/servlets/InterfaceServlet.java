@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Class for users servlet.
+ * Servlet to show to user interface.
  *
  * @author apermyakov
  * @version 1.0
- * @since 06.12.2017
+ * @since 07.12.2017
  */
-public class UsersServlet extends HttpServlet {
+public class InterfaceServlet extends HttpServlet{
 
     /**
      * Field for user store object.
@@ -24,8 +24,8 @@ public class UsersServlet extends HttpServlet {
     /**
      * Method to work with get request.
      *
-     * @param req http request
-     * @param resp http response
+     * @param req request
+     * @param resp response
      * @throws ServletException servlet e
      * @throws IOException io e
      */
@@ -40,48 +40,34 @@ public class UsersServlet extends HttpServlet {
         writer.append("   <title></title>");
         writer.append("</head>");
         writer.append("<body>");
+        writer.append("<br/>");
         writer.append(users.get());
+        writer.append("<br/>");
+        writer.append("<form action='");
+        writer.append(req.getContextPath());
+        writer.append("/user/post' method='get'>");
+        writer.append("   <input type='submit' value='Add new user'>");
+        writer.append("</form>");
+        writer.append("<form action='");
+        writer.append(req.getContextPath());
+        writer.append("/user/put' method='get'>");
+        writer.append("   <input type='submit' value='Edit user'>");
+        writer.append("</form>");
+        writer.append("<form action='");
+        writer.append(req.getContextPath());
+        writer.append("/user/delete' method='get'>");
+        writer.append("   <input type='submit' value='Delete user'>");
+        writer.append("</form>");
         writer.append("</body>");
         writer.append("</html>");
         writer.flush();
     }
 
     /**
-     * Method to work with post request.
-     *
-     * @param req http request
-     * @param resp http response
-     * @throws ServletException servlet e
-     * @throws IOException io e
+     * Method for close connect to DB when servlet end.
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        users.post(req);
-    }
-
-    /**
-     * Method for work with put request.
-     *
-     * @param req http request
-     * @param resp http response
-     * @throws ServletException servlet e
-     * @throws IOException io e
-     */
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        users.put(req);
-    }
-
-    /**
-     * Method for work with delete request.
-     *
-     * @param req http request
-     * @param resp http response
-     * @throws ServletException servlet e
-     * @throws IOException io e
-     */
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        users.delete(req);
+    public void destroy() {
+        users.closeConnect();
     }
 }
