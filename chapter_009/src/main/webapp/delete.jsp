@@ -1,0 +1,22 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: apermyakov
+  Date: 08.12.2017
+  Time: 9:50
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Delete user</title>
+</head>
+<body>
+    <br/>
+    <form action="<%=request.getContextPath()%>/user/delete" method="post">
+        Insert ID of user, that need to be delete:
+        <br/>
+        ID : <input type='text' name='id'/>
+        <input type='submit' value='Delete user'>
+    </form>
+</body>
+</html>
