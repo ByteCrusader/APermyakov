@@ -14,7 +14,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>InterfaceServlet</servlet-name>
-        <url-pattern>/interface</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>UserPostServlet</servlet-name>

@@ -1,6 +1,5 @@
-<%@ page import="java.text.DateFormat" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Calendar" %><%--
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--
   Created by IntelliJ IDEA.
   User: apermyakov
   Date: 08.12.2017
@@ -13,9 +12,8 @@
     <title>Add new user</title>
 </head>
 <body>
-    <%DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");%>
     <br/>
-    <form action="<%=request.getContextPath()%>/user/post?createDate=<%=dateFormat.format(Calendar.getInstance().getTime())%>&" method="post">
+    <form action="${requestScope.sessionContext.contextPath}/user/post?createDate=${dateFormat.format(calendar)}&" method="post">
         Insert new user:<br/>
         Name : <input type='text' name='name'/><br/>
         Login : <input type='text' name='login'/><br/>

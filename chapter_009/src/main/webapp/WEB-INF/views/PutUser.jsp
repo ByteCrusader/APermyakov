@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--
   Created by IntelliJ IDEA.
   User: apermyakov
@@ -12,7 +13,7 @@
 </head>
 <body>
     <br/>
-    <form action="<%=request.getContextPath()%>/user/put" method="post">
+    <form action="${requestScope.sessionContext.contextPath}/user/put" method="post">
         Insert ID of user, that need to be edit:<br/>
         ID : <input type='text' name='id'/><br/>
         Insert new information about user:<br/>

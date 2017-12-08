@@ -21,6 +21,19 @@ public class UserDeleteServlet extends HttpServlet {
     private final UserStore users = UserStore.getInstance();
 
     /**
+     * Method for work with get request.
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/views/DeleteUser.jsp").forward(req, resp);
+    }
+
+    /**
      * Method for work with post request.
      *
      * @param req request
@@ -31,6 +44,6 @@ public class UserDeleteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         users.delete(req);
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        resp.sendRedirect(req.getContextPath() + "/");
     }
 }

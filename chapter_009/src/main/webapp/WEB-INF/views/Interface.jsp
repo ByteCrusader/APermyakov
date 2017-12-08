@@ -1,4 +1,6 @@
-<%@ page import="ru.apermyakov.servlets.UserStore" %><%--
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml" %>
+<%--
   Created by IntelliJ IDEA.
   User: apermyakov
   Date: 08.12.2017
@@ -12,15 +14,15 @@
 </head>
 <body>
     <br/>
-        <%=UserStore.getInstance().get()%>
+        <c:out value="${users}" escapeXml="false"/>
     <br/>
-    <form action="<%=request.getContextPath()%>/post.jsp" method="get">
+    <form action="${requestScope.sessionContext.contextPath}/user/post" method="get">
         <input type="submit" value="Add new user">
     </form>
-    <form action="<%=request.getContextPath()%>/put.jsp" method="get">
+    <form action="${requestScope.sessionContext.contextPath}/user/put" method="get">
         <input type="submit" value="Edit user">
     </form>
-    <form action="<%=request.getContextPath()%>/delete.jsp" method="get">
+    <form action="${requestScope.sessionContext.contextPath}/user/delete" method="get">
         <input type="submit" value="Delete user">
     </form>
 </body>
