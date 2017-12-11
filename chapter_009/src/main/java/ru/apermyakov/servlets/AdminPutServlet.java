@@ -5,17 +5,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
- * Servlet to show to user post interface.
+ * Servlet to show to user put interface.
  *
  * @author apermyakov
  * @version 1.0
  * @since 07.12.2017
  */
-public class UserPostServlet extends HttpServlet {
+public class AdminPutServlet extends HttpServlet {
 
     /**
      * Field for user store object.
@@ -32,10 +30,8 @@ public class UserPostServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("dateFormat", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss"));
-        req.setAttribute("calendar", Calendar.getInstance().getTime());
         req.setAttribute("roles", users.getRoles());
-        req.getRequestDispatcher("/WEB-INF/views/PostUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/AdminPutUser.jsp").forward(req, resp);
     }
 
     /**
@@ -48,7 +44,7 @@ public class UserPostServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        users.post(req);
+        users.put(req);
         resp.sendRedirect(req.getContextPath() + "/");
     }
 }

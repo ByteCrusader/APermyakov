@@ -7,7 +7,9 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.*;
+import java.util.HashMap;
 
 /**
  * Singleton to work with data base.
@@ -20,10 +22,10 @@ import java.sql.*;
 public class UserStore {
 
     /**
-     * Field for instance.
+     * Field for INSTANCE.
      */
     @GuardedBy("this")
-    private static final UserStore instance = new UserStore();
+    private static final UserStore INSTANCE = new UserStore();
 
     /**
      * Field for connection to data base.
@@ -49,15 +51,29 @@ public class UserStore {
     /**
      * Private design of user store.
      */
-    private UserStore() {}
+    private UserStore() { }
 
     /**
-     * Method for get user store instance.
+     * Method for getUser user store INSTANCE.
      *
-     * @return instance
+     * @return INSTANCE
      */
     public static UserStore getInstance() {
-        return instance;
+        return INSTANCE;
+    }
+
+    /**
+     * Method for initial tables of not exists.
+     *
+     * @param statement statement
+     * @throws SQLException sql e
+     */
+    private void initialTableIfNotExist(Statement statement) throws SQLException {
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS ROLE (id serial primary key, name text)");
+        statement.executeUpdate("INSERT INTO ROLE (name) select 'administrator' where not EXISTS (select name from role where name = 'administrator')");
+        statement.executeUpdate("INSERT INTO ROLE (name) select 'teacher' where not exists (select name from role where name = 'teacher')");
+        statement.executeUpdate("INSERT INTO ROLE (name) select 'student' where not exists (select name from role where name = 'student')");
+        statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (id serial primary key, name text, login text, email text, createDate text, password integer, role_id integer REFERENCES role(id))");
     }
 
     /**
@@ -65,7 +81,7 @@ public class UserStore {
      */
     private void checkTable() throws SQLException {
         Statement statement = this.connection.createStatement();
-        statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS (id serial primary key, name text, login text, email text, createDate text)");
+        initialTableIfNotExist(statement);
         statement.close();
     }
 
@@ -74,7 +90,7 @@ public class UserStore {
      *
      * @return string of all database
      */
-    public String get(){
+    public String getUser() {
         StringBuilder builder = new StringBuilder("<table>");
         try {
             checkTable();
@@ -99,6 +115,37 @@ public class UserStore {
     }
 
     /**
+     * Method for get roles map.
+     *
+     * @return map of roles
+     */
+    public HashMap<Integer, String> getRoles() {
+        HashMap<Integer, String> result = new HashMap<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM ROLE");
+            while (resultSet.next()) {
+                result.put(resultSet.getInt("id"), resultSet.getString("name"));
+            }
+            statement.close();
+        }        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Method for calculate hash of password.
+     *
+     * @param password password
+     * @return hash
+     */
+    private int hash(String password) {
+        int passwordHash = password.hashCode();
+        return passwordHash ^ (passwordHash >>> 16);
+    }
+
+    /**
      * Method for work with data in database.
      *
      * @param sqlScript sql script
@@ -114,10 +161,19 @@ public class UserStore {
             statement.setString(1, req.getParameter("name"));
             statement.setString(2, req.getParameter("login"));
             statement.setString(3, req.getParameter("email"));
-            if (sqlScript.startsWith("UPDATE")) {
-                statement.setInt(4, Integer.valueOf(req.getParameter("id")));
+            statement.setInt(4, hash(req.getParameter("password")));
+            if (sqlScript.startsWith("UPDATE") && sqlScript.contains("role")) {
+                statement.setInt(5, Integer.valueOf(req.getParameter("role")));
+                statement.setInt(6, Integer.valueOf(req.getParameter("id")));
+            } else if (sqlScript.startsWith("UPDATE") && !sqlScript.contains("role")) {
+                statement.setInt(5, Integer.valueOf(req.getParameter("id")));
             } else {
-                statement.setString(4, req.getParameter("createDate"));
+                statement.setString(5, req.getParameter("createDate"));
+                if (("teacher").equals(req.getParameter("role"))) {
+                    statement.setInt(6, 2);
+                } else {
+                    statement.setInt(6, 3);
+                }
             }
         }
         statement.executeUpdate();
@@ -131,7 +187,7 @@ public class UserStore {
      */
     public synchronized void post(HttpServletRequest req) {
         try {
-            this.workWithDataInDb("INSERT INTO USERS (name, login, email, createDate) VALUES (?, ?, ?, ?)", req);
+            this.workWithDataInDb("INSERT INTO USERS (name, login, email, password, createDate, role_id) VALUES (?, ?, ?, ?, ?, ?)", req);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -144,7 +200,14 @@ public class UserStore {
      */
     public synchronized void put(HttpServletRequest req) {
         try {
-            this.workWithDataInDb("UPDATE USERS SET name=?, login=?, email=? WHERE id=?", req);
+            HttpSession session = req.getSession();
+            synchronized (session) {
+                if (("admin").equals(session.getAttribute("login"))) {
+                    this.workWithDataInDb("UPDATE USERS SET name=?, login=?, email=?, password=?, role_id=? WHERE id=?", req);
+                } else {
+                    this.workWithDataInDb("UPDATE USERS SET name=?, login=?, email=?, password=? WHERE id=?", req);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -174,5 +237,75 @@ public class UserStore {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Method for check auth.
+     *
+     * @param req req
+     * @return auth or not
+     */
+    public boolean isPastInspection(HttpServletRequest req) {
+        boolean result = false;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM USERS WHERE login=? and password=?");
+            statement.setString(1, req.getParameter("login"));
+            statement.setInt(2, hash(req.getParameter("password")));
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Method for get role by login.
+     *
+     * @param req req
+     * @return role
+     */
+    public String getRole(HttpServletRequest req) {
+        String result = "";
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT name FROM role WHERE id = (SELECT role_id FROM USERS WHERE login=?)");
+            HttpSession session = req.getSession();
+            synchronized (session) {
+                statement.setString(1, (String) session.getAttribute("login"));
+            }
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Method for get id of login.
+     *
+     * @param req req
+     * @return id
+     */
+    public int getId(HttpServletRequest req) {
+        int result = -1;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE login = ?");
+            HttpSession session = req.getSession();
+            synchronized (session) {
+                statement.setString(1, (String) session.getAttribute("login"));
+            }
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

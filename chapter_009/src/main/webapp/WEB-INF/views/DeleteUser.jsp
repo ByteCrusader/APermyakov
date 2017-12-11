@@ -19,5 +19,8 @@
         ID : <input type='text' name='id'/>
         <input type='submit' value='Delete user'>
     </form>
+    <form action="${requestScope.sessionContext.contextPath}/" method="get">
+        <input type='submit' value='Back'>
+    </form>
 </body>
 </html>

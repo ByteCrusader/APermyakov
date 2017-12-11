@@ -22,7 +22,7 @@ public class UsersServlet extends HttpServlet {
     private final UserStore users = UserStore.getInstance();
 
     /**
-     * Method to work with get request.
+     * Method to work with getUser request.
      *
      * @param req http request
      * @param resp http response
@@ -40,7 +40,7 @@ public class UsersServlet extends HttpServlet {
         writer.append("   <title></title>");
         writer.append("</head>");
         writer.append("<body>");
-        writer.append(users.get());
+        writer.append(users.getUser());
         writer.append("</body>");
         writer.append("</html>");
         writer.flush();

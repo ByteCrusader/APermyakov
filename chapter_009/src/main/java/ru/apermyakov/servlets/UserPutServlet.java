@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet to show to user put interface.
+ * Servlet for user put user.
  *
  * @author apermyakov
  * @version 1.0
- * @since 07.12.2017
+ * @since 11.12.2017
  */
 public class UserPutServlet extends HttpServlet {
 
@@ -23,14 +23,14 @@ public class UserPutServlet extends HttpServlet {
     /**
      * Method for work with get request.
      *
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
+     * @param req req
+     * @param resp resp
+     * @throws ServletException servlet e
+     * @throws IOException io e
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/PutUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/UserPutUser.jsp").forward(req, resp);
     }
 
     /**

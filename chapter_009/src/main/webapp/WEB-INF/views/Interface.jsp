@@ -16,14 +16,17 @@
     <br/>
         <c:out value="${users}" escapeXml="false"/>
     <br/>
-    <form action="${requestScope.sessionContext.contextPath}/user/post" method="get">
+    <form action="${requestScope.sessionContext.contextPath}/filter/post" method="get">
         <input type="submit" value="Add new user">
     </form>
-    <form action="${requestScope.sessionContext.contextPath}/user/put" method="get">
+    <form action="${requestScope.sessionContext.contextPath}/filter/put" method="get">
         <input type="submit" value="Edit user">
     </form>
     <form action="${requestScope.sessionContext.contextPath}/user/delete" method="get">
         <input type="submit" value="Delete user">
+    </form>
+    <form action="${requestScope.sessionContext.contextPath}/signout" method="get">
+        <input type="submit" value="Sign out">
     </form>
 </body>
 </html>

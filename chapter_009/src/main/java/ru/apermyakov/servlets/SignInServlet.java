@@ -4,18 +4,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
- * Servlet to show to user post interface.
+ * Servlet for sing in.
  *
  * @author apermyakov
  * @version 1.0
- * @since 07.12.2017
+ * @since 08.12.2017
  */
-public class UserPostServlet extends HttpServlet {
+public class SignInServlet extends HttpServlet {
 
     /**
      * Field for user store object.
@@ -23,19 +22,16 @@ public class UserPostServlet extends HttpServlet {
     private final UserStore users = UserStore.getInstance();
 
     /**
-     * Method for work with get request.
+     * Method for work with getUser request.
      *
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
+     * @param req request
+     * @param resp response
+     * @throws ServletException servlet e
+     * @throws IOException io e
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("dateFormat", new SimpleDateFormat("dd.MM.yyyy HH:mm:ss"));
-        req.setAttribute("calendar", Calendar.getInstance().getTime());
-        req.setAttribute("roles", users.getRoles());
-        req.getRequestDispatcher("/WEB-INF/views/PostUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/Authentication.jsp").forward(req, resp);
     }
 
     /**
@@ -48,7 +44,15 @@ public class UserPostServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        users.post(req);
-        resp.sendRedirect(req.getContextPath() + "/");
+       if (users.isPastInspection(req)) {
+           HttpSession session = req.getSession();
+           synchronized (session) {
+               session.setAttribute("login", req.getParameter("login"));
+           }
+           resp.sendRedirect(req.getContextPath() + "/");
+       } else {
+           req.setAttribute("greeting", "Invalid login or password, try again");
+           doGet(req, resp);
+       }
     }
 }

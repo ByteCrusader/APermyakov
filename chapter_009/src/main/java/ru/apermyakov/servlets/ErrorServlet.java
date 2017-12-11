@@ -7,21 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Servlet to show to user interface.
+ * Servlet to work with errors.
  *
  * @author apermyakov
  * @version 1.0
- * @since 07.12.2017
+ * @since 11.12.2017
  */
-public class InterfaceServlet extends HttpServlet {
+public class ErrorServlet extends HttpServlet {
 
     /**
-     * Field for user store object.
-     */
-    private final UserStore users = UserStore.getInstance();
-
-    /**
-     * Method to work with getUser request.
+     * Method for show user error window.
      *
      * @param req request
      * @param resp response
@@ -30,15 +25,6 @@ public class InterfaceServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("users", users.getUser());
-        req.getRequestDispatcher("/WEB-INF/views/Interface.jsp").forward(req, resp);
-    }
-
-    /**
-     * Method for close connect to DB when servlet end.
-     */
-    @Override
-    public void destroy() {
-        users.closeConnect();
+        req.getRequestDispatcher("/WEB-INF/views/Error.jsp").forward(req, resp);
     }
 }
