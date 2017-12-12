@@ -95,15 +95,19 @@ public class UserStore {
         try {
             checkTable();
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM USERS");
+            ResultSet resultSet = statement.executeQuery("SELECT u.id, u.name, u.login, u.email, u.createDate, r.name as role " +
+                                                                "FROM USERS as u " +
+                                                                "left join role as r " +
+                                                                "on u.role_id=r.id");
             while (resultSet.next()) {
                 builder.append("<tr><td>");
-                builder.append(String.format("%s %s %s %s %s",
+                builder.append(String.format("%s %s %s %s %s %s",
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         resultSet.getString("login"),
                         resultSet.getString("email"),
-                        resultSet.getString("createDate")));
+                        resultSet.getString("createDate"),
+                        resultSet.getString("role")));
                 builder.append("</td></tr>");
             }
             statement.close();
@@ -169,11 +173,7 @@ public class UserStore {
                 statement.setInt(5, Integer.valueOf(req.getParameter("id")));
             } else {
                 statement.setString(5, req.getParameter("createDate"));
-                if (("teacher").equals(req.getParameter("role"))) {
-                    statement.setInt(6, 2);
-                } else {
-                    statement.setInt(6, 3);
-                }
+                statement.setInt(6, Integer.valueOf(req.getParameter("role")));
             }
         }
         statement.executeUpdate();
@@ -200,9 +200,10 @@ public class UserStore {
      */
     public synchronized void put(HttpServletRequest req) {
         try {
+            String role = this.getRole(req);
             HttpSession session = req.getSession();
             synchronized (session) {
-                if (("admin").equals(session.getAttribute("login"))) {
+                if (("administrator").equals(role)) {
                     this.workWithDataInDb("UPDATE USERS SET name=?, login=?, email=?, password=?, role_id=? WHERE id=?", req);
                 } else {
                     this.workWithDataInDb("UPDATE USERS SET name=?, login=?, email=?, password=? WHERE id=?", req);
