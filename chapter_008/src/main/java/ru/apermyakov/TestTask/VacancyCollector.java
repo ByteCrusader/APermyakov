@@ -24,43 +24,31 @@ import java.util.concurrent.locks.ReentrantLock;
  * @version 1.0
  * @since 05.12.2017
  */
-@ThreadSafe
 public class VacancyCollector extends TimerTask{
 
     /**
      * Field for log4j logger.
      */
-    @GuardedBy("lock")
-    private static Logger logger = Logger.getLogger(VacancyCollector.class);
-
-    /**
-     * Field for treads lock.
-     */
-    @GuardedBy("itself")
-    private ReentrantLock lock = new ReentrantLock();
+    private static final Logger logger = Logger.getLogger(VacancyCollector.class);
 
     /**
      * Field for contain last data of vacancy.
      */
-    @GuardedBy("lock")
     private String lastData;
 
     /**
      * Field for main database worker.
      */
-    @GuardedBy("lock")
     private DatabaseWorker worker;
 
     /**
      * Field for contain current year.
      */
-    @GuardedBy("lock")
     private String currentYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR)).substring(2);
 
     /**
      * Field for act script map.
      */
-    @GuardedBy("lock")
     private Map<String, String> scripts = new HashMap<>();
 
     /**
@@ -161,19 +149,14 @@ public class VacancyCollector extends TimerTask{
      * Method for record vacancy to data base.
      */
     private void recordByPeriod() {
-        try {
-            lock.lock();
-            this.worker.mainActivity("initial");
-            if (this.worker.mainActivity("check")) {
-                this.parseHTML(this.scripts.get("url"));
-                logger.log(Level.INFO, "Update done");
-            } else {
-                this.firstStart();
-            }
-            this.worker.mainActivity("end");
-        } finally {
-            lock.unlock();
+        this.worker.mainActivity("initial");
+        if (this.worker.mainActivity("check")) {
+            this.parseHTML(this.scripts.get("url"));
+            logger.log(Level.INFO, "Update done");
+        } else {
+            this.firstStart();
         }
+        this.worker.mainActivity("end");
     }
 
     /**
@@ -193,32 +176,22 @@ public class VacancyCollector extends TimerTask{
      * Method for initial record vacancy to data base by periods.
      */
     public void record() {
+        BasicConfigurator.configure();
         try {
-            lock.lock();
-            BasicConfigurator.configure();
-            try {
-                this.scripts.putAll(parseXMLFile());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            this.worker = new DatabaseWorker(this.scripts);
-            Timer timer = new Timer();
-            timer.schedule(this, 0, Long.valueOf(this.scripts.get("schedule")));
-        } finally {
-            lock.unlock();
+            this.scripts.putAll(parseXMLFile());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        this.worker = new DatabaseWorker(this.scripts);
+        Timer timer = new Timer();
+        timer.schedule(this, 0, Long.valueOf(this.scripts.get("schedule")));
     }
 
     /**
      * Method for show results of collection.
      */
     public void showResults() {
-        try {
-            lock.lock();
-            this.worker.mainActivity("result");
-        } finally {
-            lock.unlock();
-        }
+        this.worker.mainActivity("result");
     }
 
     /**

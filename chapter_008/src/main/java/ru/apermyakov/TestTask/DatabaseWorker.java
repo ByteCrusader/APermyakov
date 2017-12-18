@@ -22,7 +22,7 @@ public class DatabaseWorker {
     /**
      * Field for log4j logger.
      */
-    private static Logger logger = Logger.getLogger(DatabaseWorker.class);
+    private static final Logger logger = Logger.getLogger(DatabaseWorker.class);
 
     /**
      * Field for map of scripts.
@@ -60,13 +60,14 @@ public class DatabaseWorker {
      *
      * @param connection connection
      * @return true if success
-     * @throws SQLException sql e
      */
-    private boolean initialTable(Connection connection) throws SQLException {
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(this.scripts.get("createvacancy"));
-        statement.executeUpdate(this.scripts.get("createrenewal"));
-        statement.close();
+    private boolean initialTable(Connection connection) {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(this.scripts.get("createvacancy"));
+            statement.executeUpdate(this.scripts.get("createrenewal"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -77,17 +78,18 @@ public class DatabaseWorker {
      * @param name       name of vacancy
      * @param href       href of vacancy
      * @param data       data of vacancy
-     * @throws SQLException sql e
      */
-    private void addToBase(Connection connection, String name, String href, String data) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(this.scripts.get("insertvacancy"));
-        statement.setString(1, name);
-        statement.setString(2, href);
-        statement.setString(3, data);
-        statement.setString(4, name);
-        statement.setString(5, href);
-        statement.executeUpdate();
-        statement.close();
+    private void addToBase(Connection connection, String name, String href, String data) {
+        try {
+            NamedParameterStatement statement = new NamedParameterStatement(connection, this.scripts.get("insertvacancy"));
+            statement.setString("name", name);
+            statement.setString("href", href);
+            statement.setString("data", data);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -95,15 +97,16 @@ public class DatabaseWorker {
      *
      * @param connection connection object
      * @return true if success
-     * @throws SQLException sql e
      */
-    private boolean endRecord(Connection connection) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(this.scripts.get("insertrenewal"));
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar calendar = Calendar.getInstance();
-        statement.setString(1, dateFormat.format(calendar.getTime()));
-        statement.executeUpdate();
-        statement.close();
+    private boolean endRecord(Connection connection) {
+        try (PreparedStatement statement = connection.prepareStatement(this.scripts.get("insertrenewal"))) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar calendar = Calendar.getInstance();
+            statement.setString(1, dateFormat.format(calendar.getTime()));
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -112,16 +115,17 @@ public class DatabaseWorker {
      *
      * @param connection connection object
      * @return false if first else false
-     * @throws SQLException sql e
      */
-    private boolean checkRenewal(Connection connection) throws SQLException {
+    private boolean checkRenewal(Connection connection) {
         boolean result = false;
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(this.scripts.get("selectrenewal"));
-        if (resultSet.next()) {
-            result = true;
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(this.scripts.get("selectrenewal"));
+            if (resultSet.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        statement.close();
         return result;
     }
 
@@ -130,15 +134,16 @@ public class DatabaseWorker {
      *
      * @param connection connection object
      * @return true if success
-     * @throws SQLException sql e
      */
-    private boolean results(Connection connection) throws SQLException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(this.scripts.get("selectvacancy"));
-        while (resultSet.next()) {
-            logger.log(Level.INFO, (String.format("%s %s %s", resultSet.getString("vacancyname"), resultSet.getString("vacancyhref"), resultSet.getString("vacancydata"))));
+    private boolean results(Connection connection) {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(this.scripts.get("selectvacancy"));
+            while (resultSet.next()) {
+                logger.log(Level.INFO, (String.format("%s %s %s", resultSet.getString("vacancyname"), resultSet.getString("vacancyhref"), resultSet.getString("vacancydata"))));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        statement.close();
         return true;
     }
 
@@ -149,20 +154,24 @@ public class DatabaseWorker {
      * @return method's result
      */
     public boolean mainActivity(String item) {
+        final String init = "initial";
+        final String end = "end";
+        final String check = "check";
+        final String res = "result";
         Connection connection = null;
         boolean result = false;
         try {
             connection = this.connect();
-            if (("initial").equals(item)) {
+            if (init.equals(item)) {
                 result = this.initialTable(connection);
             }
-            if (("end").equals(item)) {
+            if (end.equals(item)) {
                 result = this.endRecord(connection);
             }
-            if (("check").equals(item)) {
+            if (check.equals(item)) {
                 result = this.checkRenewal(connection);
             }
-            if (("result").equals(item)) {
+            if (res.equals(item)) {
                 result = this.results(connection);
             }
         } catch (SQLException e) {
@@ -188,10 +197,11 @@ public class DatabaseWorker {
      * @param data vacancy's data
      */
     public void mainActivity(String item, String name, String href, String data) {
+        final String add = "add";
         Connection connection = null;
         try {
             connection = this.connect();
-            if (("add").equals(item)) {
+            if (add.equals(item)) {
                 this.addToBase(connection, name, href, data);
             }
         } catch (SQLException e) {

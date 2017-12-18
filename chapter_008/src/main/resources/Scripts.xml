@@ -8,7 +8,7 @@
     <schedulescript>86400000</schedulescript>
     <createvacancyscript>CREATE TABLE IF NOT EXISTS VACANCY (id serial primary key, vacancyname text, vacancyhref text, vacancydata text)</createvacancyscript>
     <createrenewalscript>CREATE TABLE IF NOT EXISTS RENEWAL (id serial primary key, renewaltime text)</createrenewalscript>
-    <insertvacancyscript>INSERT INTO VACANCY (vacancyname, vacancyhref, vacancydata) SELECT ?, ?, ? WHERE NOT EXISTS (SELECT * FROM VACANCY WHERE vacancyname=? and vacancyhref=?)</insertvacancyscript>
+    <insertvacancyscript>INSERT INTO VACANCY (vacancyname, vacancyhref, vacancydata) SELECT :name, :href, :data WHERE NOT EXISTS (SELECT * FROM VACANCY WHERE vacancyname=:name and vacancyhref=:href)</insertvacancyscript>
     <insertrenewalscript>INSERT INTO RENEWAL (renewaltime) VALUES (?)</insertrenewalscript>
     <selectrenewalscript>SELECT renewaltime FROM RENEWAL</selectrenewalscript>
     <selectvacancyscript>SELECT * FROM VACANCY</selectvacancyscript>
