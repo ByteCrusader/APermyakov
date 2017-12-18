@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add user</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax('./json/auth', {
+                method: 'post',
+                complete: function (data) {
+                    var users = JSON.parse(data.responseText);
+                    var cookie = (String)(users[0].sessionCondition);
+                    if (cookie !== "enable") {
+                        var absolutePath = window.location.href.replace(window.location.pathname, '');
+                        window.location.href = (String)(absolutePath + "/Authentication.html");
+                        return false;
+                    }
+                }
+            });
+
+            $.ajax('./json/post', {
+                method: 'post',
+                data: {
+                    table: 'role',
+                    param: 'role'
+                },
+                complete: function (data) {
+                    var result = "";
+                    var users = JSON.parse(data.responseText);
+                    for (var i = 0; i != users.length; ++i) {
+                        result += "<option>" + users[i].role + "</option>";
+                    }
+                    var table = document.getElementById("role");
+                    table.innerHTML = result;
+                }
+            });
+
+            $.ajax('./json/post', {
+                method : 'post',
+                data : {
+                    table : 'countries',
+                    param : 'country'
+                },
+                complete : function (data) {
+                    var result = "";
+                    var users = JSON.parse(data.responseText);
+                    for (var i = 0; i != users.length; ++i) {
+                        result += "<option>" + users[i].country + "</option>";
+                    }
+                    var table = document.getElementById("country");
+                    table.innerHTML = result;
+                }
+            });
+
+            $("#back").click(function back() {
+                var absolutePath = window.location.href.replace(window.location.pathname, '');
+                var decision = confirm("Are you sure you want to leave the page? All entries will be lost");
+                if (decision) {
+                    window.location.href = (String)(absolutePath + "/Interface.html");
+                }
+                return false;
+            });
+
+            $("#post").click(function () {
+                var result = "";
+                if (($("input#name").val()) === '') {
+                    result += "You miss name, please, insert name! \r\n"
+                }
+                if (($("input#login").val()) === '') {
+                    result += "You miss login, please, insert login! \r\n"
+                }
+                if (($("input#email").val()) === '') {
+                    result += "You miss email, please, insert email! \r\n"
+                }
+                if (($("input#password").val()) === '') {
+                    result += "You miss password, please, insert password! \r\n"
+                }
+                if (($("#city").val()) === null) {
+                    result += "Please, chose country and city! \r\n"
+                }
+                if (result === "") {
+                    post();
+                } else {
+                    alert(result);
+                }
+            });
+
+            function post() {
+                $.ajax('./json/admin/post', {
+                    method: 'post',
+                    data: {
+                        name: $("input#name").val(),
+                        login: $("input#login").val(),
+                        email: $("input#email").val(),
+                        password: $("input#password").val(),
+                        role: $("#role").val(),
+                        country : $("#country").val(),
+                        city : $("#city").val()
+                    },
+                    complete: function (data) {
+                        var resp = JSON.parse(data.responseText);
+                        if (resp[0].correct === "yes") {
+                            var absolutePath = window.location.href.replace(window.location.pathname, '');
+                            var decision = confirm("Successfully add user! Add another user?");
+                            if (!decision) {
+                                window.location.href = (String)(absolutePath + "/Interface.html");
+                            } else {
+                                window.location.reload()
+                            }
+                            return false;
+                        } else {
+                            var message = "Wrong input " + resp[1].mistake + " ! ";
+                            if (resp[1].mistake === "email") {
+                                message += "Email mast have domen!"
+                            }
+                            if (resp[1].mistake === "name") {
+                                message += "Name mast start with upper case!"
+                            }
+                            alert(message);
+                        }
+                    }
+                });
+                return false;
+            }
+
+            $("#country").click(function () {
+
+                $.ajax('./json/city', {
+                    method : 'post',
+                    data : {
+                        country : $("#country").val()
+                    },
+                    complete : function (data) {
+                        var result = "";
+                        var users = JSON.parse(data.responseText);
+                        for (var i = 0; i != users.length; ++i) {
+                            result += "<option>" + users[i].country + "</option>";
+                        }
+                        var table = document.getElementById("city");
+                        table.innerHTML = result;
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+<br/>
+<div class="container">
+    <h3>Insert new user:</h3>
+    <div class="form-inline">
+        <label for="name">Name : </label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter name"/>
+    </div>
+    <div class="form-inline">
+        <label for="login">Login : </label>
+        <input type="text" class="form-control" id="login" name="login" placeholder="Enter id"/>
+    </div>
+    <div class="form-inline">
+        <label for="email">Email : </label>
+        <input type="text" class="form-control" id="email" name="email" placeholder="Enter email"/>
+    </div>
+    <div class="form-inline">
+        <label for="password">Password : </label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password"/>
+    </div>
+    <div class="form-inline">
+        <label for="role">Role : </label>
+        <select class="form-control" id="role" name="role">
+        </select>
+    </div>
+    <div class="form-inline">
+        <label for="country">Country : </label>
+        <select class="form-control" id="country">
+        </select>
+    </div>
+    <div class="form-inline">
+        <label for="city">City : </label>
+        <select class="form-control" id="city">
+        </select>
+    </div>
+    <br/>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-default" id="post">Add new user</button>
+        <button type="submit" class="btn btn-default" id="back">Back</button>
+    </div>
+</div>
+</body>
+</html>

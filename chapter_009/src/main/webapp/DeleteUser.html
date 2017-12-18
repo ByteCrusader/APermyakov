@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete user</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax('./json/auth', {
+                method : 'post',
+                complete : function (data) {
+                    var users = JSON.parse(data.responseText);
+                    var cookie = (String) (users[0].sessionCondition);
+                    if (cookie !== "enable") {
+                        var absolutePath = window.location.href.replace(window.location.pathname, '');
+                        window.location.href = (String) (absolutePath + "/Authentication.html");
+                        return false;
+                    }
+                }
+            });
+
+            $("#back").click(function back() {
+                var absolutePath = window.location.href.replace(window.location.pathname, '');
+                var decision = confirm("Are you sure you want to leave the page? All entries will be lost");
+                if (decision) {
+                    window.location.href = (String)(absolutePath + "/Interface.html");
+                }
+                return false;
+            });
+
+            $("#check").click( function () {
+                if ($("input#id").val() === '') {
+                    alert("Insert id into form");
+                } else {
+                    check()
+                }
+            });
+        });
+
+        function check() {
+            $.ajax('./json/checkid', {
+                method : 'post',
+                data : {
+                    id : $("input#id").val(),
+                },
+                complete : function (data) {
+                    var users = JSON.parse(data.responseText);
+                    var access = (String) (users[0].access);
+                    if (access === "enable") {
+                        del();
+                        return false;
+                    } else {
+                        alert("You cannot delete another user!");
+                    }
+                    return false;
+                }
+            });
+            return false;
+        }
+
+        function del() {
+            $.ajax('./json/delete', {
+                method : 'post',
+                data : {
+                    id : $("input#id").val(),
+                },
+                complete : function (data) {
+                    var users = JSON.parse(data.responseText);
+                    var role = (String) (users[0].role);
+                    if (role !== "administrator") {
+                        $.ajax('./json/signout', {
+                            method: 'post',
+                            success: function () {
+                                var absolutePath = window.location.href.replace(window.location.pathname, '');
+                                window.location.href = (String)(absolutePath + "/Authentication.html");
+                                return false;
+                            }
+                        })
+                    } else {
+                        var absolutePath = window.location.href.replace(window.location.pathname, '');
+                        var decision = confirm("Successfully delete user! Delete another user?");
+                        if (!decision) {
+                            window.location.href = (String)(absolutePath + "/Interface.html");
+                        } else {
+                            window.location.reload()
+                        }
+                        return false;
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <br/>
+    <h3>Insert ID of user, that need to be delete:</h3>
+    <div class="form-inline">
+        <label for="id">ID : </label>
+        <input type="text" class="form-control" id="id" name="id" placeholder="Enter id"/>
+    </div>
+    <br/>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-default" id="check">Delete user</button>
+        <button type="submit" class="btn btn-default" id="back">Back</button>
+    </div>
+</div>
+</body>
+</html>

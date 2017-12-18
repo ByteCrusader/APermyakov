@@ -1,137 +1,102 @@
 <web-app>
 
     <servlet>
-        <servlet-name>EchoServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.EchoServlet</servlet-class>
+        <servlet-name>JsonPostService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonPostService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>ru.apermyakov.servlets.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>*</url-pattern>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>SignInServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.SignInServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SignInServlet</servlet-name>
-        <url-pattern>/signin</url-pattern>
+        <servlet-name>JsonPostService</servlet-name>
+        <url-pattern>/json/post</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>SignoutServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.SignoutServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-name>JsonCityService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonCityService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SignoutServlet</servlet-name>
-        <url-pattern>/signout</url-pattern>
+        <servlet-name>JsonCityService</servlet-name>
+        <url-pattern>/json/city</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>InterfaceServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.InterfaceServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-name>JsonSignInService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonSignInService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>InterfaceServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <servlet-name>JsonSignInService</servlet-name>
+        <url-pattern>/json/signin</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ErrorServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.ErrorServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
+        <servlet-name>SignOutService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.SignOutService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ErrorServlet</servlet-name>
-        <url-pattern>/error</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-        <filter-name>PostRoleFilter</filter-name>
-        <filter-class>ru.apermyakov.servlets.PostRoleFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PostRoleFilter</filter-name>
-        <url-pattern>/filter/post</url-pattern>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>UserPostServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.UserPostServlet</servlet-class>
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UserPostServlet</servlet-name>
-        <url-pattern>/user/post</url-pattern>
-    </servlet-mapping>
-
-    <filter>
-        <filter-name>PutRoleFilter</filter-name>
-        <filter-class>ru.apermyakov.servlets.PutRoleFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PutRoleFilter</filter-name>
-        <url-pattern>/filter/put</url-pattern>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>RoleCapabilityFilter</filter-name>
-        <filter-class>ru.apermyakov.servlets.RoleCapabilityFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>RoleCapabilityFilter</filter-name>
-        <url-pattern>/user/*</url-pattern>
-    </filter-mapping>
-
-    <servlet>
-        <servlet-name>AdminPutServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.AdminPutServlet</servlet-class>
-        <load-on-startup>3</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminPutServlet</servlet-name>
-        <url-pattern>/admin/put</url-pattern>
+        <servlet-name>SignOutService</servlet-name>
+        <url-pattern>/json/signout</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserPutServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.UserPutServlet</servlet-class>
-        <load-on-startup>3</load-on-startup>
+        <servlet-name>JsonInterfaceService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonInterfaceService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserPutServlet</servlet-name>
-        <url-pattern>/user/put</url-pattern>
+        <servlet-name>JsonInterfaceService</servlet-name>
+        <url-pattern>/json/interface</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserDeleteServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.UserDeleteServlet</servlet-class>
-        <load-on-startup>4</load-on-startup>
+        <servlet-name>JsonAuthService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonAuthService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserDeleteServlet</servlet-name>
-        <url-pattern>/user/delete</url-pattern>
+        <servlet-name>JsonAuthService</servlet-name>
+        <url-pattern>/json/auth</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UsersServlet</servlet-name>
-        <servlet-class>ru.apermyakov.servlets.UsersServlet</servlet-class>
-        <load-on-startup>3</load-on-startup>
+        <servlet-name>JsonRoleService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonRoleService</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
+        <servlet-name>JsonRoleService</servlet-name>
+        <url-pattern>/json/role</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JsonCheckIdService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.JsonCheckIdService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JsonCheckIdService</servlet-name>
+        <url-pattern>/json/checkid</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PutService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.PutService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PutService</servlet-name>
+        <url-pattern>/json/admin/put</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.DeleteService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteService</servlet-name>
+        <url-pattern>/json/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PostService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.PostService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostService</servlet-name>
+        <url-pattern>/json/admin/post</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax('./json/auth', {
+                method: 'post',
+                complete: function (data) {
+                    var users = JSON.parse(data.responseText);
+                    var cookie = (String)(users[0].sessionCondition);
+                    if (cookie !== "enable") {
+                        var absolutePath = window.location.href.replace(window.location.pathname, '');
+                        window.location.href = (String)(absolutePath + "/Authentication.html");
+                        return false;
+                    }
+                }
+            });
+
+            $.ajax('./json/interface', {
+                method: 'post',
+                complete: function (data) {
+                    var result = "";
+                    var users = JSON.parse(data.responseText);
+                    for (var i = 0; i != users.length; ++i) {
+                        result += "<tr>" +
+                            "<td>" + users[i].id + "</td>" +
+                            "<td>" + users[i].name + "</td>" +
+                            "<td>" + users[i].login + "</td>" +
+                            "<td>" + users[i].email + "</td>" +
+                            "<td>" + users[i].createDate + "</td>" +
+                            "<td>" + users[i].role + "</td>" +
+                            "<td>" + users[i].country + "</td>" +
+                            "<td>" + users[i].city + "</td>" +
+                            "</tr>"
+                    }
+                    var table = document.getElementById("tableBody");
+                    table.innerHTML = result;
+                }
+            });
+
+            $("#add").click(function () {
+                $.ajax('./json/role', {
+                    method: 'post',
+                    complete: function (data) {
+                        var users = JSON.parse(data.responseText);
+                        var access = (String)(users[0].access);
+                        if (access === "full") {
+                            var absolutePath = window.location.href.replace(window.location.pathname, '');
+                            window.location.href = (String)(absolutePath + "/PostUser.html");
+                            return false;
+                        } else {
+                            alert("You cannot add new user, please, contact administrators");
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $("#edit").click(function () {
+                $.ajax('./json/role', {
+                    method: 'post',
+                    complete: function (data) {
+                        var users = JSON.parse(data.responseText);
+                        var access = (String)(users[0].access);
+                        var absolutePath = window.location.href.replace(window.location.pathname, '');
+                        if (access === "full") {
+                            window.location.href = (String)(absolutePath + "/AdminPutUser.html");
+                            return false;
+                        } else {
+                            window.location.href = (String)(absolutePath + "/UserPutUser.html");
+                            return false;
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $("#del").click(function () {
+                var absolutePath = window.location.href.replace(window.location.pathname, '');
+                window.location.href = (String)(absolutePath + "/DeleteUser.html");
+                return false;
+            });
+
+            $("#signout").click(function () {
+                var decision = confirm("Are you sure you want to sign out?");
+                if (decision) {
+                    $.ajax('./json/signout', {
+                        method: 'post',
+                        success: function () {
+                            var absolutePath = window.location.href.replace(window.location.pathname, '');
+                            alert("You successfully sign out! \n\r You will redirect to authentication page");
+                            window.location.href = (String)(absolutePath + "/Authentication.html");
+                            return false;
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<br/>
+<div class="container">
+    <h3>Available users</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Login</th>
+            <th>Email</th>
+            <th>Create date</th>
+            <th>Role</th>
+            <th>Country</th>
+            <th>City</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+    <div class="btn-group">
+        <button type="submit" class="btn btn-default" id="add">Add new user</button>
+        <button type="submit" class="btn btn-default" id="edit">Edit user</button>
+        <button type="submit" class="btn btn-default" id="del">Delete user</button>
+    </div>
+    <div class="pull-right">
+        <button type="submit" class="btn btn-default" id="signout">Sign out</button>
+    </div>
+</div>
+</body>
+</html>
