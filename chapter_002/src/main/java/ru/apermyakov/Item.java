@@ -14,7 +14,7 @@ public class Item {
 	/**
 	* Field item id.
 	*/
-	private int id;
+	private String id;
 
 	/**
 	* Field name of task.
@@ -53,7 +53,7 @@ public class Item {
 	* Method get item's id.
 	* @return item's id
 	*/
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
@@ -61,7 +61,7 @@ public class Item {
 	* Method set item's id.
 	* @param id item's id
 	*/
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

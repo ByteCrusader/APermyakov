@@ -38,7 +38,7 @@ public class TrackerTest {
 		Item second = new Item("Second", "2", 123L);
 		second.setId(first.getId());
 		tracker.update(second);
-		assertThat(tracker.findById(second.getId()).getName(), is("Second"));
+		assertThat(tracker.findById(Integer.valueOf(second.getId())).getName(), is("Second"));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class TrackerTest {
 		tracker.initial(true);
 		Item first = new Item("First", "1", 123L);
 		tracker.add(first);
-		int itemId = first.getId();
+		int itemId = Integer.valueOf(first.getId());
 		Item second = new Item("First", "2", 123L);
 		tracker.add(second);
 		tracker.delete(first);
@@ -119,7 +119,7 @@ public class TrackerTest {
 		assertThat(tracker.findAll().get(0).getName(), is(second.getName()));
 		assertThat(tracker.findByName(second.getName()).get(1).getName(), is(second.getName()));
 		tracker.delete(second);
-		assertThat(tracker.findAll().get(0).getId(), is(2));
+		assertThat(tracker.findAll().get(0).getId(), is("2"));
 		tracker.findByName("InvalidName");
 	}
 }

@@ -73,7 +73,7 @@ class Edit extends BaseAction {
 		String newName = input.ask("Please, input new name of task: ");
 		String newDesc = input.ask("Please, input new description of task: ");
 		Item newItem = new Item(newName, newDesc, 123L);
-		newItem.setId(Integer.valueOf(baseId));
+		newItem.setId(baseId);
 		tracker.update(newItem);
 	}
 }

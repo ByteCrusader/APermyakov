@@ -197,7 +197,7 @@ public class Tracker {
 		select.setString(2, item.getDescription());
 		select.setLong(3, item.getCreated());
 		ResultSet result = select.executeQuery();
-		item.setId(result.getInt("id"));
+		item.setId(String.valueOf(result.getInt("id")));
 		select.close();
 	}
 
@@ -224,7 +224,7 @@ public class Tracker {
 		statement.setString(1, item.getName());
 		statement.setString(2, item.getDescription());
 		statement.setLong(3, item.getCreated());
-		statement.setInt(4, item.getId());
+		statement.setInt(4, Integer.valueOf(item.getId()));
 		statement.executeUpdate();
 		statement.close();
 	}
@@ -247,7 +247,7 @@ public class Tracker {
 	 */
 	private void deleteFromDb(Connection conn, Item item) throws SQLException {
 		PreparedStatement statement = conn.prepareStatement(this.scripts.get("deletescript"));
-		statement.setInt(1, item.getId());
+		statement.setInt(1, Integer.valueOf(item.getId()));
 		statement.executeUpdate();
 		statement.close();
 	}
@@ -271,7 +271,7 @@ public class Tracker {
 	private void addFoundCortegeToList(ResultSet found, List<Item> resultList) throws SQLException {
 		while (found.next()) {
 			Item item = new Item(found.getString("itemname"), found.getString("itemdescription"), found.getLong("itemcreated"));
-			item.setId(found.getInt("id"));
+			item.setId(String.valueOf(found.getInt("id")));
 			resultList.add(item);
 		}
 	}
