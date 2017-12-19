@@ -22,22 +22,27 @@ public class JsonInterfaceService extends HttpServlet {
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         boolean record = false;
         writer.append("[");
-        for (Map.Entry<Integer, HashMap<String, String>> userEntry : users.getUsersMap().entrySet()) {
+        for (User user : users.getUsers()) {
             if (record) {
                 writer.append(",");
             }
             writer.append("{\"id\":\"");
-            writer.append(String.valueOf(userEntry.getKey()));
-            writer.append("\"");
-            for (Map.Entry<String, String> user : userEntry.getValue().entrySet()) {
-                    writer.append(",");
-                writer.append("\"");
-                writer.append(user.getKey());
-                writer.append("\":\"");
-                writer.append(user.getValue());
-                writer.append("\"");
-            }
-            writer.append("}");
+            writer.append(String.valueOf(user.getId()));
+            writer.append("\",\"name\":\"");
+            writer.append(user.getName());
+            writer.append("\",\"login\":\"");
+            writer.append(user.getLogin());
+            writer.append("\",\"email\":\"");
+            writer.append(user.getEmail());
+            writer.append("\",\"createDate\":\"");
+            writer.append(user.getCreateDate());
+            writer.append("\",\"role\":\"");
+            writer.append(user.getRole());
+            writer.append("\",\"country\":\"");
+            writer.append(user.getCountry());
+            writer.append("\",\"city\":\"");
+            writer.append(user.getCity());
+            writer.append("\"}");
             record = true;
         }
         writer.append("]");

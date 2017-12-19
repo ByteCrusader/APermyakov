@@ -8,6 +8,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Service for initial delete user from db and return json result
+ *
+ * @author apermyakov
+ * @version 1.0
+ * @since 15.12.2017
+ */
 public class DeleteService extends HttpServlet {
 
     /**
@@ -17,7 +24,9 @@ public class DeleteService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        users.delete(req);
+        User user = new User();
+        user.setId(Integer.valueOf(req.getParameter("id")));
+        users.delete(user);
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         HttpSession session = req.getSession();

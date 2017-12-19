@@ -19,14 +19,17 @@ public class JsonSignInService extends HttpServlet {
         String logPas = req.getHeader("Authorization");
         String res = new String(Base64.getDecoder().decode(logPas.replace("Basic ", "")));
         String[] authPare = res.split(":");
+        User user = new User();
+        user.setLogin(authPare[0]);
+        user.setPassword(authPare[1]);
 
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append("[{\"access\":\"");
-        if (users.isPastInspection(authPare[0], authPare[1])) {
+        if (users.isPastInspection(user)) {
             HttpSession session = req.getSession();
             synchronized (session) {
-                session.setAttribute("login", authPare[0]);
-                session.setAttribute("role", users.getRole(authPare[0]));
+                session.setAttribute("login", user.getLogin());
+                session.setAttribute("role", users.getRole(user));
             }
             for (Cookie cookie : req.getCookies()) {
                 if (("JSESSIONID").equals(cookie.getName())) {

@@ -40,7 +40,20 @@ public class PutService extends HttpServlet {
         }
         if (post) {
             writer.append("yes\"}");
-            users.put(req);
+
+            User sessionUser = new User();
+            sessionUser.setRole(String.valueOf(req.getSession().getAttribute("role")));
+
+            User targetUser = new User();
+            targetUser.setName(req.getParameter("name"));
+            targetUser.setLogin(req.getParameter("login"));
+            targetUser.setEmail(req.getParameter("email"));
+            targetUser.setPassword(req.getParameter("password"));
+            targetUser.setRole(req.getParameter("role"));
+            targetUser.setCountry(req.getParameter("country"));
+            targetUser.setCity(req.getParameter("city"));
+
+            users.put(sessionUser, targetUser);
         }
         writer.append("]");
         writer.flush();
