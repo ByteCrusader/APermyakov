@@ -24,7 +24,7 @@ public class DeleteService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = new User();
+        TransferObject user = new TransferObject();
         user.setId(Integer.valueOf(req.getParameter("id")));
         users.delete(user);
         resp.setContentType("text/json");

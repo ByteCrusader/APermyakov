@@ -41,10 +41,10 @@ public class PutService extends HttpServlet {
         if (post) {
             writer.append("yes\"}");
 
-            User sessionUser = new User();
+            TransferObject sessionUser = new TransferObject();
             sessionUser.setRole(String.valueOf(req.getSession().getAttribute("role")));
 
-            User targetUser = new User();
+            TransferObject targetUser = new TransferObject();
             targetUser.setName(req.getParameter("name"));
             targetUser.setLogin(req.getParameter("login"));
             targetUser.setEmail(req.getParameter("email"));

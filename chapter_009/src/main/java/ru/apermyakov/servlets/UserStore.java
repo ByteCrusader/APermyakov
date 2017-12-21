@@ -107,8 +107,8 @@ public class UserStore {
      *
      * @return list of users
      */
-    public List<User> getUsers() {
-        List<User> result = new ArrayList<>();
+    public List<TransferObject> getUsers() {
+        List<TransferObject> result = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
             checkTable();
             ResultSet resultSet = statement.executeQuery("SELECT u.id, u.name, u.login, u.email, u.createDate, r.name as role, c.name as country, s.name as city " +
@@ -120,7 +120,7 @@ public class UserStore {
                                                                 "left join cities as s " +
                                                                 "on u.cities_id=s.id");
             while (resultSet.next()) {
-                User user = new User();
+                TransferObject user = new TransferObject();
                 user.setId(resultSet.getInt("id"));
                 user.setName(resultSet.getString("name"));
                 user.setLogin(resultSet.getString("login"));
@@ -134,9 +134,9 @@ public class UserStore {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        result.sort(new Comparator<User>() {
+        result.sort(new Comparator<TransferObject>() {
             @Override
-            public int compare(User o1, User o2) {
+            public int compare(TransferObject o1, TransferObject o2) {
                 return Integer.compare(o1.getId(), o2.getId());
             }
         });
@@ -224,7 +224,7 @@ public class UserStore {
      * @param sqlScript sql script
      * @param user user
      */
-    private void workWithDataInDb(String sqlScript, User user){
+    private void workWithDataInDb(String sqlScript, TransferObject user){
         checkTable();
         try (PreparedStatement statement = connection.prepareStatement(sqlScript)) {
             if (sqlScript.startsWith("DELETE")) {
@@ -257,7 +257,7 @@ public class UserStore {
      *
      * @param user user
      */
-    public void post(User user) {
+    public void post(TransferObject user) {
         this.workWithDataInDb("INSERT INTO USERS (name, login, email, password, countries_id, cities_id, createDate, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", user);
     }
 
@@ -267,7 +267,7 @@ public class UserStore {
      * @param currentUser current user
      * @param targetUser target user
      */
-    public void put(User currentUser, User targetUser) {
+    public void put(TransferObject currentUser, TransferObject targetUser) {
         final String admin = "administrator";
         if (admin.equals(currentUser.getRole())) {
             this.workWithDataInDb("UPDATE USERS SET name=?, login=?, email=?, password=?, countries_id=?, cities_id=?, role_id=? WHERE id=?", targetUser);
@@ -281,7 +281,7 @@ public class UserStore {
      *
      * @param user user
      */
-    public void delete(User user) {
+    public void delete(TransferObject user) {
         this.workWithDataInDb("DELETE FROM USERS WHERE id=?", user);
     }
 
@@ -291,7 +291,7 @@ public class UserStore {
      * @param user user
      * @return exist or not
      */
-    public boolean isPastInspection(User user) {
+    public boolean isPastInspection(TransferObject user) {
         boolean result = false;
         try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM USERS WHERE login=? and password=?")) {
             statement.setString(1, user.getLogin());
@@ -312,7 +312,7 @@ public class UserStore {
      * @param user user
      * @return role
      */
-    public String getRole(User user) {
+    public String getRole(TransferObject user) {
         String result = "";
         try (PreparedStatement statement = connection.prepareStatement("SELECT name FROM role WHERE id = (SELECT role_id FROM USERS WHERE login=?)")) {
             statement.setString(1, user.getLogin());
@@ -332,7 +332,7 @@ public class UserStore {
      * @param user user
      * @return id
      */
-    public String getId(User user) {
+    public String getId(TransferObject user) {
         String result = "";
         try (PreparedStatement statement = connection.prepareStatement("SELECT id FROM users WHERE login = ?")) {
             statement.setString(1, user.getLogin());

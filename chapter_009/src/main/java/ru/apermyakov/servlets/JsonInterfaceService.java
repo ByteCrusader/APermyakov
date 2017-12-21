@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 public class JsonInterfaceService extends HttpServlet {
 
@@ -22,7 +20,7 @@ public class JsonInterfaceService extends HttpServlet {
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         boolean record = false;
         writer.append("[");
-        for (User user : users.getUsers()) {
+        for (TransferObject user : users.getUsers()) {
             if (record) {
                 writer.append(",");
             }

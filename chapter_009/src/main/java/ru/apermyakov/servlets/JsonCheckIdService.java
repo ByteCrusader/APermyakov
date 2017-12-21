@@ -24,7 +24,7 @@ public class JsonCheckIdService  extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = new User();
+        TransferObject user = new TransferObject();
         HttpSession session = req.getSession();
         user.setLogin(String.valueOf(session.getAttribute("login")));
         resp.setContentType("text/json");

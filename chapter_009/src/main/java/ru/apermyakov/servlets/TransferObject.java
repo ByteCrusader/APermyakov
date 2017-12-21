@@ -1,9 +1,11 @@
 package ru.apermyakov.servlets;
 
+import java.util.List;
+
 /**
  * JavaBean for data base user.
  */
-public class User {
+public class TransferObject {
 
     /**
      * Field for user's id.
@@ -49,6 +51,16 @@ public class User {
      * Field for user's create date.
      */
     private String createDate;
+
+    /**
+     *
+     */
+    private String address;
+
+    /**
+     *
+     */
+    private List<String> musicType;
 
     /**
      * Method for get user's id.
@@ -212,12 +224,40 @@ public class User {
         this.createDate = createDate;
     }
 
+    /**
+     * @return
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return
+     */
+    public List<String> getMusicType() {
+        return musicType;
+    }
+
+    /**
+     * @param musicType
+     */
+    public void setMusicType(List<String> musicType) {
+        this.musicType = musicType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        TransferObject user = (TransferObject) o;
 
         if (id != user.id) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
@@ -227,7 +267,9 @@ public class User {
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
         if (country != null ? !country.equals(user.country) : user.country != null) return false;
         if (city != null ? !city.equals(user.city) : user.city != null) return false;
-        return createDate != null ? createDate.equals(user.createDate) : user.createDate == null;
+        if (createDate != null ? !createDate.equals(user.createDate) : user.createDate != null) return false;
+        if (address != null ? !address.equals(user.address) : user.address != null) return false;
+        return musicType != null ? musicType.equals(user.musicType) : user.musicType == null;
     }
 
     @Override
@@ -241,12 +283,14 @@ public class User {
         result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (musicType != null ? musicType.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "TransferObject{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
@@ -256,6 +300,8 @@ public class User {
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", createDate='" + createDate + '\'' +
+                ", address='" + address + '\'' +
+                ", musicType=" + musicType +
                 '}';
     }
 }

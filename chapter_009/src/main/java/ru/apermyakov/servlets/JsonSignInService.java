@@ -19,7 +19,7 @@ public class JsonSignInService extends HttpServlet {
         String logPas = req.getHeader("Authorization");
         String res = new String(Base64.getDecoder().decode(logPas.replace("Basic ", "")));
         String[] authPare = res.split(":");
-        User user = new User();
+        TransferObject user = new TransferObject();
         user.setLogin(authPare[0]);
         user.setPassword(authPare[1]);
 

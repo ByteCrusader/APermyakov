@@ -99,4 +99,31 @@
         <url-pattern>/json/admin/post</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>TestJsonSignInService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.testtask.JsonSignInService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestJsonSignInService</servlet-name>
+        <url-pattern>/test/json/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TestSignOutService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.testtask.SignOutService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestSignOutService</servlet-name>
+        <url-pattern>/test/json/signout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TestJsonInterfaceService</servlet-name>
+        <servlet-class>ru.apermyakov.servlets.testtask.JsonInterfaceService</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestJsonInterfaceService</servlet-name>
+        <url-pattern>/test/json/interface</url-pattern>
+    </servlet-mapping>
+
 </web-app>

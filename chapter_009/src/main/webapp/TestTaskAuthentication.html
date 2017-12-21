@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authentication</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#validate").click(function () {
+                var result = "";
+                if (($("input#login").val()) === '') {
+                    result += "You miss role, please, insert role! \r\n"
+                }
+                if (result === "") {
+                    validate();
+                } else {
+                    alert(result);
+                }
+            });
+
+            function validate() {
+
+                var userrole = $("input#role").val();
+
+                $.ajax('./test/json/signin', {
+                    method : 'post',
+                    data : {
+                        role : $("input#role").val()
+                    },
+                    complete : function (data) {
+                        var users = JSON.parse(data.responseText);
+                        var access = (String) (users[0].access);
+                        if (access === "allow") {
+                            var absolutePath = window.location.href.replace(window.location.pathname, '');
+                            alert("You sing in under the role " + userrole);
+                            window.location.href = (String) (absolutePath + "/TestTaskInterface.html");
+                            return false;
+                        } else {
+                            alert("There is no user take this role");
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <br/>
+    <h3>Sign in</h3>
+    <div class="form-inline">
+        <label for="role">Role : </label>
+        <input type="text" class="form-control" id="role" name="role" placeholder="Enter role"/>
+    </div>
+    <button type="submit" class="btn btn-default" id="validate">Sign In</button>
+</div>
+</body>
+</html>

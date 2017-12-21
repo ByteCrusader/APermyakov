@@ -41,7 +41,7 @@ public class PostService extends HttpServlet {
         if (post) {
             writer.append("yes\"}");
 
-            User user = new User();
+            TransferObject user = new TransferObject();
             user.setName(req.getParameter("name"));
             user.setLogin(req.getParameter("login"));
             user.setEmail(req.getParameter("email"));
