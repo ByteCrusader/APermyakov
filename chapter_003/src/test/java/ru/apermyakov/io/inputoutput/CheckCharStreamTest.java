@@ -18,22 +18,54 @@ import static org.junit.Assert.*;
 public class CheckCharStreamTest {
 
     /**
-     * Test when drop abuses then drop abuses and don't touch another words.
+     * Method for generic test.
+     *
+     * @param abuse abuse
+     * @param check check
+     * @param result result
      */
-    @Test
-    public void whenDropAbusesThenDropAbusesAndDOntTouchAnotherWords() {
+    private void genericTest(String abuse, String check, boolean result) {
         String first = "Hi! I'm here to check you! Check passed fail";
         char[] firstArray = first.toCharArray();
-        String[] abuse = new String[]{"che", "fail", "here", "to"};
+        String[] abuses = new String[]{abuse};
         CheckCharStream checker = new CheckCharStream();
         try (CharArrayReader input = new CharArrayReader(firstArray);
              CharArrayWriter output = new CharArrayWriter()
         ) {
-            checker.dropAbuses(input, output, abuse);
-            assertThat(output.toString().contains("fail"), is(false));
-            assertThat(output.toString().contains("here"), is(false));
-            assertThat(output.toString().contains("to"), is(false));
-            assertThat(output.toString().contains("check"), is(true));
+            checker.dropAbuses(input, output, abuses);
+            assertThat(output.toString().contains(check), is(result));
         }
+    }
+
+    /**
+     * Test when drop abuse fail then don't contain fail.
+     */
+    @Test
+    public void whenDropAbuseFailThenDontContainFail() {
+        this.genericTest("fail", "fail", false);
+    }
+
+    /**
+     * Test when drop abuses here then don't contain here.
+     */
+    @Test
+    public void whenDropAbuseHereThenDontContainHere() {
+        this.genericTest("here", "here", false);
+    }
+
+    /**
+     * Test when drop abuses to then don't contain to.
+     */
+    @Test
+    public void whenDropAbuseToThenDontContainTo() {
+        this.genericTest("to", "to", false);
+    }
+
+    /**
+     * Test when drop abuses che then contain check.
+     */
+    @Test
+    public void whenDropAbusesCheThenContainCheck() {
+        this.genericTest("che", "check", true);
     }
 }
