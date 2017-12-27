@@ -34,14 +34,15 @@ public class ServerSideTest {
      * @throws IOException e
      */
     private void genericTest(String input, String output) throws IOException {
-        Socket socket = mock(Socket.class);
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        when(socket.getInputStream()).thenReturn(in);
-        when(socket.getOutputStream()).thenReturn(out);
-        ServerSide server = new ServerSide(socket);
-        server.startServer();
-        assertThat(out.toString().contains(output), is(true));
+        try (Socket socket = mock(Socket.class);
+             ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            when(socket.getInputStream()).thenReturn(in);
+            when(socket.getOutputStream()).thenReturn(out);
+            ServerSide server = new ServerSide(socket);
+            server.startServer();
+            assertThat(out.toString().contains(output), is(true));
+        }
     }
 
     /**

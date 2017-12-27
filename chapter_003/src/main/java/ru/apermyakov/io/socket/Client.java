@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import static java.lang.Thread.sleep;
 
@@ -42,25 +43,24 @@ public class Client {
     /**
      * Method for start client.
      */
-    public void startClient() {
-        try {
-            final String separator = System.getProperty("line.separator");
-
-            InetAddress address = InetAddress.getByName(this.ipAddress);
-            Socket socket = new Socket(address, this.serverPort);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    public void startClient() throws UnknownHostException {
+        final String separator = System.getProperty("line.separator");
+        InetAddress address = InetAddress.getByName(this.ipAddress);
+        try (Socket socket = new Socket(address, this.serverPort);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))
+        ) {
 
             System.out.println(
                     String.format(
                             "You have approached a strange shadow.%s" +
-                            "It turned out to be a small gray-haired old man.%s" +
-                            "You apply to him:%s"
-                    , separator
-                    , separator
-                    , separator
-            ));
+                                    "It turned out to be a small gray-haired old man.%s" +
+                                    "You apply to him:%s"
+                            , separator
+                            , separator
+                            , separator
+                    ));
 
             String message;
             String answer;
@@ -91,7 +91,7 @@ public class Client {
      *
      * @param args args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnknownHostException {
         Client client = new Client(5354, "127.0.0.1");
         client.startClient();
     }

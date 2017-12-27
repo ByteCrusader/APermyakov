@@ -66,47 +66,47 @@ public class ServerSide {
         final String no = "no";
         List<String> answer = new ArrayList<>();
         if (message.toLowerCase().contains(hi)) {
-            lastMessage = hi;
+            this.lastMessage = hi;
             answer.add("Greetings, traveler of the internet! ＼(￣▽￣)／");
             answer.add("My name is Omniscient Oracle! <(￣︶￣)>");
             answer.add("Do you want to ask me a question? (￣▽￣)");
-            greet = true;
-        } else if (greet && message.toLowerCase().contains(yes) && hi.equals(lastMessage)) {
-            lastMessage = yes;
+            this.greet = true;
+        } else if (this.greet && message.toLowerCase().contains(yes) && hi.equals(this.lastMessage)) {
+            this.lastMessage = yes;
             answer.add("Excellent! (o˘◡˘o)");
             answer.add("But now come to mind only the capital of Europe " +
                     "and the current time (ಠ_ಠ)");
-        } else if (greet && message.toLowerCase().contains(no) && hi.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains(no) && hi.equals(this.lastMessage)) {
             answer.add("Oh   σ(￣、￣〃)");
             answer.add("Well then I went on to comb my beard, bye, wanderer ....φ(︶▽︶)φ....");
-        } else if (greet && message.toLowerCase().contains("netherlands") && yes.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains("netherlands") && yes.equals(this.lastMessage)) {
             answer.add("The capital of the Netherlands - Amsterdam (・ω・)ﾉ");
-        } else if (greet && message.toLowerCase().contains("greece") && yes.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains("greece") && yes.equals(this.lastMessage)) {
             answer.add("The capital of the Greece - Athens (˘⌣˘)");
-        } else if (greet && message.toLowerCase().contains("germany") && yes.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains("germany") && yes.equals(this.lastMessage)) {
             answer.add("The capital of the Germany - Berlin (っ˘ω˘ς)");
-        } else if (greet && message.toLowerCase().contains("united kingdom") && yes.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains("united kingdom") && yes.equals(this.lastMessage)) {
             answer.add("The capital of the United Kingdom - London (*¯︶¯*)");
-        } else if (greet && message.toLowerCase().contains("france") && yes.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains("france") && yes.equals(this.lastMessage)) {
             answer.add("The capital of the France - Paris (ᵔ.ᵔ)");
-        } else if (greet && message.toLowerCase().contains("time") && yes.equals(lastMessage)) {
+        } else if (this.greet && message.toLowerCase().contains("time") && yes.equals(this.lastMessage)) {
             answer.add(String.format("The current time %s ( ^▽^)", createDate()));
-        } else if (message.toLowerCase().contains(no) && !greet) {
-            lastMessage = hi;
+        } else if (message.toLowerCase().contains(no) && !this.greet) {
+            this.lastMessage = hi;
             answer.add("Oh, well, then (ಠ_ಠ)");
             answer.add("Greetings, traveler of the internet! ＼(￣▽￣)／");
             answer.add("My name is Omniscient Oracle! <(￣︶￣)>");
             answer.add("Do you want to ask me a question? (￣▽￣)");
-            greet = true;
-        } else if (message.toLowerCase().contains(yes) && !greet) {
-            lastMessage = yes;
+            this.greet = true;
+        } else if (message.toLowerCase().contains(yes) && !this.greet) {
+            this.lastMessage = yes;
             answer.add("Hmmm... (⇀_⇀)");
             answer.add("(↼_↼)");
             answer.add("(⇀_⇀)");
             answer.add("I don't know you.. I can tell you only about the capital of Europe " +
                     "and the current time ノ( ゜-゜ノ)");
-            greet = true;
-        } else if (!greet) {
+            this.greet = true;
+        } else if (!this.greet) {
             answer.add("(-_-) Zzzz");
             answer.add("(・_-)");
             answer.add("(⊙_⊙)");
@@ -130,23 +130,24 @@ public class ServerSide {
      * @throws IOException e
      */
     public void startServer() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-        PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-        String message;
-        boolean goodbye = false;
-        System.out.println("Server build, ready to work");
-        do {
-            message = in.readLine();
-            System.out.println(String.format("Catch message: %s", message));
-            for (String answer : getAnswer(message)) {
-                out.println(answer);
-                System.out.println(String.format("Answer: %s", answer));
-                if (answer.toLowerCase().contains("bye")) {
-                    goodbye = true;
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+             PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true)) {
+            String message;
+            boolean goodbye = false;
+            System.out.println("Server build, ready to work");
+            do {
+                message = in.readLine();
+                System.out.println(String.format("Catch message: %s", message));
+                for (String answer : getAnswer(message)) {
+                    out.println(answer);
+                    System.out.println(String.format("Answer: %s", answer));
+                    if (answer.toLowerCase().contains("bye")) {
+                        goodbye = true;
+                    }
                 }
-            }
-            out.println();
-        } while (!goodbye);
+                out.println();
+            } while (!goodbye);
+        }
     }
 
     /**
