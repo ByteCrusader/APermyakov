@@ -1,0 +1,7 @@
+C:\check\chapter_009\lol.txt
+C:\check\distance.txt
+C:\check\first.txt
+C:\check\hi.txt
+C:\check\second.txt
+C:\check\source.txt
+C:\check\test.txt

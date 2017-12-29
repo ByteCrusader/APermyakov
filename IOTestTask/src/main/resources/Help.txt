@@ -1,0 +1,8 @@
+﻿Keys
+-h - to call the help;
+-d - directory for searching;
+-n - file name, mask, or regular expression;
+-m - search by file mask like *.txt or *.doc;
+-f - search for the full match of the file name;
+-r - search by regular expression;
+-o - write the result of the search to a file.
