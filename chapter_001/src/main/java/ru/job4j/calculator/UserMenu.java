@@ -28,6 +28,8 @@ public class UserMenu {
         this.doings.add(new Subtract("subtract"));
         this.doings.add(new Div("div"));
         this.doings.add(new Multiple("multiple"));
+        this.doings.add(new Hypotenuse("hypotenuse"));
+        this.doings.add(new Sin("sin"));
     }
 
     /**

@@ -46,7 +46,7 @@ public class Add implements Doing {
      * @param input user input.
      * @return true of ans, false if new number.
      */
-    private boolean checkInput(String input) {
+    protected boolean checkInput(String input) {
         final String ans = "ans";
         return ans.equals(input.toLowerCase());
     }
