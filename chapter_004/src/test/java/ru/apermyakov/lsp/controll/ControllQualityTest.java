@@ -3,10 +3,7 @@ package ru.apermyakov.lsp.controll;
 import org.junit.Before;
 import org.junit.Test;
 import ru.apermyakov.lsp.food.*;
-import ru.apermyakov.lsp.storage.Shop;
-import ru.apermyakov.lsp.storage.Storage;
-import ru.apermyakov.lsp.storage.Trash;
-import ru.apermyakov.lsp.storage.Warehouse;
+import ru.apermyakov.lsp.storage.*;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -148,5 +145,49 @@ public class ControllQualityTest {
     public void whenGetAllProductsFromTrashThanContainBuckwheat() {
         this.controll.distributeProduct(this.buckwheat);
         assertThat(this.controll.getStorageProducts(this.trash.getName()).get(0).getName(), is(this.buckwheat.getName()));
+    }
+
+    /**
+     * Test when add recycle tomato to storage than take storage name recycle.
+     */
+    @Test
+    public void whenAddRecycleTomatoToStorageThanTakeStorageNameRecycle() {
+        Products tomato = new Tomatoes();
+        tomato.setName("tomato");
+        Calendar tomatoCreateDate = new GregorianCalendar(2018, Calendar.JANUARY, 5, 10, 20);
+        Calendar tomatoExpireDate = new GregorianCalendar(2018, Calendar.JANUARY, 8, 10, 20);
+        tomato.setCreateDate(tomatoCreateDate);
+        tomato.setExpireDate(tomatoExpireDate);
+        Products recycleFood = new RecycleFood(tomato);
+
+        Controller controll = new ControllQuality();
+        Storage recycle = new Recycle(new Trash());
+        Storage secondWarehouse = new SecondWarehouse(new Warehouse());
+
+        controll.addStorageToList(recycle);
+        controll.addStorageToList(secondWarehouse);
+        assertThat(controll.distributeProduct(recycleFood), is(recycle.getName()));
+    }
+
+    /**
+     * Test when add vegetable pumpkin to storage than take storage name refrigerator.
+     */
+    @Test
+    public void whenAddVegetablePumpkinToStorageThanTakeStorageNameRefrigerator() {
+        Products pumpkin = new Pumpkin();
+        pumpkin.setName("pumpkin");
+        Calendar pumpkinCreateDate = new GregorianCalendar(2018, Calendar.JANUARY, 10, 10, 20);
+        Calendar pumpkinExpireDate = new GregorianCalendar(2018, Calendar.JANUARY, 15, 10, 20);
+        pumpkin.setCreateDate(pumpkinCreateDate);
+        pumpkin.setExpireDate(pumpkinExpireDate);
+        Products vegetable = new Vegetables(pumpkin);
+
+        Controller controll = new ControllQuality();
+        Storage refrigerator = new Refrigerator(new SecondWarehouse(new Warehouse()));
+        Storage recycle = new Recycle(new Trash());
+
+        controll.addStorageToList(refrigerator);
+        controll.addStorageToList(recycle);
+        assertThat(controll.distributeProduct(vegetable), is(refrigerator.getName()));
     }
 }
