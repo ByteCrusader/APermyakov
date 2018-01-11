@@ -74,4 +74,19 @@ public class ControllQuality implements Controller {
         }
         return resultStorage;
     }
+
+    /**
+     * Method for resort all storage.
+     */
+    @Override
+    public void resort() {
+        List<Products> allProducts = new ArrayList<>();
+        for (Storage storage : this.storages) {
+            allProducts.addAll(storage.getProducts());
+            storage.getProducts().clear();
+        }
+        for (Products product : allProducts) {
+            this.distributeProduct(product);
+        }
+    }
 }

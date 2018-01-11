@@ -131,11 +131,20 @@ public class ControllQualityTest {
     }
 
     /**
-     * Test when get all storages than contain shop storage.
+     * Test when chicken out of quality before resort than get chicken out of shop and get to trash.
      */
     @Test
-    public void whenGetAllStoragesThanContainShopStorage() {
-        assertThat(this.controll.getAllStorages().get(2).getName(), is(this.shop.getName()));
+    public void whenChickenOutOfQualityBeforeResortThanGetChickenOutOfShopAndGetToTrash() {
+        Calendar chickenExpireDate = new GregorianCalendar(2018, Calendar.JANUARY, 12, 15, 20);
+        this.chicken.setExpireDate(chickenExpireDate);
+        this.controll.distributeProduct(this.food);
+        this.controll.distributeProduct(this.chicken);
+        this.controll.distributeProduct(this.cheese);
+        this.controll.distributeProduct(this.buckwheat);
+        chickenExpireDate = new GregorianCalendar(2018, Calendar.JANUARY, 10, 15, 20);
+        this.chicken.setExpireDate(chickenExpireDate);
+        this.controll.resort();
+        assertThat(this.trash.getProducts().get(1).getName(), is(this.chicken.getName()));
     }
 
     /**
@@ -145,6 +154,14 @@ public class ControllQualityTest {
     public void whenGetAllProductsFromTrashThanContainBuckwheat() {
         this.controll.distributeProduct(this.buckwheat);
         assertThat(this.controll.getStorageProducts(this.trash.getName()).get(0).getName(), is(this.buckwheat.getName()));
+    }
+
+    /**
+     * Test when get all storages than contain shop storage.
+     */
+    @Test
+    public void whenGetAllStoragesThanContainShopStorage() {
+        assertThat(this.controll.getAllStorages().get(2).getName(), is(this.shop.getName()));
     }
 
     /**

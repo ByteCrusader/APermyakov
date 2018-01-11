@@ -43,4 +43,9 @@ public interface Controller {
      * @return name of storage.
      */
     String distributeProduct(Products product);
+
+    /**
+     * Method for resort all storage.
+     */
+    void resort();
 }
