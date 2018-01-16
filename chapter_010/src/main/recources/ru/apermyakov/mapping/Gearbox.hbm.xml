@@ -1,0 +1,10 @@
+<hibernate-mapping>
+    <class name="ru.apermyakov.mapping.Gearbox" table="gearbox">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <property name="type" column="type"/>
+        <property name="gear" column="gear"/>
+    </class>
+</hibernate-mapping>

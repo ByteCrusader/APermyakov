@@ -1,0 +1,9 @@
+<hibernate-mapping>
+    <class name="ru.apermyakov.mapping.Transmission" table="transmission">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="type" column="type"/>
+        <property name="description" column="description"/>
+    </class>
+</hibernate-mapping>
