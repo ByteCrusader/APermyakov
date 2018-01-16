@@ -77,7 +77,7 @@ public class AddAd extends HttpServlet {
         try (SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            List<User> users = (List<User>) session.createQuery("from User where name=?").setParameter(0, req.getParameter("userName")).list();
+            List<User> users = (List<User>) session.createQuery("from User where name=:name").setParameter("name", req.getParameter("userName")).list();
             Engine engine = session.get(Engine.class, Integer.parseInt(req.getParameter("engineId")));
             Gearbox gearbox = session.get(Gearbox.class, Integer.parseInt(req.getParameter("gearboxId")));
             Transmission transmission = session.get(Transmission.class, Integer.parseInt(req.getParameter("transmissionId")));

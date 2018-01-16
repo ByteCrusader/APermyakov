@@ -37,6 +37,12 @@
 			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.4.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -83,6 +89,7 @@
 		<module>chapter_007</module>
 		<module>chapter_008</module>
 		<module>chapter_009</module>
+		<module>chapter_010</module>
 		<module>IOTestTask</module>
 	</modules>
 </project>
