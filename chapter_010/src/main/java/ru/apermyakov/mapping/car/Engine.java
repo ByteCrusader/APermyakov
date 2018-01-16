@@ -1,4 +1,4 @@
-package ru.apermyakov.mapping;
+package ru.apermyakov.mapping.car;
 
 public class Engine {
 
@@ -11,6 +11,13 @@ public class Engine {
     private int cylinders;
 
     private double horsepower;
+
+    public Engine() {
+    }
+
+    public Engine(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;

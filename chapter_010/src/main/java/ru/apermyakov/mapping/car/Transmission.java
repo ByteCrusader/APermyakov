@@ -1,4 +1,4 @@
-package ru.apermyakov.mapping;
+package ru.apermyakov.mapping.car;
 
 public class Transmission {
 
@@ -7,6 +7,14 @@ public class Transmission {
     private String type;
 
     private String description;
+
+    public Transmission() {
+    }
+
+    public Transmission(int id) {
+
+        this.id = id;
+    }
 
     public int getId() {
         return id;

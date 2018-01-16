@@ -1,4 +1,4 @@
-package ru.apermyakov.mapping;
+package ru.apermyakov.mapping.car;
 
 public class Car {
 
@@ -15,6 +15,13 @@ public class Car {
     private Gearbox gearbox;
 
     private Transmission transmission;
+
+    public Car() {
+    }
+
+    public Car(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;

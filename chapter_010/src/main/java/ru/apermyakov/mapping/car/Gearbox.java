@@ -1,4 +1,4 @@
-package ru.apermyakov.mapping;
+package ru.apermyakov.mapping.car;
 
 public class Gearbox {
 
@@ -9,6 +9,14 @@ public class Gearbox {
     private String type;
 
     private int gear;
+
+    public Gearbox() {
+    }
+
+    public Gearbox(int id) {
+
+        this.id = id;
+    }
 
     public int getId() {
         return id;
