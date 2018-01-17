@@ -1,0 +1,20 @@
+<hibernate-mapping>
+    <class name="ru.apermyakov.model.ad.Ad" table="ads">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="description" column="description"/>
+        <property name="photoPath" column="photopath"/>
+        <property name="status" column="status"/>
+        <many-to-one name="car"
+                     column="car_id"
+                     class="ru.apermyakov.model.car.Car"
+                     lazy="false"
+                     fetch="join"/>
+        <many-to-one name="user"
+                     column="user_id"
+                     class="ru.apermyakov.model.user.User"
+                     lazy="false"
+                     fetch="join"/>
+    </class>
+</hibernate-mapping>
