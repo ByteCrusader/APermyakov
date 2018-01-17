@@ -2,6 +2,8 @@ package ru.apermyakov.ioc.storage;
 
 import ru.apermyakov.ioc.user.User;
 
+import java.util.Map;
+
 /**
  * Interface for storage.
  *
@@ -17,4 +19,19 @@ public interface Storage {
      * @param user user.
      */
     void add(User user);
+
+    /**
+     * Method for get all users.
+     *
+     * @return map of users.
+     */
+    Map<String, User> getUsers();
+
+    /**
+     * Method for get user by name.
+     *
+     * @param userName user name.
+     * @return user.
+     */
+    User getUserByName(String userName);
 }

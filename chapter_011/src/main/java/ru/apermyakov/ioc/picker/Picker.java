@@ -2,6 +2,8 @@ package ru.apermyakov.ioc.picker;
 
 import ru.apermyakov.ioc.user.User;
 
+import java.util.Map;
+
 /**
  * Interface for picker.
  *
@@ -17,4 +19,19 @@ public interface Picker {
      * @param user user.
      */
     void add(User user);
+
+    /**
+     * Method for get all users.
+     *
+     * @return map of users.
+     */
+    Map<String, User> getUsers();
+
+    /**
+     * Method for get user by name.
+     *
+     * @param userName user name.
+     * @return user.
+     */
+    User getUserByName(String userName);
 }

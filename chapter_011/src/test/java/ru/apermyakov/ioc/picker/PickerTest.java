@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.apermyakov.ioc.storage.MemoryStorage;
 import ru.apermyakov.ioc.storage.Storage;
 import ru.apermyakov.ioc.user.SimpleUser;
+import ru.apermyakov.ioc.user.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -67,9 +68,24 @@ public class PickerTest {
     @Test
     public void whenAddUserUsingAnnotationThanCorrectAddToDb() {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
-        Picker picker = context.getBean(AdminPicker.class);
+        Picker picker = context.getBean(JdbcPicker.class);
         picker.add(new SimpleUser());
 
         assertThat(console.toString().endsWith("Add to DB\r\n"), is(true));
+    }
+
+    /**
+     * Test when add user ivan to memory storage than take equal object by get user by name.
+     */
+    @Test
+    public void whenAddUserIvanToMemoryStorageThanTakeEqualObjectByGetUserByName() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring-context.xml");
+        Picker picker = context.getBean(UserPicker.class);
+        User addedUser = new SimpleUser();
+        addedUser.setName("Ivan");
+        picker.add(addedUser);
+        User resultUser = picker.getUserByName("Ivan");
+
+        assertThat(addedUser.equals(resultUser), is(true));
     }
 }

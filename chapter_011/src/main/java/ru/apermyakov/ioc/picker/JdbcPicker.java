@@ -1,25 +1,29 @@
 package ru.apermyakov.ioc.picker;
 
-import ru.apermyakov.ioc.storage.Storage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.apermyakov.ioc.storage.DbStorage;
 import ru.apermyakov.ioc.user.User;
 
 import java.util.Map;
 
 /**
- * Class for demonstrate xml spring.
+ * Class for demonstrate annotation spring.
  *
  * @author apermyakov.
  * @version 1.0.
  * @since 17.01.2018.
  */
-public class UserPicker implements Picker {
+@Component
+public class JdbcPicker implements DbPicker {
 
     /**
-     * Field for storage.
+     * Field for annotation storage.
      */
-    private final Storage storage;
+    private final DbStorage storage;
 
-    public UserPicker(Storage storage) {
+    @Autowired
+    public JdbcPicker(DbStorage storage) {
         this.storage = storage;
     }
 
@@ -52,5 +56,15 @@ public class UserPicker implements Picker {
     @Override
     public User getUserByName(String userName) {
         return this.storage.getUserByName(userName);
+    }
+
+    /**
+     * Method for make connection settings.
+     *
+     * @param connSettings connection settings.
+     */
+    @Override
+    public void makeConnSettings(Map<String, String> connSettings) {
+        this.storage.makeConnSettings(connSettings);
     }
 }
