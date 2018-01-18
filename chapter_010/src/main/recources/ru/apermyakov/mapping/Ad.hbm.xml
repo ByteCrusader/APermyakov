@@ -4,7 +4,7 @@
             <generator class="identity"/>
         </id>
         <property name="description" column="description"/>
-        <property name="photoPath" column="photopath"/>
+        <property name="photo" column="photopath"/>
         <property name="status" column="status"/>
         <many-to-one name="car"
                      column="car_id"

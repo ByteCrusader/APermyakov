@@ -9,16 +9,16 @@
 <br/>
 <form action="<%=request.getContextPath()%>/ads.do" method="post">
     Insert Ad:<br/>
-    Description : <input type='text' name='description'/><br/>
+    Title : <input type='text' name='title'/><br/>
     Status : <input type='text' name='status'/><br/>
     Make : <input type='text' name='make'/><br/>
     Model : <input type='text' name='model'/><br/>
     Year : <input type='text' name='year'/><br/>
-    Engine id : <input type='text' name='engineId'/><br/>
-    Gearbox id : <input type='text' name='gearboxId'/><br/>
-    Transmission id : <input type='text' name='transmissionId'/><br/>
+    Engine type : <input type='text' name='engine'/><br/>
+    Horsepower : <input type='text' name='horsepower'/><br/>
+    Gearbox type : <input type='text' name='gearbox'/><br/>
     User id : <input type='text' name='userId'/><br/>
-    <input type='submit' value='Add ad'>
+    <input type='submit' value='Add advert'>
 </form>
 <div class="container">
     <div class="row">
@@ -32,25 +32,25 @@
                     <th>Make</th>
                     <th>Model</th>
                     <th>Engine</th>
+                    <th>Horsepower</th>
                     <th>Gearbox</th>
-                    <th>Transmission</th>
                     <th>Year</th>
                     <th>User name</th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${ads}" var="ad">
+                <c:forEach items="${adverts}" var="advert">
                     <tr>
-                        <td><c:out value="${ad.id}"/></td>
-                        <td><c:out value="${ad.description}"/></td>
-                        <td><c:out value="${ad.status}"/></td>
-                        <td><c:out value="${ad.car.make}"/></td>
-                        <td><c:out value="${ad.car.model}"/></td>
-                        <td><c:out value="${ad.car.engine}"/></td>
-                        <td><c:out value="${ad.car.gearbox}"/></td>
-                        <td><c:out value="${ad.car.transmission}"/></td>
-                        <td><c:out value="${ad.car.year}"/></td>
-                        <td><c:out value="${ad.user.name}"/></td>
+                        <td><c:out value="${advert.id}"/></td>
+                        <td><c:out value="${advert.title}"/></td>
+                        <td><c:out value="${advert.status}"/></td>
+                        <td><c:out value="${advert.car.make}"/></td>
+                        <td><c:out value="${advert.car.model}"/></td>
+                        <td><c:out value="${advert.car.engine}"/></td>
+                        <td><c:out value="${advert.car.horsepower}"/></td>
+                        <td><c:out value="${advert.car.gearbox}"/></td>
+                        <td><c:out value="${advert.car.year}"/></td>
+                        <td><c:out value="${advert.user.name}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -1,6 +1,9 @@
 package ru.apermyakov.config;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 public class WebDesc extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -17,5 +20,10 @@ public class WebDesc extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected String[] getServletMappings() {
         return new String[]{"*.do"};
+    }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        return new Filter[]{new CharacterEncodingFilter("UTF-8", true)};
     }
 }

@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
         import org.springframework.context.annotation.ComponentScan;
         import org.springframework.context.annotation.Configuration;
         import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-        import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
         import org.springframework.web.servlet.view.InternalResourceViewResolver;
         import org.springframework.web.servlet.view.JstlView;
 
@@ -17,8 +16,8 @@ import org.springframework.context.annotation.Bean;
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan("ru.apermyakov.controller")
-public class SpringWebConfig extends WebMvcConfigurerAdapter {
+@ComponentScan("ru.apermyakov")
+public class SpringWebConfig {
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
@@ -28,5 +27,4 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
-
 }

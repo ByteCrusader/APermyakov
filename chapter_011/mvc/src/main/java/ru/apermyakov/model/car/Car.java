@@ -1,7 +1,12 @@
 package ru.apermyakov.model.car;
 
+import javax.persistence.*;
+
+@Entity(name = "cars")
 public class Car {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String make;
@@ -10,11 +15,13 @@ public class Car {
 
     private int year;
 
-    private Engine engine;
+    @Column(name = "enginetype")
+    private String engine;
 
-    private Gearbox gearbox;
+    private int horsepower;
 
-    private Transmission transmission;
+    @Column(name = "gearboxtype")
+    private String gearbox;
 
     public Car() {
     }
@@ -55,27 +62,27 @@ public class Car {
         this.year = year;
     }
 
-    public Engine getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(Engine engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 
-    public Gearbox getGearbox() {
+    public int getHorsepower() {
+        return horsepower;
+    }
+
+    public void setHorsepower(int horsepower) {
+        this.horsepower = horsepower;
+    }
+
+    public String getGearbox() {
         return gearbox;
     }
 
-    public void setGearbox(Gearbox gearbox) {
+    public void setGearbox(String gearbox) {
         this.gearbox = gearbox;
-    }
-
-    public Transmission getTransmission() {
-        return transmission;
-    }
-
-    public void setTransmission(Transmission transmission) {
-        this.transmission = transmission;
     }
 }

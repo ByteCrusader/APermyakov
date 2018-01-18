@@ -1,7 +1,12 @@
 package ru.apermyakov.model.user;
 
+import javax.persistence.*;
+
+@Entity(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
@@ -14,7 +19,6 @@ public class User {
     }
 
     public User(int id) {
-
         this.id = id;
     }
 
