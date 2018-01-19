@@ -25,15 +25,15 @@ public class AdvertsController {
         this.dao = dao;
     }
 
-    @GetMapping("/ads")
+    @GetMapping("/adverts")
     public String showItems(ModelMap model) {
         model.addAttribute("adverts", this.dao.findAll());
-        return "ads";
+        return "adverts";
     }
 
-    @PostMapping("/ads")
+    @PostMapping("/adverts")
     public String addItems(@ModelAttribute Car car, @ModelAttribute Advert advert, @RequestParam int userId) {
         this.dao.create(car, advert, userId);
-        return "redirect:ads.do";
+        return "redirect:adverts.do";
     }
 }

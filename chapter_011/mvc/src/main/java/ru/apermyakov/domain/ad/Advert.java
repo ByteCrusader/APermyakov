@@ -80,4 +80,30 @@ public class Advert {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Advert advert = (Advert) o;
+
+        if (id != advert.id) return false;
+        if (title != null ? !title.equals(advert.title) : advert.title != null) return false;
+        if (car != null ? !car.equals(advert.car) : advert.car != null) return false;
+        if (user != null ? !user.equals(advert.user) : advert.user != null) return false;
+        if (photo != null ? !photo.equals(advert.photo) : advert.photo != null) return false;
+        return status != null ? status.equals(advert.status) : advert.status == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (car != null ? car.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        return result;
+    }
 }

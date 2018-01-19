@@ -85,4 +85,32 @@ public class Car {
     public void setGearbox(String gearbox) {
         this.gearbox = gearbox;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Car car = (Car) o;
+
+        if (id != car.id) return false;
+        if (year != car.year) return false;
+        if (horsepower != car.horsepower) return false;
+        if (make != null ? !make.equals(car.make) : car.make != null) return false;
+        if (model != null ? !model.equals(car.model) : car.model != null) return false;
+        if (engine != null ? !engine.equals(car.engine) : car.engine != null) return false;
+        return gearbox != null ? gearbox.equals(car.gearbox) : car.gearbox == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (make != null ? make.hashCode() : 0);
+        result = 31 * result + (model != null ? model.hashCode() : 0);
+        result = 31 * result + year;
+        result = 31 * result + (engine != null ? engine.hashCode() : 0);
+        result = 31 * result + horsepower;
+        result = 31 * result + (gearbox != null ? gearbox.hashCode() : 0);
+        return result;
+    }
 }
