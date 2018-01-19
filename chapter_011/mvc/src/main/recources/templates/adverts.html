@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Adverts</title>
+</head>
+<body>
+<form th:action="@{/adverts}" method="post">
+    <div><label> Insert Ad : </label></div>
+    <div><label> Title : <input type="text" name="title"/> </label></div>
+    <div><label> Status : <input type="text" name="status"/> </label></div>
+    <div><label> Make : <input type="text" name="make"/> </label></div>
+    <div><label> Model : <input type="text" name="model"/> </label></div>
+    <div><label> Year : <input type="text" name="year"/> </label></div>
+    <div><label> Engine type : <input type="text" name="engine"/> </label></div>
+    <div><label> Horsepower : <input type="text" name="horsepower"/> </label></div>
+    <div><label> Gearbox type : <input type="text" name="gearbox"/> </label></div>
+    <div><label> User id : <input type="text" name="userId"/> </label></div>
+    <div><input type="submit" value="Add"/></div>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Engine</th>
+        <th>Horsepower</th>
+        <th>Gearbox</th>
+        <th>Year</th>
+        <th>User name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="items: ${adverts}">
+        <td th:text="${items.id}"></td>
+        <td th:text="${items.title}"></td>
+        <td th:text="${items.status}"></td>
+        <td th:text="${items.car.make}"></td>
+        <td th:text="${items.car.model}"></td>
+        <td th:text="${items.car.engine}"></td>
+        <td th:text="${items.car.horsepower}"></td>
+        <td th:text="${items.car.gearbox}"></td>
+        <td th:text="${items.car.year}"></td>
+        <td th:text="${items.user.name}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

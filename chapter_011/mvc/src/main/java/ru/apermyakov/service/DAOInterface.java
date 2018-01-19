@@ -1,7 +1,7 @@
-package ru.apermyakov.persistant;
+package ru.apermyakov.service;
 
-import ru.apermyakov.model.ad.Advert;
-import ru.apermyakov.model.car.Car;
+import ru.apermyakov.domain.ad.Advert;
+import ru.apermyakov.domain.car.Car;
 
 import java.util.List;
 

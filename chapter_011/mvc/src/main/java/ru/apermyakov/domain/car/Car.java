@@ -1,4 +1,4 @@
-package ru.apermyakov.model.car;
+package ru.apermyakov.domain.car;
 
 import javax.persistence.*;
 

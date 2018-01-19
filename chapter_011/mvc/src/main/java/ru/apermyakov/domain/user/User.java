@@ -1,4 +1,4 @@
-package ru.apermyakov.model.user;
+package ru.apermyakov.domain.user;
 
 import javax.persistence.*;
 

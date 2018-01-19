@@ -1,7 +1,7 @@
-package ru.apermyakov.model.ad;
+package ru.apermyakov.domain.ad;
 
-import ru.apermyakov.model.car.Car;
-import ru.apermyakov.model.user.User;
+import ru.apermyakov.domain.car.Car;
+import ru.apermyakov.domain.user.User;
 
 import javax.persistence.*;
 

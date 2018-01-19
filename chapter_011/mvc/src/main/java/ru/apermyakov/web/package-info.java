@@ -1,8 +1,8 @@
 /**
- * Package to config.
+ * Package to web.
  *
  * @author apermyakov.
  * @version 1.0.
  * @since 17.01.2018.
  */
-package ru.apermyakov.config;
+package ru.apermyakov.web;

@@ -1,27 +1,29 @@
-package ru.apermyakov.persistant;
+package ru.apermyakov.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.apermyakov.model.ad.Advert;
-import ru.apermyakov.model.car.Car;
-import ru.apermyakov.model.user.User;
+import ru.apermyakov.domain.ad.Advert;
+import ru.apermyakov.domain.car.Car;
+import ru.apermyakov.domain.user.User;
 import ru.apermyakov.repository.AdvertsRepository;
 import ru.apermyakov.repository.CarRepository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class AdvertsDAO implements DAOInterface {
 
-    @Resource
-    private AdvertsRepository advertsRepository;
+    private final AdvertsRepository advertsRepository;
 
-    @Resource
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
+
+    @Autowired
+    public AdvertsDAO(AdvertsRepository advertsRepository, CarRepository carRepository) {
+        this.advertsRepository = advertsRepository;
+        this.carRepository = carRepository;
+    }
 
     @Override
-    @Transactional
     public Advert create(Car car, Advert advert, int userId) {
         Car addedCar = this.carRepository.save(car);
         advert.setCar(addedCar);
@@ -30,7 +32,6 @@ public class AdvertsDAO implements DAOInterface {
     }
 
     @Override
-    @Transactional
     public List<Advert> findAll() {
         return (List<Advert>) this.advertsRepository.findAll();
     }

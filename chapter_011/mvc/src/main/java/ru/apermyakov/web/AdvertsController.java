@@ -1,12 +1,12 @@
-package ru.apermyakov.controller;
+package ru.apermyakov.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import ru.apermyakov.model.ad.Advert;
-import ru.apermyakov.model.car.Car;
-import ru.apermyakov.persistant.DAOInterface;
+import ru.apermyakov.domain.ad.Advert;
+import ru.apermyakov.domain.car.Car;
+import ru.apermyakov.service.DAOInterface;
 
 /**
  * Front controller.
@@ -18,8 +18,12 @@ import ru.apermyakov.persistant.DAOInterface;
 @Controller
 public class AdvertsController {
 
+    private final DAOInterface dao;
+
     @Autowired
-    private DAOInterface dao;
+    public AdvertsController(DAOInterface dao) {
+        this.dao = dao;
+    }
 
     @GetMapping("/ads")
     public String showItems(ModelMap model) {
