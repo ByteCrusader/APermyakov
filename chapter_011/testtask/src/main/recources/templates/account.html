@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<head>
+    <title>Account</title>
+</head>
+<body>
+
+<form th:action="@{/account}" method="post" enctype="application/json">
+    <div><label> Account Id : <input type="text" name="accountId:"/> </label></div>
+    <div><input type="submit" value="Registry In"/></div>
+</form>
+
+</body>
+</html>

@@ -95,6 +95,7 @@
 
     <modules>
         <module>ios</module>
+        <module>testtask</module>
         <module>mvc</module>
     </modules>
 </project>
