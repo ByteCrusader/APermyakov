@@ -12,9 +12,9 @@ public class OccupiedWayException extends RuntimeException {
 	/**
 	* Design input exceptions.
 	*
-	* @param messege string with exception
+	* @param message string with exception
 	*/
-	public OccupiedWayException(String messege) {
-		super(messege);
+	public OccupiedWayException(String message) {
+		super(message);
 	}
 }

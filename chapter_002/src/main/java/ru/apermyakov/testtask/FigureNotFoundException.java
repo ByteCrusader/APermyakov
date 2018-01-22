@@ -12,9 +12,9 @@ public class FigureNotFoundException extends RuntimeException {
 	/**
 	* Design input exceptions.
 	*
-	* @param messege string with exception
+	* @param message string with exception
 	*/
-	public FigureNotFoundException(String messege) {
-		super(messege);
+	public FigureNotFoundException(String message) {
+		super(message);
 	}
 }

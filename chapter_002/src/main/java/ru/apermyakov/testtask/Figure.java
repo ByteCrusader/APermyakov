@@ -15,9 +15,9 @@ public abstract class Figure {
 	final Cell position;
 
 	/**
-	* Initial figure reall moves caunter.
+	* Initial figure real moves counter.
 	*/
-	int reallMoves = 0;
+	int realMoves = 0;
 
 	/**
 	* Method for initial figure.

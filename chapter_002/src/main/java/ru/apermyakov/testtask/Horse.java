@@ -30,38 +30,38 @@ public class Horse extends Figure {
 	private void init() {
 		if (super.position.getX() + 2 < 8) {
 			if (super.position.getY() + 1 < 8) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, 2, 1);
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, 2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, 2, 1);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, 1, 2);
 			}
 			if (super.position.getY() - 1 >= 0) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, 2, -1);
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, -2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, 2, -1);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, 1, -2);
 			}
 		}
 		if (super.position.getX() + 2 >= 8 && super.position.getX() + 1 < 8) {
 			if (super.position.getY() + 2 < 8) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, 2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, 1, 2);
 			}
 			if (super.position.getY() - 2 >= 0) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, 1, -2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, 1, -2);
 			}
 		}
 		if (super.position.getX() - 2 >= 0) {
 			if (super.position.getY() + 1 < 8) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, -2, 1);
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, 2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, -2, 1);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, -1, 2);
 			}
 			if (super.position.getY() - 1 >= 0) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, -2, -1);
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, -2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, -2, -1);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, -1, -2);
 			}
 		}
 		if (super.position.getX() - 2 < 0 && super.position.getX() - 1 >= 0) {
 			if (super.position.getY() + 2 < 8) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, 2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, -1, 2);
 			}
 			if (super.position.getY() - 2 >= 0) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, -1, -2);
+				moves[super.realMoves++] = move.moveSomewhere(super.position, -1, -2);
 			}
 		}
 	}
@@ -86,7 +86,7 @@ public class Horse extends Figure {
 	* @since 20.10.2017
 	*/
 	public Cell[] possibleMoves() {
-		return Arrays.copyOf(moves, super.reallMoves);
+		return Arrays.copyOf(moves, super.realMoves);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class Horse extends Figure {
 		Cell[] horseWay = new Cell[64];
 		int wayPoints = 0;
 		int wayLength = 0;
-		for (Cell option : Arrays.copyOf(moves, super.reallMoves)) {
+		for (Cell option : Arrays.copyOf(moves, super.realMoves)) {
 			if (dist.getX() == option.getX() && dist.getY() == option.getY()) {
 				int wayXLength = Math.max(dist.getX(), super.position.getX()) - Math.min(dist.getX(), super.position.getX());
 				int wayYLength = Math.max(dist.getY(), super.position.getY()) - Math.min(dist.getY(), super.position.getY());

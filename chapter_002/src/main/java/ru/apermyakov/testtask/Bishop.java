@@ -33,8 +33,8 @@ public class Bishop extends Figure {
 					 super.position.getX() - count >= 0 &&  super.position.getY() - count >= 0;
 			 count++) {
 			for (int index = 1; index <= 2; index++ ) {
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, count*(int)Math.pow(-1D, index), count*(int)Math.pow(-1D, index));
-				moves[super.reallMoves++] = move.moveSomewhere(super.position, count*(int)Math.pow(-1D, index + 1), count*(int)Math.pow(-1D, index));
+				moves[super.realMoves++] = move.moveSomewhere(super.position, count*(int)Math.pow(-1D, index), count*(int)Math.pow(-1D, index));
+				moves[super.realMoves++] = move.moveSomewhere(super.position, count*(int)Math.pow(-1D, index + 1), count*(int)Math.pow(-1D, index));
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class Bishop extends Figure {
 	* @since 20.10.2017
 	*/
 	public Cell[] possibleMoves() {
-		return Arrays.copyOf(moves, super.reallMoves);
+		return Arrays.copyOf(moves, super.realMoves);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Bishop extends Figure {
 		Cell[] bishopWay = new Cell[64];
 		int wayPoints = 0;
 		int wayLength = 0;
-		for (Cell option : Arrays.copyOf(moves, super.reallMoves)) {
+		for (Cell option : Arrays.copyOf(moves, super.realMoves)) {
 			if (dist.getX() == option.getX() && dist.getY() == option.getY()) {
 				wayLength = Math.max(dist.getX(), super.position.getX()) - Math.min(dist.getX(), super.position.getX());
 				if (dist.getX() > super.position.getX() && dist.getY() > super.position.getY()) { //up and right

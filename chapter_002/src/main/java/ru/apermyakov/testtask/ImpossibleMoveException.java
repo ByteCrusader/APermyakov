@@ -12,9 +12,9 @@ public class ImpossibleMoveException extends RuntimeException {
 	/**
 	* Design input exceptions.
 	*
-	* @param messege string with exception
+	* @param message string with exception
 	*/
-	public ImpossibleMoveException(String messege) {
-		super(messege);
+	public ImpossibleMoveException(String message) {
+		super(message);
 	}
 }
