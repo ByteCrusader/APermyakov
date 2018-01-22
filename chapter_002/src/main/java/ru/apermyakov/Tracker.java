@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class for create tracker.
@@ -55,10 +56,8 @@ public class Tracker {
 	 * @param clause clause of chose
 	 * @param item item to methods
 	 * @param resultList resultList to methods
-	 * @param field field to methods
-	 * @param <T> generic param
 	 */
-	private <T> void mainAction(String clause, Item item, List<Item> resultList, T field) {
+	private void mainAction(String clause, Item item, List<Item> resultList) {
 		Connection conn = null;
 		try {
 			conn = getConnectToDb();
@@ -79,9 +78,6 @@ public class Tracker {
 			}
 			if (("find").equals(clause)) {
 				findFromDb(conn, resultList);
-			}
-			if (("findby").equals(clause)) {
-				findFromDb(conn, field, resultList);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -174,7 +170,7 @@ public class Tracker {
 		} else {
 			clause = "initial";
 		}
-		mainAction(clause, null, null, null);
+		mainAction(clause, null, null);
 	}
 
 	/**
@@ -208,7 +204,7 @@ public class Tracker {
 	 * @return new item
 	 */
 	public Item add(Item item) {
-		mainAction("add", item, null, null);
+		mainAction("add", item, null);
 		return item;
 	}
 
@@ -235,7 +231,7 @@ public class Tracker {
 	 * @param item new item
 	 */
 	public void update(Item item) {
-		mainAction("update", item, null, null);
+		mainAction("update", item, null);
 	}
 
 	/**
@@ -258,7 +254,7 @@ public class Tracker {
 	 * @param item chosen item
 	 */
 	public void delete(Item item) {
-		mainAction("delete", item, null, null);
+		mainAction("delete", item, null);
 	}
 
 	/**
@@ -296,44 +292,7 @@ public class Tracker {
 	 */
 	public List<Item> findAll() {
 		List<Item> resultList = new ArrayList<>();
-		mainAction("find", null, resultList, null);
-		return resultList;
-	}
-
-	/**
-	 * Overload findFromDb.
-	 *
-	 * @param conn connection
-	 * @param field field for find
-	 * @param resultList result of search
-	 * @throws SQLException sql e
-	 */
-	private <T> void findFromDb(Connection conn, T field, List<Item> resultList) throws SQLException {
-		Integer cons = 0;
-		PreparedStatement statement;
-		if (cons.getClass().equals(field.getClass())) {
-			statement = conn.prepareStatement(this.scripts.get("selectbyidscript"));
-		} else {
-			statement = conn.prepareStatement(this.scripts.get("selectbynamescript"));
-		}
-		statement.setObject(1, field);
-		addFoundCortegeToList(statement.executeQuery(), resultList);
-		statement.close();
-	}
-
-	/**
-	 * Method for find by field.
-	 *
-	 * @param field field
-	 * @param <T> type of field
-	 * @return list of result
-	 */
-	private <T> List<Item> findByField(T field) {
-		List<Item> resultList = new ArrayList<>();
-		mainAction("findby", null, resultList, field);
-		if (resultList.size() == 0) {
-			throw new IllegalArgumentException("Wrong input data!");
-		}
+		mainAction("find", null, resultList);
 		return resultList;
 	}
 
@@ -344,7 +303,7 @@ public class Tracker {
 	 * @return array of found names
 	 */
 	public List<Item> findByName(String key) {
-		return findByField(key);
+		return this.findAll().stream().filter(i -> key.equals(i.getName())).collect(Collectors.toList());
 	}
 
 	/**
@@ -354,6 +313,6 @@ public class Tracker {
 	 * @return found item
 	 */
 	public Item findById(int id) {
-		return findByField(id).get(0);
+		return this.findAll().stream().filter(i -> String.valueOf(id).equals(i.getId())).findFirst().get();
 	}
 }
