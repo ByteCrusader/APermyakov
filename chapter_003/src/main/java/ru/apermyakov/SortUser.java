@@ -1,6 +1,7 @@
 package ru.apermyakov;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class for sort list of users.
@@ -18,12 +19,7 @@ public class SortUser {
      * @return sorted set
      */
     public Set<User> sort(List<User> list) {
-        for (User user : list) {
-            if (user == null) {
-                list.remove(user);
-            }
-        }
-        return new TreeSet<>(list);
+        return list.stream().filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
     /**
@@ -33,14 +29,9 @@ public class SortUser {
      * @return sorted list of users
      */
     public List<User> sortNameLength(List<User> users) {
-        users.sort(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1 == null ? 1
-                        : o2 == null ? -1
-                        : compareLength(o1, o2);
-            }
-        });
+        users.sort((o1, o2) -> o1 == null ? 1
+                : o2 == null ? -1
+                : compareLength(o1, o2));
         return users;
     }
 
@@ -51,15 +42,10 @@ public class SortUser {
      * @return sorted list of users
      */
     public List<User> sortByAllFields(List<User> users) {
-        users.sort(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                return o1 == null ? 1
-                        : o2 == null ? -1
-                        : compareLength(o1, o2) != 0 ? compareLength(o1, o2)
-                        : o1.getAge().compareTo(o2.getAge());
-            }
-        });
+        users.sort((o1, o2) -> o1 == null ? 1
+                : o2 == null ? -1
+                : compareLength(o1, o2) != 0 ? compareLength(o1, o2)
+                : o1.getAge().compareTo(o2.getAge()));
         return users;
     }
 

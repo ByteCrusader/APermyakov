@@ -21,7 +21,6 @@ public class CheckCharStream {
      * @throws IOException e
      */
     private boolean checkAbuses(BufferedReader bufferedReader, int streamChar, String checkedWord) throws IOException {
-        boolean result = false;
         int inside = streamChar;
         boolean record = true;
         for (char symb : checkedWord.toCharArray()) {
@@ -31,10 +30,7 @@ public class CheckCharStream {
                 record = false;
             }
         }
-        if (record && ((char)inside == ' ' || inside == -1)) {
-            result = true;
-        }
-        return result;
+        return record && ((char)inside == ' ' || inside == -1);
     }
 
     /**

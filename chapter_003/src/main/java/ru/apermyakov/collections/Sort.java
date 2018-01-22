@@ -21,14 +21,7 @@ public class Sort {
         Set<String> temp = new TreeSet<>();
         for (String value : src) {
             String fg = value.lastIndexOf('\\') > 0 ? value.substring(0, value.lastIndexOf('\\')) : value;
-            boolean missedItem = true;
-            for (String item : src) {
-                if (fg.equals(item)) {
-                    missedItem = false;
-                    break;
-                }
-            }
-            if (missedItem) {
+            if (src.stream().noneMatch(fg::equals)) {
                 temp.add(fg);
             }
         }
@@ -45,14 +38,9 @@ public class Sort {
     public String[] sortAscending(String[] source) {
         ArrayList<String> result = new ArrayList<>(Arrays.asList(source));
         addMissed(result);
-        result.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1 == null ? 1
-                        : o2 == null ? -1
-                        : (new Comparing(o1, o2)).checkDepartment();
-            }
-        });
+        result.sort((o1, o2) -> o1 == null ? 1
+                : o2 == null ? -1
+                : (new Comparing(o1, o2)).checkDepartment());
         return result.toArray(new String[result.size()]);
     }
 
@@ -65,14 +53,9 @@ public class Sort {
     public String[] sortDecreasing(String[] source) {
         ArrayList<String> result = new ArrayList<>(Arrays.asList(source));
         addMissed(result);
-        result.sort(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return o1 == null ? 1
-                        : o2 == null ? -1
-                        : (new Comparing(o1, o2)).decreasingCheckDepartment();
-            }
-        });
+        result.sort((o1, o2) -> o1 == null ? 1
+                : o2 == null ? -1
+                : (new Comparing(o1, o2)).decreasingCheckDepartment());
         return result.toArray(new String[result.size()]);
     }
 }

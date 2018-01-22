@@ -1,7 +1,8 @@
 package ru.apermyakov;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Class for convert user into list to hash map.
@@ -18,11 +19,10 @@ public class UserConvert {
      * @param list list of users
      * @return hash map of users
      */
-    public HashMap<Integer, User> process(List<User> list) {
-        HashMap<Integer, User> result = new HashMap<>();
-        for (User user : list) {
-            result.put(user.getId(), user);
-        }
-        return result;
+    public Map<Integer, User> process(List<User> list) {
+        return list.stream().collect(Collectors.toMap(
+                User::getId,
+                p -> p
+        ));
     }
 }

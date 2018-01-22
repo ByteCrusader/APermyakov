@@ -1,5 +1,6 @@
 package ru.apermyakov.arrayiterator;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -73,13 +74,7 @@ public class PrimesIterator implements Iterator {
      * @return number of primes
      */
     private int numberOfPrimes() {
-        int primes = 0;
-        for (int item : this.array) {
-            if (checkPrimeItem(item)) {
-                primes++;
-            }
-        }
-        return primes;
+        return (int) Arrays.stream(this.array).filter(this::checkPrimeItem).count();
     }
 
     /**

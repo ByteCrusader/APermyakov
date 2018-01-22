@@ -89,14 +89,7 @@ public class Tree<T extends Comparable<T>> implements SimpleTree<T> {
      * @return found parent or null
      */
     private Node<T> checkParents(List<Node<T>> children, T parent) {
-        Node<T> result = null;
-        for (Node<T> steps : children) {
-            if (parent.compareTo(steps.value) == 0) {
-                result = steps;
-                break;
-            }
-        }
-        return result;
+        return children.stream().filter(i -> parent.compareTo(i.value) == 0).findFirst().get();
     }
 
     /**
@@ -107,14 +100,7 @@ public class Tree<T extends Comparable<T>> implements SimpleTree<T> {
      * @return exist or not
      */
     private boolean checkChildren(Node<T> parent, T child) {
-        boolean result = true;
-        for (Node<T> steps : parent.children) {
-            if (child.compareTo(steps.value) == 0) {
-                result = false;
-                break;
-            }
-        }
-        return result;
+        return parent.children.stream().noneMatch(i -> child.compareTo(i.value) == 0);
     }
 
     /**

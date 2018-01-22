@@ -15,22 +15,12 @@ public class Converter {
     /**
      * Field for sorted by price save sell orders.
      */
-    TreeMap<Double, Order> sell = new TreeMap<>(new Comparator<Double>() {
-        @Override
-        public int compare(Double o1, Double o2) {
-            return o1.compareTo(o2);
-        }
-    });
+    TreeMap<Double, Order> sell = new TreeMap<>(Comparator.naturalOrder());
 
     /**
      * Filed for sorted by price save buy orders.
      */
-    TreeMap<Double, Order> buy = new TreeMap<>(new Comparator<Double>() {
-        @Override
-        public int compare(Double o1, Double o2) {
-            return o2.compareTo(o1);
-        }
-    });
+    TreeMap<Double, Order> buy = new TreeMap<>(Comparator.reverseOrder());
 
     /**
      * Method for initialize convert action.

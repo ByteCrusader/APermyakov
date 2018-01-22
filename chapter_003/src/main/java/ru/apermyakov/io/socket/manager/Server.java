@@ -4,8 +4,10 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Class for realize server activities.
@@ -53,13 +55,7 @@ public class Server implements ServerInterface {
     @Override
     public List<String> getRootCatalog() {
         File catalog = new File(this.rootCatalog);
-        List<String> result = new ArrayList<>();
-        for (File file : catalog.listFiles()) {
-            if (!file.isHidden()) {
-                result.add(file.getPath());
-            }
-        }
-        return result;
+        return Arrays.stream(catalog.listFiles()).filter(i -> !i.isHidden()).map(File::getPath).collect(Collectors.toList());
     }
 
     /**

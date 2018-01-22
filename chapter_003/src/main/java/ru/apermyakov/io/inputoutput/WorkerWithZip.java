@@ -39,14 +39,7 @@ public class WorkerWithZip {
      * @return exist or not
      */
     private boolean checkByKey(File file, List<String> keys) {
-        boolean result = false;
-        for (String key : keys) {
-            if (file.getAbsolutePath().endsWith(key)) {
-                result = true;
-                break;
-            }
-        }
-        return result;
+        return keys.stream().anyMatch(i -> file.getAbsolutePath().endsWith(i));
     }
 
     /**
