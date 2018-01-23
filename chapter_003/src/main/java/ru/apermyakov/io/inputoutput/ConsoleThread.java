@@ -50,7 +50,7 @@ public class ConsoleThread extends ChatThread {
     @Override
     public void run() {
         while(!Thread.currentThread().isInterrupted()) {
-            try (RandomAccessFile access = new RandomAccessFile("C:\\chat\\answers.txt", "r")) {
+            try (RandomAccessFile access = new RandomAccessFile("answers.txt", "r")) {
                 String answer = getRandomString(access);
                 synchronized (log) {
                     log.wait();

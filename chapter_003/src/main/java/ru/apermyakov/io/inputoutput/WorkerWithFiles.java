@@ -113,8 +113,8 @@ public class WorkerWithFiles{
      */
     private boolean pass (File source, File distance, int passCounter) throws IOException {
         boolean result = true;
-        File firstTempFile = new File("C:\\check\\first.txt");
-        File secondTempFile = new File("C:\\check\\second.txt");
+        File firstTempFile = new File("first.txt");
+        File secondTempFile = new File("second.txt");
         try ( RandomAccessFile firstTemp = new RandomAccessFile(firstTempFile, "rw");
               RandomAccessFile secondTemp = new RandomAccessFile(secondTempFile, "rw");
               RandomAccessFile sour = new RandomAccessFile(source, "r")

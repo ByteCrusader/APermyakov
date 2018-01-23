@@ -3,8 +3,8 @@ package ru.apermyakov;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -27,7 +27,7 @@ public class UserConvertTest {
         List<User> users = new ArrayList<>();
         users.add(user);
         UserConvert convert = new UserConvert();
-        HashMap<Integer, User> result = convert.process(users);
+        Map<Integer, User> result = convert.process(users);
         assertThat(result.containsKey(user.getId()), is(true));
     }
 
@@ -44,7 +44,7 @@ public class UserConvertTest {
         users.add(second);
         users.add(third);
         UserConvert convert = new UserConvert();
-        HashMap<Integer, User> result = convert.process(users);
+        Map<Integer, User> result = convert.process(users);
         assertThat(result.containsValue(third), is(true));
     }
 }

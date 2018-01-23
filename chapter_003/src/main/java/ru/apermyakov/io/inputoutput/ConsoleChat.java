@@ -15,7 +15,7 @@ public class ConsoleChat {
      * Method for initial chat.
      */
     public void startChat() {
-        File log = new File("C:\\chat\\log.txt");
+        File log = new File("log.txt");
         UserThread user = new UserThread(log);
         ConsoleThread console = new ConsoleThread(log);
         Thread userThread = new Thread(user);
