@@ -16,7 +16,7 @@ public class Input {
     /**
      * Field for system in scanner.
      */
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     /**
      * Method for scan user doing by ask.

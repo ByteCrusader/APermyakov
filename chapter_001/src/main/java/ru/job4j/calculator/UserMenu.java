@@ -1,8 +1,8 @@
 package ru.job4j.calculator;
 
-import ru.job4j.calculator.doing.*;
+import ru.job4j.calculator.doing.Doing;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,31 +17,17 @@ public class UserMenu {
     /**
      * List of calculator doings.
      */
-    private List<Doing> doings;
+    private final List<Doing> doings;
 
-    /**
-     * Method for initial list of calculator doings.
-     */
-    public void initial() {
-        this.doings = new ArrayList<>();
-        this.doings.add(new Add("add"));
-        this.doings.add(new Subtract("subtract"));
-        this.doings.add(new Div("div"));
-        this.doings.add(new Multiple("multiple"));
-        this.doings.add(new Hypotenuse("hypotenuse"));
-        this.doings.add(new Sin("sin"));
+    public UserMenu(List<Doing> doings) {
+        this.doings = Collections.unmodifiableList(doings);
     }
 
     /**
      * Method for show calculate doings.
      */
     public void show() {
-        int index = 0;
-        for (Doing doing : this.doings) {
-            ++index;
-            System.out.format("%s. %s", index, doing.getName());
-            System.out.println();
-        }
+        this.doings.forEach(System.out::println);
     }
 
     /**
@@ -52,15 +38,9 @@ public class UserMenu {
      * @param input input object of user.
      */
     public void choose(String choice, Result answer, Input input) {
-        int index = 0;
-        for (Doing someDoing : this.doings) {
-            if (choice.equals(someDoing.getName())) {
-                someDoing.doAction(answer, input);
-                break;
-            }
-            index++;
-        }
-        if (index == this.doings.size()) {
+        if (this.doings.stream().anyMatch(i -> choice.equals(i.getName()))) {
+            this.doings.stream().filter(i -> choice.equals(i.getName())).findFirst().get().doAction(answer, input);
+        } else {
             System.out.println("Wrong input");
         }
     }

@@ -1,5 +1,10 @@
 package ru.job4j.calculator;
 
+import ru.job4j.calculator.doing.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class for modulate interactive calculator action.
  *
@@ -58,8 +63,14 @@ public class InteractCalc {
     public static void main(String[] args) {
         Result answer = new Result();
         Input input = new Input();
-        UserMenu menu = new UserMenu();
-        menu.initial();
+        List<Doing> doings = new ArrayList<>();
+        doings.add(new Add("add"));
+        doings.add(new Subtract("subtract"));
+        doings.add(new Div("div"));
+        doings.add(new Multiple("multiple"));
+        doings.add(new Hypotenuse("hypotenuse"));
+        doings.add(new Sin("sin"));
+        UserMenu menu = new UserMenu(doings);
         InteractCalc interactCalc = new InteractCalc(answer, menu, input);
         interactCalc.startCalc();
     }
