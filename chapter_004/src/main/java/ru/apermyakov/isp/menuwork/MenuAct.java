@@ -1,6 +1,7 @@
 package ru.apermyakov.isp.menuwork;
 
 import ru.apermyakov.isp.menuitems.Item;
+import ru.apermyakov.isp.menuitems.ItemKey;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,23 +32,44 @@ public class MenuAct implements Menu {
     }
 
     /**
+     * Method for check parent.
+     *
+     * @param item item.
+     * @return true if have parent.
+     */
+    private boolean checkParent(Item item) {
+        return item.isSubItem();
+    }
+
+    /**
      * Method for build indents by menu item key.
      *
-     * @param menuKey menu item key.
+     * @param menuItem menu item.
      * @return string of indents.
      */
     @Override
-    public String buildIndent(String menuKey) {
-        String keyWithoutLastSep = menuKey.substring(0, menuKey.lastIndexOf('.'));
+    public String buildIndent(Item menuItem) {
         StringBuilder resultIndent = new StringBuilder();
-        boolean skipTab = true;
-        for (String aSplitKey : keyWithoutLastSep.split("\\.")) {
-            if (!skipTab) {
-                resultIndent.append("\t");
-            }
-            skipTab = false;
+        if (this.checkParent(menuItem)) {
+            resultIndent.append("\t");
+            resultIndent.append(this.buildIndent(menuItem.getParent()));
         }
         return resultIndent.toString();
+    }
+
+    /**
+     * Method for build menu root.
+     *
+     * @param menuItem menu item.
+     * @return result string.
+     */
+    private String buildMenuRoot(Item menuItem) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("%s %s %s %s", buildIndent(menuItem), menuItem.getKey(), menuItem.getName(), System.lineSeparator()));
+        if (menuItem.isRootItem()) {
+            menuItem.getChildren().forEach(i -> builder.append(this.buildMenuRoot(i)));
+        }
+        return builder.toString();
     }
 
     /**
@@ -56,8 +78,20 @@ public class MenuAct implements Menu {
     @Override
     public void showMenu() {
         this.sortMenu();
-        for (Item menuItem : menuItems) {
-            System.out.format("%s %s %s %s", buildIndent(menuItem.getKey()), menuItem.getKey(), menuItem.getName(), System.lineSeparator());
+        this.menuItems.forEach(i -> System.out.print(buildMenuRoot(i)));
+    }
+
+    /**
+     * Method for do menu action.
+     *
+     * @param menuItem menu item.
+     * @param itemName item name.
+     */
+    private void doMenuAction(Item menuItem, String itemName) {
+        if (menuItem.checkKey(itemName)) {
+            menuItem.doAction();
+        } else if (menuItem.isRootItem()) {
+            menuItem.getChildren().forEach(i -> doMenuAction(i, itemName));
         }
     }
 
@@ -68,11 +102,7 @@ public class MenuAct implements Menu {
      */
     @Override
     public void workItem(String itemName) {
-        for (Item menuItem : menuItems) {
-            if (menuItem.checkKey(itemName)) {
-                menuItem.doAction();
-            }
-        }
+        this.menuItems.forEach(i -> doMenuAction(i, itemName));
     }
 
     /**
@@ -80,11 +110,6 @@ public class MenuAct implements Menu {
      */
     @Override
     public void sortMenu() {
-        this.menuItems.sort(new Comparator<Item>() {
-            @Override
-            public int compare(Item o1, Item o2) {
-                return o1.getKey().compareTo(o2.getKey());
-            }
-        });
+        this.menuItems.sort(Comparator.comparing(ItemKey::getKey));
     }
 }

@@ -41,11 +41,12 @@ public class MenuTest {
         Item fourthItem = new MenuItem("1.2.", "Fourth");
         Item fifthItem = new MenuItem("2.", "Fifth");
 
-        this.menu.addToMenuList(thirdItem);
+        firstItem.setChild(secondItem);
+        secondItem.setChild(thirdItem);
+        firstItem.setChild(fourthItem);
+
         this.menu.addToMenuList(fifthItem);
         this.menu.addToMenuList(firstItem);
-        this.menu.addToMenuList(secondItem);
-        this.menu.addToMenuList(fourthItem);
 
         System.setOut(new PrintStream(console));
     }

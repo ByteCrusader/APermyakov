@@ -1,5 +1,7 @@
 package ru.apermyakov.isp.menuwork;
 
+import ru.apermyakov.isp.menuitems.Item;
+
 /**
  * Interface for modulate menu action.
  *
@@ -12,9 +14,9 @@ public interface MenuIndentBuild {
     /**
      * Method for build indents by menu item key.
      *
-     * @param menuKey menu item key.
+     * @param item menu item.
      * @return string of indents.
      */
-    String buildIndent(String menuKey);
+    String buildIndent(Item item);
 }
 

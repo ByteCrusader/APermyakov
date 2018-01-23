@@ -1,5 +1,8 @@
 package ru.apermyakov.isp.menuitems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class for modulate menu item by item's interfaces.
  *
@@ -18,6 +21,26 @@ public class MenuItem implements Item {
      * Field for item's key.
      */
     private String key;
+
+    /**
+     * Field for parent.
+     */
+    private Item parent;
+
+    /**
+     * Field for sub menu flag.
+     */
+    private boolean subItem = false;
+
+    /**
+     * Field for root menu flag.
+     */
+    private boolean rootItem = false;
+
+    /**
+     * Field for list of item.
+     */
+    private List<Item> children = new ArrayList<>();
 
     /**
      * Constructor for menu item.
@@ -67,5 +90,65 @@ public class MenuItem implements Item {
     @Override
     public boolean checkKey(String key) {
         return key.equals(this.key);
+    }
+
+    /**
+     * Method for get parent.
+     *
+     * @return parent.
+     */
+    public Item getParent() {
+        return this.parent;
+    }
+
+    /**
+     * Method for set parent.
+     *
+     * @param parent parent.
+     */
+    public void setParent(Item parent) {
+        this.parent = parent;
+        this.subItem = true;
+    }
+
+    /**
+     * Method for get children.
+     *
+     * @return list of children.
+     */
+    public List<Item> getChildren() {
+        return this.children;
+    }
+
+    /**
+     * Method for set child.
+     *
+     * @param child child.
+     */
+    @Override
+    public void setChild(Item child) {
+        this.children.add(child);
+        child.setParent(this);
+        this.rootItem = true;
+    }
+
+    /**
+     * Method for check sub flag.
+     *
+     * @return sub flag.
+     */
+    @Override
+    public boolean isSubItem() {
+        return this.subItem;
+    }
+
+    /**
+     * Method for check root flag.
+     *
+     * @return root flag.
+     */
+    @Override
+    public boolean isRootItem() {
+        return this.rootItem;
     }
 }
