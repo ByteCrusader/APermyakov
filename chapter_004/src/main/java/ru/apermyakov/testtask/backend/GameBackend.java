@@ -6,12 +6,13 @@ import ru.apermyakov.testtask.cell.Sell;
 import ru.apermyakov.testtask.output.Output;
 import ru.apermyakov.testtask.output.UserOutput;
 import ru.apermyakov.testtask.requests.ComputerRequest;
-import ru.apermyakov.testtask.requests.Request;
 import ru.apermyakov.testtask.requests.UserRequests;
 import ru.apermyakov.testtask.user.BoardUser;
 import ru.apermyakov.testtask.user.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class for modulate tic-tac-toe backend for user and computer.
@@ -36,11 +37,6 @@ public class GameBackend implements Backend {
      * Field for list of game users.
      */
     private List<User> users = new ArrayList<>();
-
-    /**
-     * Field for map of request.
-     */
-    private Map<String, Request> requests = new HashMap<>();
 
     /**
      * Field for output.
@@ -79,15 +75,17 @@ public class GameBackend implements Backend {
     @Override
     public void initialBackend() {
         this.output = new UserOutput();
-        this.addUser(new BoardUser("User", true));
-        this.addUser(new BoardUser("Comp", false));
-        this.requests.put("User", new UserRequests());
-        this.boardSize = this.requests.get("User").requestSize();
-        this.requests.put("Comp", new ComputerRequest(boardSize.get("Height"), boardSize.get("Width")));
+        User user = new BoardUser("User", true);
+        user.setPequests(new UserRequests());
+        this.addUser(user);
+        this.boardSize = this.users.stream().filter(User::isUser).findFirst().get().getRequests().requestSize();
+        User comp = new BoardUser("Comp", false);
+        comp.setPequests(new ComputerRequest(boardSize.get("Height"), boardSize.get("Width")));
+        this.addUser(comp);
         this.addBoard(new GameBoard(boardSize.get("Height"), boardSize.get("Width")));
-        this.requests.get("User").requestValue(this.users);
-        this.requests.get("User").requestPriority(this.users);
-        this.complexity = this.requests.get("User").requestComplexity();
+        this.users.stream().filter(User::isUser).findFirst().get().getRequests().requestValue(this.users);
+        this.users.stream().filter(User::isUser).findFirst().get().getRequests().requestPriority(this.users);
+        this.complexity = this.users.stream().filter(User::isUser).findFirst().get().getRequests().requestComplexity();
         this.sortUsersByPriority();
     }
 
@@ -100,7 +98,7 @@ public class GameBackend implements Backend {
     protected Map<String, Integer> getCoordinates(User user) {
         Map<String, Integer> coordinates;
         do {
-            coordinates = this.requests.get(user.getName()).requestCoordinates();
+            coordinates = this.users.stream().filter(user::equals).findFirst().get().getRequests().requestCoordinates();
         } while (this.gameBoard.selectSell(coordinates.get("Height"), coordinates.get("Width")).isValueSet());
         return coordinates;
     }
@@ -173,7 +171,6 @@ public class GameBackend implements Backend {
     @Override
     public void resetGame() {
         this.users.clear();
-        this.requests.clear();
         this.initialBackend();
     }
 
@@ -185,7 +182,7 @@ public class GameBackend implements Backend {
         boolean continueGame;
         do {
             this.startMainLoop();
-            continueGame = this.requests.get("User").continueGame();
+            continueGame = this.users.stream().filter(User::isUser).findFirst().get().getRequests().continueGame();
             if (continueGame) {
                 this.resetGame();
             }

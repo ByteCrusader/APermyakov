@@ -1,5 +1,7 @@
 package ru.apermyakov.testtask.user;
 
+import ru.apermyakov.testtask.requests.Request;
+
 /**
  * Class for modulate board user.
  *
@@ -28,6 +30,8 @@ public class BoardUser implements User {
      * Field for user type.
      */
     private boolean userOrComp;
+
+    private Request requests;
 
     /**
      * User constructor.
@@ -104,5 +108,39 @@ public class BoardUser implements User {
     @Override
     public boolean isUser() {
         return this.userOrComp;
+    }
+
+    @Override
+    public void setPequests(Request request) {
+        this.requests = request;
+    }
+
+    @Override
+    public Request getRequests() {
+        return this.requests;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BoardUser boardUser = (BoardUser) o;
+
+        if (isCrossValue != boardUser.isCrossValue) return false;
+        if (priority != boardUser.priority) return false;
+        if (userOrComp != boardUser.userOrComp) return false;
+        if (name != null ? !name.equals(boardUser.name) : boardUser.name != null) return false;
+        return requests != null ? requests.equals(boardUser.requests) : boardUser.requests == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (isCrossValue ? 1 : 0);
+        result = 31 * result + priority;
+        result = 31 * result + (userOrComp ? 1 : 0);
+        result = 31 * result + (requests != null ? requests.hashCode() : 0);
+        return result;
     }
 }
