@@ -2,7 +2,8 @@ package ru.apermyakov.testtask;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Class for cast check orders by price.
@@ -14,30 +15,16 @@ import java.util.TreeMap;
 public class Caster {
 
     /**
-     * Field for sell map.
-     */
-    TreeMap<Double, Order> sell;
-
-    /**
-     * Field for buy map.
-     */
-    TreeMap<Double, Order> buy;
-
-    /**
      * Field for order.
      */
-    Order order;
+    private Order order;
 
     /**
      * Initialize caster.
      *
-     * @param sell sell map
-     * @param buy buy map
      * @param order insert order
      */
-    public Caster(TreeMap<Double, Order> sell, TreeMap<Double, Order> buy, Order order) {
-        this.sell = sell;
-        this.buy = buy;
+    public Caster(Order order) {
         this.order = order;
     }
 
@@ -45,12 +32,10 @@ public class Caster {
      * Method for delete orders from map.
      *
      * @param removeOrders remove orders
-     * @param sellOrBuy sell or buy map
+     * @param supplier sell or buy map
      */
-    private void removeAction(List<Double> removeOrders, boolean sellOrBuy) {
-        for (Double price : removeOrders) {
-            Order remove = sellOrBuy ? buy.remove(price) : sell.remove(price);
-        }
+    private void removeAction(List<Double> removeOrders, Supplier<Map<Double, Order>> supplier) {
+        removeOrders.forEach(supplier.get()::remove);
     }
 
     /**
@@ -58,24 +43,23 @@ public class Caster {
      *
      * @param removeOrders remove orders
      * @param sellOrBuy sell or buy map
+     * @param supplier sell or buy map
      */
-    private void castAction(List<Double> removeOrders, boolean sellOrBuy) {
-        TreeMap<Double, Order> targetMap;
-        targetMap = sellOrBuy ? this.buy : this.sell;
-        for (Order buyOrder : targetMap.values()) {
-            if (order != null && sellOrBuy ? order.price <= buyOrder.price : order.price >= buyOrder.price) {
-                if (order.volume < buyOrder.volume) {
-                    targetMap.put(buyOrder.price, new Order(buyOrder.book, buyOrder.operation,
-                            buyOrder.price, buyOrder.volume - order.volume, buyOrder.orderId));
-                    order = null;
+    private void castAction(List<Double> removeOrders, boolean sellOrBuy, Supplier<Map<Double, Order>> supplier) {
+        for (Order buyOrder : supplier.get().values()) {
+            if (this.order != null && sellOrBuy ? this.order.getPrice() <= buyOrder.getPrice() : this.order.getPrice() >= buyOrder.getPrice()) {
+                if (this.order.getVolume() < buyOrder.getVolume()) {
+                    supplier.get().put(buyOrder.getPrice(), new Order(buyOrder.getBook(), buyOrder.getOperation(),
+                            buyOrder.getPrice(), buyOrder.getVolume() - this.order.getVolume(), buyOrder.getOrderId()));
+                    this.order = null;
                     break;
-                } else if (order.volume == buyOrder.volume) {
-                    targetMap.remove(buyOrder.price);
-                    order = null;
+                } else if (this.order.getVolume() == buyOrder.getVolume()) {
+                    supplier.get().remove(buyOrder.getPrice());
+                    this.order = null;
                     break;
                 } else {
-                    order.volume -= buyOrder.volume;
-                    removeOrders.add(buyOrder.price);
+                    this.order.setVolume(this.order.getVolume() - buyOrder.getVolume());
+                    removeOrders.add(buyOrder.getPrice());
                 }
             }
         }
@@ -85,13 +69,14 @@ public class Caster {
      * Method for initialize cast actions.
      *
      * @param sellOrBuy sell or buy action
+     * @param supplier sell or buy map
      * @return result order
      */
-    public Order cast(boolean sellOrBuy) {
+    public Order cast(boolean sellOrBuy, Supplier<Map<Double, Order>> supplier) {
         List<Double> removeOrders = new LinkedList<>();
 
-        castAction(removeOrders, sellOrBuy);
-        removeAction(removeOrders, sellOrBuy);
+        castAction(removeOrders, sellOrBuy, supplier);
+        removeAction(removeOrders, supplier);
         return order;
     }
 }

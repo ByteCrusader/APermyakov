@@ -15,11 +15,7 @@ public class Shower {
      * @param converter converter
      */
     public void show(Converter converter) {
-        for (Order order : converter.buy.values()) {
-            System.out.println(String.format("%s@%s", order.volume, order.price));
-        }
-        for (Order order : converter.sell.values()) {
-            System.out.println(String.format("%s@%s", order.volume, order.price));
-        }
+        converter.buy.values().forEach(i -> System.out.println(String.format("%s@%s", i.getVolume(), i.getPrice())));
+        converter.sell.values().forEach(i -> System.out.println(String.format("%s@%s", i.getVolume(), i.getPrice())));
     }
 }

@@ -43,9 +43,9 @@ public class Saver {
     public void addOrder(String order) {
         Parser parser = new Parser();
         if (order.length() > 4 && order.substring(1, 4).equals("Add")) {
-            converter.convertAdd(parser.parseAddOrder(order));
+            this.converter.convertAdd(parser.parseAddOrder(order));
         } else if (order.length() > 7 && order.substring(1, 7).equals("Delete")) {
-            converter.convertDelete(parser.parseDeleteOrder(order));
+            this.converter.convertDelete(parser.parseDeleteOrder(order));
         }
     }
 }

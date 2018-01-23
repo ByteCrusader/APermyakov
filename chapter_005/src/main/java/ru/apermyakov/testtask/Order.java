@@ -12,27 +12,27 @@ public class Order {
     /**
      * Field for name of book.
      */
-    String book;
+    private String book;
 
     /**
      * Field for name of operation.
      */
-    String operation;
+    private String operation;
 
     /**
      * Field for order price.
      */
-    double price;
+    private double price;
 
     /**
      * Field for order volume.
      */
-    int volume;
+    private int volume;
 
     /**
      * Field for order ID.
      */
-    int orderId;
+    private int orderId;
 
     /**
      * Design new order.
@@ -48,6 +48,46 @@ public class Order {
         this.operation = operation;
         this.price = price;
         this.volume = volume;
+        this.orderId = orderId;
+    }
+
+    public String getBook() {
+        return book;
+    }
+
+    public void setBook(String book) {
+        this.book = book;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getVolume() {
+        return volume;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 }

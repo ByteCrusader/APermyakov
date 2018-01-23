@@ -23,7 +23,7 @@ public class SimpleSAXParser extends DefaultHandler {
      * @return return converter
      */
     public Converter getConverter() {
-        return converter;
+        return this.converter;
     }
 
     /**
@@ -39,7 +39,7 @@ public class SimpleSAXParser extends DefaultHandler {
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
         if (("AddOrder").equals(qName)) {
-            converter.convertAdd(new Order(attributes.getValue("book"),
+            this.converter.convertAdd(new Order(attributes.getValue("book"),
                     attributes.getValue("operation"),
                     Double.valueOf(attributes.getValue("price")),
                     Integer.valueOf(attributes.getValue("volume")),
@@ -47,7 +47,7 @@ public class SimpleSAXParser extends DefaultHandler {
         }
 
         if (("DeleteOrder").equals(qName)) {
-            converter.convertDelete(new Order(attributes.getValue("book"),
+            this.converter.convertDelete(new Order(attributes.getValue("book"),
                     "",
                     0D,
                     0,
