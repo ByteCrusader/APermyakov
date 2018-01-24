@@ -23,6 +23,12 @@ public class Car {
         this.id = id;
     }
 
+    public Car(String make, String model, int year) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
+
     public int getId() {
         return id;
     }

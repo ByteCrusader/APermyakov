@@ -17,6 +17,15 @@ public class Ad {
 
     private boolean status;
 
+    public Ad() {
+    }
+
+    public Ad(String description, boolean status, String photoPath) {
+        this.description = description;
+        this.status = status;
+        this.photoPath = photoPath;
+    }
+
     public int getId() {
         return id;
     }
