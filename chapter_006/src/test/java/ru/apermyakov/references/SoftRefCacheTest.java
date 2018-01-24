@@ -24,7 +24,6 @@ public class SoftRefCacheTest {
     @Test
     public void whenUploadTestFileThanGetTestString() throws IOException {
         SoftRefCache cache = new Cache();
-        cache.setValueKey("C:\\check\\test.txt");
-        assertThat(cache.uploadValue(), is("Check soft references cache"));
+        assertThat(cache.get("C:\\check\\test.txt"), is("Check soft references cache"));
     }
 }

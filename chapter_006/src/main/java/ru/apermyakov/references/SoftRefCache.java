@@ -20,32 +20,18 @@ public abstract class SoftRefCache {
     private final Map<SoftReference<String>, SoftReference<String>> cache = new HashMap<>();
 
     /**
-     * Field for key.
-     */
-    private String key;
-
-    /**
-     * Method for set value key.
-     *
-     * @param key key.
-     */
-    public void setValueKey(String key) {
-        this.key = key;
-    }
-
-    /**
      * Method for upload value.
      *
      * @return text from file.
      * @throws IOException exception.
      */
-    public String uploadValue() throws IOException {
+    public String get(String key) throws IOException {
         FileUploader uploader = new FileUploader();
         String result;
-        SoftReference<String> keyReference = this.cache.get(new SoftReference<>(this.key));
+        SoftReference<String> keyReference = this.cache.get(new SoftReference<>(key));
         if (keyReference == null || keyReference.get() == null) {
-            result = uploader.upload(this.key);
-            this.cache.put(new SoftReference<>(this.key), new SoftReference<>(result));
+            result = uploader.upload(key);
+            this.cache.put(new SoftReference<>(key), new SoftReference<>(result));
         } else {
             result = keyReference.get();
         }
