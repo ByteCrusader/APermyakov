@@ -29,6 +29,16 @@ public class Item {
      */
     private boolean done;
 
+    public Item() {
+    }
+
+    public Item(int id, String description, String created, boolean done) {
+        this.id = id;
+        this.description = description;
+        this.created = created;
+        this.done = done;
+    }
+
     /**
      * Get id.
      *
