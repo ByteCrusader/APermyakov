@@ -57,10 +57,22 @@ public class Checker {
      * @since 23.10.2017
      */
     public boolean checkFigure() {
-        boolean result = Arrays.stream(this.existFigures).anyMatch(i -> i.position.getX() == this.source.getX() && i.position.getY() == this.source.getY());
+        boolean result = Arrays.stream(this.existFigures)
+                .anyMatch(
+                        i -> i.position.getX() == this.source.getX()
+                                && i.position.getY() == this.source.getY()
+                );
         if (result) { //Check cell existence
-            this.figure = Arrays.stream(this.existFigures).filter(i -> i.position.getX() == this.source.getX() && i.position.getY() == this.source.getY()).findFirst().get();
-            this.index = Arrays.stream(this.existFigures).collect(Collectors.toList()).indexOf(this.figure);
+            this.figure = Arrays.stream(this.existFigures)
+                    .filter(
+                            i -> i.position.getX() == this.source.getX()
+                                    && i.position.getY() == this.source.getY()
+                    ).findFirst()
+                    .get();
+            this.index = Arrays.stream(this.existFigures)
+                    .collect(
+                            Collectors.toList()
+                    ).indexOf(this.figure);
         }
         return result;
     }
@@ -72,7 +84,11 @@ public class Checker {
      * @since 23.10.2017
      */
     public boolean checkMove() {
-        return Arrays.stream(this.figure.possibleMoves()).anyMatch(i -> this.dist.getX() == i.getX() && this.dist.getY() == i.getY());
+        return Arrays.stream(this.figure.possibleMoves())
+                .anyMatch(
+                        i -> this.dist.getX() == i.getX()
+                                && this.dist.getY() == i.getY()
+                );
     }
 
 	/**
@@ -82,7 +98,14 @@ public class Checker {
      * @since 23.10.2017
      */
     public boolean checkWay() {
-        boolean result = Arrays.stream(this.figure.way(this.dist)).noneMatch(i -> Arrays.stream(this.existFigures).anyMatch(n -> i.getX() == n.position.getX() && i.getY() == n.position.getY()));
+        boolean result = Arrays.stream(this.figure.way(this.dist))
+                .noneMatch(
+                        i -> Arrays.stream(this.existFigures)
+                                .anyMatch(
+                                        n -> i.getX() == n.position.getX()
+                                                && i.getY() == n.position.getY()
+                                )
+                );
         return (result || figure.getClass().toString().equals("class ru.apermyakov.testtask.Horse"));
     }
 
