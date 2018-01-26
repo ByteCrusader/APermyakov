@@ -3,8 +3,10 @@ package ru.apermyakov.servlets.testtask;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Class for work with psql db connect.
@@ -20,12 +22,14 @@ public class PsqlConnector {
      *
      * @return connection
      */
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException, IOException {
         PoolProperties properties = new PoolProperties();
-        properties.setUrl("jdbc:postgresql://localhost:5432/servlettest");
-        properties.setDriverClassName("org.postgresql.Driver");
-        properties.setUsername("postgres");
-        properties.setPassword("Figa1357");
+        Properties appProperties = new Properties();
+        appProperties.load(this.getClass().getClassLoader().getResourceAsStream("app.properties"));
+        properties.setUrl(appProperties.getProperty("url"));
+        properties.setDriverClassName(appProperties.getProperty("driver"));
+        properties.setUsername(appProperties.getProperty("username"));
+        properties.setPassword(appProperties.getProperty("password"));
         DataSource source = new DataSource();
         source.setPoolProperties(properties);
         return source.getConnection();

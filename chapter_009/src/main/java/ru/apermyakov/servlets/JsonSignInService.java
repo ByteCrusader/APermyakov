@@ -13,6 +13,11 @@ public class JsonSignInService extends HttpServlet {
      */
     private final UserStore users = UserStore.getInstance();
 
+    /**
+     * Field for enable sessions.
+     */
+    private final Sessions sessions = Sessions.getInstance();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/json");
@@ -27,15 +32,13 @@ public class JsonSignInService extends HttpServlet {
         writer.append("[{\"access\":\"");
         if (users.isPastInspection(user)) {
             HttpSession session = req.getSession();
-            synchronized (session) {
-                session.setAttribute("login", user.getLogin());
-                session.setAttribute("role", users.getRole(user));
-            }
+            session.setAttribute("login", user.getLogin());
+            session.setAttribute("role", users.getRole(user));
             for (Cookie cookie : req.getCookies()) {
                 if (("JSESSIONID").equals(cookie.getName())) {
-                    users.sessions.put(cookie.getValue(), session);
-                        writer.append("allow\"}]");
-                        break;
+                    this.sessions.putSession(cookie.getValue());
+                    writer.append("allow\"}]");
+                    break;
                 }
             }
         } else {

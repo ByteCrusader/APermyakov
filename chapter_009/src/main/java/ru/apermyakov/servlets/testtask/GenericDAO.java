@@ -72,12 +72,7 @@ public class GenericDAO implements DAOInterface<TransferObject, Integer> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        result.sort(new Comparator<TransferObject>() {
-            @Override
-            public int compare(TransferObject o1, TransferObject o2) {
-                return Integer.compare(o1.getId(), o2.getId());
-            }
-        });
+        result.sort(Comparator.comparingInt(TransferObject::getId));
         return result;
     }
 

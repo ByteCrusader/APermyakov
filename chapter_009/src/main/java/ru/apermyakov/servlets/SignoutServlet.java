@@ -21,9 +21,7 @@ public class SignoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        synchronized (session) {
-            session.invalidate();
-        }
+        session.invalidate();
         resp.sendRedirect(req.getContextPath() + "/");
     }
 }

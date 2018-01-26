@@ -8,9 +8,9 @@ import java.io.PrintWriter;
 public class JsonAuthService extends HttpServlet {
 
     /**
-     * Field for user store object.
+     * Field for enable sessions.
      */
-    private final UserStore users = UserStore.getInstance();
+    private final Sessions sessions = Sessions.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,7 +24,7 @@ public class JsonAuthService extends HttpServlet {
                 if (session.isNew()) {
                     cookie.setValue(session.getId());
                 }
-                if (users.sessions.containsKey(cookie.getValue())) {
+                if (this.sessions.isContainCookie(cookie.getValue())) {
                     condition = "enable\"}]";
                 }
             }

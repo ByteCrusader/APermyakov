@@ -2,11 +2,9 @@ package ru.apermyakov.servlets;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
-import javax.servlet.http.HttpSession;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,11 +24,6 @@ public class UserStore {
      */
     @GuardedBy("this")
     private static final UserStore INSTANCE = new UserStore();
-
-    /**
-     * Field for map of sessions.
-     */
-    public HashMap<String, HttpSession> sessions = new HashMap<>();
 
     /**
      * Field for connection to data base.
@@ -134,12 +127,7 @@ public class UserStore {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        result.sort(new Comparator<TransferObject>() {
-            @Override
-            public int compare(TransferObject o1, TransferObject o2) {
-                return Integer.compare(o1.getId(), o2.getId());
-            }
-        });
+        result.sort(Comparator.comparingInt(TransferObject::getId));
         return result;
     }
 

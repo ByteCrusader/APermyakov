@@ -1,17 +1,16 @@
 package ru.apermyakov.servlets.testtask;
 
-import ru.apermyakov.servlets.TransferObject;
-import ru.apermyakov.servlets.UserStore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Class for modulate interface json.
@@ -34,39 +33,13 @@ public class JsonInterfaceService extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/json");
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
-        boolean record = false;
-        writer.append("[");
-
         DAOFactory factory = new DAOFactory();
         try (Connection connection = factory.getConnection()) {
             UserDAO userDAO = factory.getUserDAO(connection);
-            List<TransferObject> users = userDAO.choseAll();
-            for (TransferObject user : users) {
-                if (record) {
-                    writer.append(",");
-                }
-                writer.append("{\"id\":\"");
-                writer.append(String.valueOf(user.getId()));
-                writer.append("\",\"name\":\"");
-                writer.append(user.getName());
-                writer.append("\",\"role\":\"");
-                writer.append(user.getRole());
-                writer.append("\",\"address\":\"");
-                writer.append(user.getAddress());
-                writer.append("\",\"musictype\":[");
-                boolean musicRecord = false;
-                for (String musicType : user.getMusicType()) {
-                    if (musicRecord) {
-                        writer.append(",");
-                    }
-                    writer.append("\"");
-                    writer.append(musicType);
-                    writer.append("\"");
-                    musicRecord = true;
-                }
-                writer.append("]}");
-                record = true;
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            mapper.writeValue(outputStream,userDAO.choseAll());
+            writer.append(new String(outputStream.toByteArray()));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,13 +1,9 @@
 package ru.apermyakov.servlets.testtask;
 
-import ru.apermyakov.servlets.TransferObject;
-import ru.apermyakov.servlets.UserStore;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Base64;
 
 /**
  * Class for work with auth.
@@ -38,9 +34,7 @@ public class JsonSignInService extends HttpServlet {
 
         if (!repository.query(specification).isEmpty()) {
             HttpSession session = req.getSession();
-            synchronized (session) {
-                session.setAttribute("role", req.getParameter("role").toUpperCase());
-            }
+            session.setAttribute("role", req.getParameter("role").toUpperCase());
             for (Cookie cookie : req.getCookies()) {
                 if (("JSESSIONID").equals(cookie.getName())) {
                     if (session.isNew()) {
